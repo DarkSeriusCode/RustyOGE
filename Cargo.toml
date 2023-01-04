@@ -1,5 +1,5 @@
 [package]
-name = "rusty-oge"
+name = "rusty_oge"
 version = "0.1.0"
 edition = "2021"
 
