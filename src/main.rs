@@ -4,21 +4,30 @@ use clap::Parser;
 #[derive(Parser)]
 struct CLI {
     /// The number of the task
-    number: usize
+    number: u32,
+
+    /// The type of the task
+    #[arg(short, long)]
+    type_num: u8,
 }
 
-pub mod tasks;
-pub use tasks::task2;
+mod input;
+
+use rusty_oge::*;
+use rusty_oge::SolveResult;
 
 fn main() {
     let args = CLI::parse();
-
-    solve_by_num(args.number).unwrap_or_else(|err| eprintln!("{err}"));
+    match solve_by_num(args.number, args.type_num) {
+        Ok(a) => println!("Ответ: {a}"),
+        Err(err) => eprintln!("{err}"),
+    }
 }
 
-fn solve_by_num(number: usize) -> Result<(), &'static str> {
-    match number {
-        2 => Ok(task2::solve()?),
+fn solve_by_num(number: u32, type_num: u8) -> SolveResult {
+    let answer = match number {
+        2 => task2::solve(input::read_task2_input, type_num),
         _ => Err("Cannot find the task"),
-    }
+    }?;
+    Ok(answer)
 }
