@@ -11,6 +11,9 @@ use std::collections::HashMap;
 const NUM_CODES: [(&str, &str); 6] = [("А", "01"), ("Д", "100"), ("К", "101"),
                                       ("Н", "10"), ("О", "111"), ("С", "000")];
 
+const NUM_CODES2: [(&str, &str); 6] = [("А", "01"), ("В", "011"), ("Д", "100"),
+                                       ("О", "111"), ("Р", "010"), ("У", "001")];
+
 const RUS_CODES: [(&str, &str); 33] = [
     ("А", "1"), ("Б", "2"), ("В", "3"), ("Г", "4"), ("Д", "5"), ("Е", "6"), 
     ("Ё", "7"), ("Ж", "8"), ("З", "9"), ("И", "10"), ("Й", "11"), ("К", "12"),
@@ -42,6 +45,7 @@ fn get_codes(raw_codes: Vec<(&str, &str)>) -> HashMap<String, String> {
 
 enum CodeType {
     Numbers,
+    Numbers2,
     Russian,
     English,
     Custom(Vec<(&'static str, &'static str)>),
@@ -51,6 +55,7 @@ impl CodeType {
     fn get(&self) -> HashMap<String, String> {
         get_codes(match self {
             Self::Numbers => Vec::from(NUM_CODES),
+            Self::Numbers2 => Vec::from(NUM_CODES2),
             Self::Russian => Vec::from(RUS_CODES),
             Self::English => Vec::from(ENG_CODES),
             Self::Custom(v) => v.clone(),
@@ -58,68 +63,68 @@ impl CodeType {
     }
 }
 
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------
+
+/// Пытается решить задание, если не получается - паникуем
+fn try_solve<S>(solver: S, codes: CodeType, input: Vec<&str>, true_answer: &str)
+where
+    S: FnOnce(HashMap<String, String>, Vec<String>) -> Result<String, &'static str>,
+{
+    let codes = codes.get();
+    let input = Vec::from_iter(input.iter().map(|item| item.to_string()));
+
+    match solver(codes, input) {
+        Ok(answer) => assert_eq!(answer, true_answer),
+        Err(err_msg) => panic!("{err_msg}"),
+    }
+}
+
+// --------------------------------------------------------------------------------------
 
 pub mod type1 {
-    use rusty_oge::task2::solvers;
-    use super::CodeType::{self, Numbers, Russian, English, Custom};
+    use rusty_oge::task2::solvers::solve_type1;
+    use super::CodeType::{self, *};
 
-    /// Пытается решить задание, если не получается - паникуем
     fn try_solve(code_type: CodeType, input: Vec<&str>, true_answer: &str) {
-        let codes = code_type.get();
-        let input = Vec::from_iter(input.iter().map(|item| item.to_string()));
-        let answer = solvers::solve_type1(codes, input);
-
-        match answer {
-            Ok(a) => assert_eq!(true_answer, a),
-            Err(msg) => panic!("{msg}"),
-        }
+        super::try_solve(solve_type1, code_type, input, true_answer);
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=7
     fn problem7() {
         try_solve(Numbers, vec!["10111101", "1010110", "10111000"], "НОС");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=27
     fn problem27() {
         try_solve(Numbers, vec!["100101000", "101111100", "100111101"], "КОД"); 
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=47
     fn problem47() {
         try_solve(Numbers, vec!["1010110", "100000101", "00011110001"], "СОДА");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=67
     fn problem67() {
         try_solve(Numbers, vec!["10111101", "00011110", "100111101"], "СОН");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=87
     fn problem87() {
         try_solve(Numbers, vec!["100101000", "100000101", "0110001"], "АДА");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=107
     fn problem107() {
         try_solve(Numbers, vec!["10111101", "100111101", "0000110"], "САН");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=127
     fn problem127() {
         try_solve(Numbers, vec!["1010110", "11110001", "100000101"], "ОДА");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=227
     fn problem227() {
         let codes = Custom(vec![("А", "*-"), ("Г", "--*"), ("М", "--"),
                                 ("К", "-*-"), ("Ю", "**--")]);
@@ -127,7 +132,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=247
     fn problem247() {
         let codes = Custom(vec![("Н", "-*"), ("К", "-*-"), ("И", "**"),
                                 ("Л", "*-**"), ("М", "--")]);
@@ -135,7 +139,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=267
     fn problem267() {
         let codes = Custom(vec![("А", "*-"), ("Д", "-**"), ("Л", "*-**"),
                                 ("Т", "-"), ("Ж", "***-")]);
@@ -143,7 +146,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=287
     fn problem287() {
         let codes = Custom(vec![("К", "+_+"), ("Л", "_*"), ("М", "*+"), 
                                 ("Н", "_++"), ("О", "*"), ("П", "__+"),
@@ -152,73 +154,61 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=327
     fn problem327() {
         try_solve(Russian, vec!["3135420", "2102030", "1331320", "2033510"], "БИТЬ");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=348
     fn problem348() {
         try_solve(Russian, vec!["20335", "21120", "31321", "51201"], "ДАТА");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=368
     fn problem368() {
         try_solve(Russian, vec!["112233", "135793", "203014", "412030"], "ГАТЬ");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=388
     fn problem388() {
         try_solve(Russian, vec!["1012", "1210", "1565", "5651"], "ДЕДА");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=408
     fn problem408() {
         try_solve(Russian, vec!["8102030", "8112131", "8112233", "8152535"], "ЖИТЬ");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=428
     fn problem428() {
         try_solve(Russian, vec!["3102030", "3102033", "3112030", "3112233"], "ВИТЬ");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=448
     fn problem448() {
         try_solve(English, vec!["2016", "2345", "4523", "6120"], "FAT");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=468
     fn problem468() {
         try_solve(English, vec!["1234", "2013", "3120", "4321"], "CAT");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=488
     fn problem488() {
         try_solve(English, vec!["18205", "20158", "20518", "81205"], "HATE");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=508
     fn problem508() {
         try_solve(English, vec!["17205", "20127", "20217", "71205"], "GATE");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=528
     fn problem528() {
         try_solve(English, vec!["121", "245", "913", "935"], "ICE");
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=548
     fn problem548() {
         let codes = Custom(vec![("Р", "C?"), ("Ы", "??C"), ("Б", "??"),
                                 ("К", "?C"), ("А", "?C?")]);
@@ -226,7 +216,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=568
     fn problem568() {
         let codes = Custom(vec![("М", "C?"), ("Ы", "?CC"), ("Ш", "??"),
                                 ("К", "?C"), ("А", "?C?")]);
@@ -234,7 +223,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=588
     fn problem588() {
         let codes = Custom(vec![("Л", "?C"), ("Е", "???"), ("Н", "CC"),
                                 ("К", "C?"), ("А", "CC?")]);
@@ -242,7 +230,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=608
     fn problem608() {
         let codes = Custom(vec![("М", "?C"), ("И", "???"), ("Ш", "CC"),
                                 ("К", "C?"), ("А", "CC?")]);
@@ -250,7 +237,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=628
     fn problem628() {
         let codes = Custom(vec![("Б", "110"), ("И", "01"), ("С", "100"),
                                 ("Е", "10"), ("Р", "11")]);
@@ -258,7 +244,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=648
     fn problem648() {
         let codes = Custom(vec![("М", "01"), ("Е", "100"), ("Т", "110"), 
                                 ("Л", "101"), ("А", "10")]);
@@ -266,15 +251,13 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=668
     fn problem668() {
         let codes = Custom(vec![("А", "10"), ("Б", "110"), ("В", "12"), 
                                 ("Г", "102"), ("Д", "0"), ("Е", "22"), ("Ж", "122")]);
         try_solve(codes, vec!["101212210102"], "АВЖАГ")
     }
-    
+
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=708
     fn problem708() {
         let codes = Custom(vec![("А", "*-"), ("Д", "-**"), ("Ж", "*-**"),
                                 ("Л", "-"), ("Т", "***-")]);
@@ -282,7 +265,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=751
     fn problem751() {
         let codes = Custom(vec![("К", "!!?"), ("И", "!!"), ("С", "?!"),
                                 ("Л", "???"), ("О", "?!")]);
@@ -290,7 +272,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=771
     fn problem771() {
         let codes = Custom(vec![("Р", "!!?"), ("Е", "!!"), ("Д", "!?"),
                                 ("И", "???"), ("С", "?!")]);
@@ -298,7 +279,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=803
     fn problem803() {
         let codes = Custom(vec![("Ш", "01"), ("К", "11"), ("О", "100"),
                                 ("Л", "101"), ("А", "10")]);
@@ -306,7 +286,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=823
     fn problem823() {
         let codes = Custom(vec![("С", "110"), ("А", "01"), ("Д", "100"), 
                                 ("И", "10"), ("К", "11")]);
@@ -314,7 +293,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=845
     fn problem845() {
         let codes = Custom(vec![("П", "@@@&"), ("Р", "@&&"), ("И", "&@"),
                                 ("В", "&&@"), ("Е", "&&&@"), ("Т", "@&@")]);
@@ -322,7 +300,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=865
     fn problem865() {
         let codes = Custom(vec![("В", "@@@"), ("О", "@&"), ("Л", "&@@"),
                                 ("Г", "&@&"), ("А", "&&&")]);
@@ -330,7 +307,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=886
     fn problem886() {
         let codes = Custom(vec![("С", "110"), ("М", "10"), ("А", "00"),
                                 ("О", "001"), ("Р", "101"), ("К", "010")]);
@@ -338,7 +314,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=906
     fn problem906() {
         let codes = Custom(vec![("С", "100"), ("М", "01"), ("А", "00"), 
                                 ("О", "001"), ("Р", "101"), ("К", "010")]);
@@ -346,7 +321,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=926
     fn problem926() {
         let codes = Custom(vec![("Р", "CF"), ("Ы", "FFC"), ("В", "FF"), 
                                 ("О", "FC"), ("С", "FCF")]);
@@ -354,7 +328,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=946
     fn problem946() {
         let codes = Custom(vec![("К", "CF"), ("О", "FFC"), ("В", "FF"),
                                 ("Е", "FC"), ("Р", "FCF")]);
@@ -362,7 +335,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=1018
     fn problem1018() {
         let codes = Custom(vec![("П", "!!?"), ("И", "!!"), ("Р", "!?"),
                                 ("А", "???"), ("Т", "?!")]);
@@ -370,7 +342,6 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=1038
     fn problem1038() {
         let codes = Custom(vec![("С", "!!?"), ("В", "!!"), ("И", "!?"),
                                 ("Т", "???"), ("Е", "?!"), ("Р", "!!!")]);
@@ -378,29 +349,162 @@ pub mod type1 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=1078
     fn problem1078() {
-        let codes = Custom(vec![("А", "01"), ("В", "011"), ("Д", "100"),
-                                ("О", "111"), ("Р", "010"), ("У", "001")]);
-        try_solve(codes, vec!["0100100101", "011011111100", "0100110001"], "ВВОД");
+        try_solve(Numbers2, vec!["0100100101", "011011111100", "0100110001"], "ВВОД");
+    }
+
+    #[test]
+    fn problem1121() {
+        let codes = Custom(vec![("Т", "-"), ("А", "*-"), ("У", "**-"), ("Ж", "***-"),
+                                ("Х", "****")]);
+        try_solve(codes, vec!["**-***-*--*-****-"], "УЖАТАХТ");
+    }
+
+    #[test]
+    fn problem1161() {
+        let codes = Custom(vec![("А", "*"), ("Б", "-++"), ("В", "--+"), ("Г", "*+"),
+                                ("Д", "-*"), ("Е", "+-+"), ("Ж", "**-")]);
+        try_solve(codes, vec!["*+-++-**-**"], "ГБДАДА");
+    }
+
+    #[test]
+    fn problem4548() {
+        try_solve(Russian, vec!["92610", "36910", "13131", "23456"], "ВЕЗИ");
+    }
+
+    #[test]
+    fn problem4585() {
+        try_solve(Numbers2, vec!["11101001", "010111011", "01001010"], "РОВ");
+    }
+
+    #[test]
+    fn problem4644() {
+        let codes = Custom(vec![("И", "**"), ("А", "*-"), ("Н", "-*"), ("Г", "--*"),
+                                ("Ч", "---*")]);
+        try_solve(codes, vec!["*-**-*--*---**--*"], "АИНГЧАН");
+    }
+
+    #[test]
+    fn problem4717() {
+        try_solve(Numbers2, vec!["01001001", "11101001", "10001010"], "ДАР");
+    }
+
+    #[test]
+    fn problem4776() {
+        try_solve(Russian, vec!["31212", "12987", "10926", "36510"], "ВЕДИ");
+    }
+
+    #[test]
+    fn problem4893() {
+        try_solve(Numbers2, vec!["011111010", "01001001", "01001010"], "ВОР");
+    }
+
+    #[test]
+    fn problem4932() {
+        try_solve(Numbers2, vec!["0100100101", "010111100", "10011101001"], "РОД");
+    }
+
+    #[test]
+    fn problem5124() {
+        let codes = Custom(vec![("М", "--"), ("Н", "-*"), ("С", "***"), ("У", "**-"),
+                                ("А", "*-")]);
+        try_solve(codes, vec!["*---**--*****--*"], "АМУНСАН");
+    }
+
+    #[test]
+    fn problem5264() {
+        let codes = Custom(vec![("К", "+-+"), ("Л", "-*"), ("М", "*+"), ("Н", "-++"),
+                                ("О", "*"), ("П", "--+"), ("Р", "--")]);
+        try_solve(codes, vec!["*+-++-++---*"], "МННРЛ");
+    }
+
+    #[test]
+    fn problem5307() {
+        try_solve(Numbers2, vec!["01001001", "0100100101", "111011111100"], "ОВОД");
+    }
+
+    #[test]
+    fn problem5393() {
+        let codes = Custom(vec![("С", "***"), ("У", "**-"), ("А", "*-"), ("М", "--"),
+                                ("Н", "-*")]);
+        try_solve(codes, vec!["-*--*-**-*-***--"], "НМАУАСМ");
+    }
+
+    #[test]
+    fn problem5552() {
+        try_solve(Numbers2, vec!["01001010", "0100110001", "01000110001"], "РУДА");
+    }
+
+    #[test]
+    fn problem5655() {
+        try_solve(Numbers2, vec!["01001010", "11110001", "0100100101"], "ОДА");
+    }
+
+    #[test]
+    fn problem5775() {
+        let codes = Custom(vec![("А", "*"), ("Б", "-++"), ("В", "--+"), ("Г", "*+"),
+                                ("Е", "-*"), ("И", "+-+"), ("К", "**-")]);
+        try_solve(codes, vec!["*+-++-**-**"], "ГБЕАЕА");
+    }
+
+    #[test]
+    fn problem5800() {
+        try_solve(Numbers2, vec!["01001010", "01111110001", "10011101001"], "ВОДА")
+    }
+
+    #[test]
+    fn problem5886() {
+        try_solve(Numbers2, vec!["0110001", "0100110001", "10011101001"], "АДА");
+    }
+
+    #[test]
+    fn problem6260() {
+        try_solve(Numbers2, vec!["11101001", "100111", "0100100101"], "ДО");
+    }
+
+    #[test]
+    fn problem6421() {
+        try_solve(Numbers2, vec!["01001001", "100011111010", "10011101001"], "ДВОР");
+    }
+
+    #[test]
+    fn problem12851() {
+        let codes = Custom(vec![("А", "01"), ("В", "10"), ("К", "000"), ("О", "111"),
+                                ("Р", "0011"), ("Т", "1101")]);
+        try_solve(codes, vec!["101110011111110101"], "ВОРОТА");
+    }
+
+    #[test]
+    fn problem18170() {
+        let codes = Custom(vec![("И", "**"), ("А", "*-"), ("Н", "-*"), ("Г", "--*"),
+                                ("Ч", "---*")]);
+        try_solve(codes, vec!["*-**-*--*---**--*"], "АИНГЧАН");
+    }
+
+    #[test]
+    fn problem18185() {
+        let codes = Custom(vec![("И", "**"), ("А", "*-"), ("Н", "-*"), ("Г", "--*"),
+                                ("Ч", "---*")]);
+        try_solve(codes, vec!["-**-**--**----*"], "НАИГАЧ");
+    }
+
+    #[test]
+    fn problem18423() {
+        let codes = Custom(vec![("А", "01"), ("Б", "100"), ("К", "101"), ("Л", "111"),
+                                ("О", "00"), ("С", "110")]);
+        try_solve(codes, vec!["001001110110100"], "ОБЛАКО");
     }
 }
 
 pub mod type2 {
-    use rusty_oge::task2::solvers;
+    use rusty_oge::task2::solvers::solve_type2;
     use super::CodeType::{self, Custom};
 
     fn try_solve(codes: CodeType, input: &str, true_answer: &str) {
-        let answer = solvers::solve_type2(codes.get(), vec![input.to_string()]);
-
-        match answer {
-            Ok(a) => assert_eq!(true_answer, a),
-            Err(msg) => panic!("{msg}"),
-        };
+        super::try_solve(solve_type2, codes, vec![input], true_answer);
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=147
     fn problem147() {
         let codes = Custom(vec![("К", "@+"), ("Л", "~+"), ("М", "+@"),
                                    ("П", "@~+"), ("О", "+"), ("И", "~")]);
@@ -408,7 +512,6 @@ pub mod type2 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=167
     fn problem167() {
         let codes = Custom(vec![("Н", "~"), ("М", "*"), ("Л", "*@"),
                                    ("И", "@~*"), ("Т", "@*"), ("О", "~*")]);
@@ -416,7 +519,6 @@ pub mod type2 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=187
     fn problem187() {
         let codes = Custom(vec![("Ж", "+#"), ("Е", "+^#"), ("С", "#"),
                                     ("А", "^"), ("К", "^#"), ("Л", "#+")]);
@@ -424,7 +526,6 @@ pub mod type2 {
     }
 
     #[test]
-    /// https://inf-oge.sdamgia.ru/problem?id=207
     fn problem207() {
         let codes = Custom(vec![("А", "+#"), ("Е", "#+"), ("Л", "~"),
                                     ("П", "#"), ("Т", "+~#"), ("О", "~#")]);
@@ -432,3 +533,134 @@ pub mod type2 {
     }
 }
 
+pub mod type3 {
+    use rusty_oge::task2::solvers::solve_type3;
+    use super::CodeType::{self, Custom};
+
+    fn try_solve(codes: CodeType, input: &str, true_answer: &str) {
+        super::try_solve(solve_type3, codes, vec![input], true_answer);
+    }
+
+    #[test]
+    fn problem1101() {
+        let codes = Custom(vec![("Ж", "+#"), ("З", "+^#"), ("И", "#"), ("Й", "^"),
+                                ("К", "^#"), ("Л", "#+")]);
+        try_solve(codes, "#++^##^#^", "5");
+    }
+
+    #[test]
+    fn problem1240() {
+        let codes = Custom(vec![("Н", "~"), ("М", "*"), ("Л", "*@"), ("И", "@~*"),
+                                ("Т", "@*"), ("О", "~*")]);
+        try_solve(codes, "*@@~**~*~", "5");
+    }
+
+    #[test]
+    fn problem6221() {
+        let codes = Custom(vec![("К", "@+"), ("Л", "~+"), ("М", "+@"), ("Н", "@~+"),
+                                ("О", "+"), ("П", "~")]);
+        try_solve(codes, "+~+~+@@~+", "5");
+    }
+
+    #[test]
+    fn problem18256() {
+        let codes = Custom(vec![("К", "@+"), ("Л", "~+"), ("М", "+@"), ("Н", "@~+"),
+                                ("О", "+"), ("П", "~")]);
+        try_solve(codes, "+~+~@~+", "4");
+    }
+}
+
+pub mod type4 {
+    use rusty_oge::task2::solvers::solve_type4;
+    use super::CodeType::{self, Custom};
+
+    fn try_solve(codes: CodeType, input: &str, true_answer: &str) {
+        super::try_solve(solve_type4, codes, vec![input], true_answer);
+    }
+
+    #[test]
+    fn problem1141() {
+        let codes = Custom(vec![("А", "*-"), ("Д", "-**"), ("Л", "*-**"), ("Т", "-"),
+                                ("Ж", "***-")]);
+        try_solve(codes, "*--***-**--**-*--", "8");
+    }
+
+    #[test]
+    fn problem4565() {
+        let codes = Custom(vec![("Е", "*"), ("Н", "-*"), ("О", "---"), ("З", "--**"),
+                                ("Щ", "--*-")]);
+        try_solve(codes, "-***---*", "5");
+    }
+
+    #[test]
+    fn problem4689() {
+        let codes = Custom(vec![("А", "*-"), ("Г", "--*"), ("И", "**"), ("П", "*--*"),
+                                ("М", "--")]);
+        try_solve(codes, "*-*--*--**-**--*", "6");
+    }
+
+    #[test]
+    fn problem4742() {
+        let codes = Custom(vec![("Т", "-"), ("А", "*-"), ("У", "**-"), ("Ж", "***-"),
+                                ("Х", "****")]);
+        try_solve(codes, "***-**-***-*-**-", "5");
+    }
+
+    #[test]
+    fn problem5311() {
+        let codes = Custom(vec![("А", "~"), ("Б", "o++"), ("В", "oo+"), ("Г", "~+"),
+                                ("Д", "o~"), ("Е", "+o+"), ("Ё", "~~o")]);
+        try_solve(codes, "~+o++o~~o~~", "6");
+    }
+
+    #[test]
+    fn problem6197() {
+        let codes = Custom(vec![("Т", "-"), ("А", "*-"), ("У", "**-"), ("Ж", "***-"),
+                                ("Х", "****")]);
+        try_solve(codes, "-*-*-**--*--", "7");
+    }
+
+    #[test]
+    fn problem6354() {
+        let codes = Custom(vec![("Т", "-"), ("А", "*-"), ("У", "**-"), ("Ж", "***-"),
+                                ("Х", "****")]);
+        try_solve(codes, "**-*-***-*--**-", "6");
+    }
+
+    #[test]
+    fn problem18211() {
+        let codes = Custom(vec![("Е", "0"), ("Н", "10"), ("О", "111"), ("З", "1100"),
+                                ("Щ", "1101")]);
+        try_solve(codes, "11110010011000", "7");
+    }
+
+    #[test]
+    fn problem18226() {
+        let codes = Custom(vec![("А", "01"), ("Г", "110"), ("И", "00"), ("П", "0110"),
+                                ("М", "11")]);
+        try_solve(codes, "0101101100100110", "6");
+    }
+}
+
+pub mod type5 {
+    use rusty_oge::task2::solvers::solve_type5;
+    use super::CodeType::{self, Custom};
+
+    fn try_solve(codes: CodeType, input: &str, true_answer: &str) {
+        super::try_solve(solve_type5, codes, vec![input], true_answer);
+    }
+
+    #[test]
+    fn problem4835() {
+        let codes = Custom(vec![("А", "..o.."), ("Б", ".o..o"), ("В", ".oo.o"),
+                                ("Г", ".oooo"), ("Д", "...o."), ("Е", ".o.oo")]);
+        try_solve(codes, "...o..o.oo...o..oooo.o.oo", "ДЕ");
+    }
+
+    #[test]
+    fn problem5755() {
+        let codes = Custom(vec![("А", "..o.."), ("Б", ".o..o"), ("В", ".oo.o"),
+                                ("Г", ".oooo"), ("Д", "...o."), ("Е", ".o.oo")]);
+        try_solve(codes, ".o..o.o.oo.o..o..o....o..", "БА");
+    }
+}
