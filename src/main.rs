@@ -4,11 +4,12 @@ use clap::Parser;
 #[derive(Parser)]
 struct CLI {
     /// The number of the task
-    number: u32,
+    #[arg(long)]
+    task_num: u32,
 
     /// The type of the task
-    #[arg(short, long)]
-    type_num: u8,
+    #[arg(long)]
+    task_type: u8,
 }
 
 mod input;
@@ -18,7 +19,7 @@ use rusty_oge::SolveResult;
 
 fn main() {
     let args = CLI::parse();
-    match solve_by_num(args.number, args.type_num) {
+    match solve_by_num(args.task_num, args.task_type) {
         Ok(a) => println!("Ответ: {a}"),
         Err(err) => eprintln!("{err}"),
     }
