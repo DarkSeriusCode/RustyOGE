@@ -5,6 +5,7 @@ use crate::task2::types::Codes;
 use crate::task2::core::decode;
 
 const UNABLE_TO_SOLVE_ERR_MSG: &str = "Не могу решить задачу!";
+pub const SOLVERS_COUNT: u8 = 5;
 
 // --------------------------------------------------------------------------------------
 
