@@ -32,8 +32,6 @@ pub fn read_task2_input() -> Result<task2::InputData, &'static str> {
 
     let encoded_strings = input_until_end("Введите строки");
 
-    Ok(task2::InputData {
-        codes,
-        encoded_strings,
-    })
+    Ok(task2::InputData::new(codes, encoded_strings))
 }
+
