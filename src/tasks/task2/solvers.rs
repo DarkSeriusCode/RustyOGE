@@ -1,10 +1,10 @@
 // Про типы задач можно посмотреть в README.md
 use std::collections::HashSet;
 use crate::SolveResult;
+use crate::utils;
 use crate::task2::types::Codes;
 use crate::task2::core::decode;
 
-const UNABLE_TO_SOLVE_ERR_MSG: &str = "Не могу решить задачу!";
 pub const SOLVERS_COUNT: u8 = 5;
 
 // --------------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ pub fn solve_type1(codes: Codes, input: Vec<String>) -> SolveResult {
             return Ok(s.to_string());
         }
     }
-    Err(UNABLE_TO_SOLVE_ERR_MSG)
+    Err(utils::UNABLE_TO_SOLVE_ERR_MSG)
 }
 
 // --------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ pub fn solve_type2(codes: Codes, input: Vec<String>) -> SolveResult {
     // его и пытаемся вернуть
     match decoded.get(0) {
         Some(s) => Ok(s.to_string()),
-        None => return Err(UNABLE_TO_SOLVE_ERR_MSG),
+        None => return Err(utils::UNABLE_TO_SOLVE_ERR_MSG),
     }
 }
 
@@ -76,7 +76,7 @@ pub fn solve_type3(codes: Codes, input: Vec<String>) -> SolveResult {
     // его и пытаемся вернуть
     match decoded.get(0) {
         Some(s) => Ok(s.chars().count().to_string()),
-        None => return Err(UNABLE_TO_SOLVE_ERR_MSG),
+        None => return Err(utils::UNABLE_TO_SOLVE_ERR_MSG),
     }
 }
 
@@ -90,7 +90,7 @@ pub fn solve_type4(codes: Codes, input: Vec<String>) -> SolveResult {
  
     match decoded.get(0) {
         Some(s) => Ok(s.chars().count().to_string()),
-        None => return Err(UNABLE_TO_SOLVE_ERR_MSG),
+        None => return Err(utils::UNABLE_TO_SOLVE_ERR_MSG),
     }
 }
 
