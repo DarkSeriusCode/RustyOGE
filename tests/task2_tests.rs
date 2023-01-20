@@ -1,9 +1,3 @@
-/// Обозначения для групп тестов
-/// type1: Задания, схожие с https://inf-oge.sdamgia.ru/problem?id=7 и 
-///        https://inf-oge.sdamgia.ru/problem?id=327
-///
-/// type2: Задания, схожие с https://inf-oge.sdamgia.ru/problem?id=147
-
 use std::collections::HashMap;
 
 // ----------------------------------------------------------------------------
