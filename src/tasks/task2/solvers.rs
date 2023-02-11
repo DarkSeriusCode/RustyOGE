@@ -1,8 +1,7 @@
 // Про типы задач можно посмотреть в README.md
 use std::collections::HashSet;
-use crate::SolveResult;
-use crate::utils;
-use crate::task2::types::Codes;
+use crate::utils::SolveError;
+use crate::task2::types::{Codes, SolveResult};
 use crate::task2::core::decode;
 
 pub const SOLVERS_COUNT: u8 = 5;
@@ -39,7 +38,7 @@ pub fn solve_type1(codes: Codes, input: Vec<String>) -> SolveResult {
             return Ok(s.to_string());
         }
     }
-    Err(utils::UNABLE_TO_SOLVE_ERR_MSG)
+    Err(SolveError::UnableToSolve)
 }
 
 // --------------------------------------------------------------------------------------
@@ -47,7 +46,7 @@ pub fn solve_type1(codes: Codes, input: Vec<String>) -> SolveResult {
 pub fn solve_type2(codes: Codes, input: Vec<String>) -> SolveResult {
     let decoded = match input.get(0) {
         Some(s) => decode(&codes, s),
-        None => return Err("Нет входных данных"),
+        None => return Err(SolveError::NoInputData),
     };
 
     // Отсееваем результаты, где повторяются символы
@@ -57,7 +56,7 @@ pub fn solve_type2(codes: Codes, input: Vec<String>) -> SolveResult {
     // его и пытаемся вернуть
     match decoded.get(0) {
         Some(s) => Ok(s.to_string()),
-        None => return Err(utils::UNABLE_TO_SOLVE_ERR_MSG),
+        None => return Err(SolveError::UnableToSolve),
     }
 }
 
@@ -66,7 +65,7 @@ pub fn solve_type2(codes: Codes, input: Vec<String>) -> SolveResult {
 pub fn solve_type3(codes: Codes, input: Vec<String>) -> SolveResult {
     let decoded = match input.get(0) {
         Some(s) => decode(&codes, s),
-        None => return Err("Нет входных данных"),
+        None => return Err(SolveError::NoInputData),
     };
  
     // Отсееваем результаты, где повторяются символы
@@ -76,7 +75,7 @@ pub fn solve_type3(codes: Codes, input: Vec<String>) -> SolveResult {
     // его и пытаемся вернуть
     match decoded.get(0) {
         Some(s) => Ok(s.chars().count().to_string()),
-        None => return Err(utils::UNABLE_TO_SOLVE_ERR_MSG),
+        None => return Err(SolveError::UnableToSolve),
     }
 }
 
@@ -85,12 +84,12 @@ pub fn solve_type3(codes: Codes, input: Vec<String>) -> SolveResult {
 pub fn solve_type4(codes: Codes, input: Vec<String>) -> SolveResult {
     let decoded = match input.get(0) {
         Some(s) => decode(&codes, s),
-        None => return Err("Нет входных данных"),
+        None => return Err(SolveError::NoInputData),
     };
  
     match decoded.get(0) {
         Some(s) => Ok(s.chars().count().to_string()),
-        None => return Err(utils::UNABLE_TO_SOLVE_ERR_MSG),
+        None => return Err(SolveError::UnableToSolve),
     }
 }
 
@@ -99,15 +98,15 @@ pub fn solve_type4(codes: Codes, input: Vec<String>) -> SolveResult {
 pub fn solve_type5(codes: Codes, input: Vec<String>) -> SolveResult {
     let decoded = match input.get(0) {
         Some(s) => decode(&codes, s),
-        None => return Err("Нет входных данных"),
+        None => return Err(SolveError::NoInputData),
     };
 
     if let None = decoded.get(0) {
-        return Err("Не могу решить задачу");
+        return Err(SolveError::UnableToSolve);
     }
 
     match get_recurring_chars(&decoded.get(0).unwrap()) {
         Some(chars) => Ok(chars.concat()),
-        None => Err("Не могу решить задачу"),
+        None => Err(SolveError::UnableToSolve),
     }
 }

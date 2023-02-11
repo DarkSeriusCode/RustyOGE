@@ -1,4 +1,5 @@
 pub use std::collections::HashMap;
+use crate::utils::SolveError;
 
 /// Алиас для сокращённой записи таблиц кодов
 pub type Codes = HashMap<String, String>;
@@ -15,3 +16,7 @@ impl InputData {
         Self { codes, encoded_strings }
     }
 }
+
+// --------------------------------------------------------------------------------------
+
+pub type SolveResult = Result<String, SolveError>;

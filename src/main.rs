@@ -1,4 +1,8 @@
 use clap::Parser;
+use std::boxed::Box;
+use std::fmt::Display;
+use std::error::Error;
+use rusty_oge::*;
 
 /// Helps you to solve OGE tasks
 #[derive(Parser)]
@@ -13,9 +17,7 @@ struct CLI {
 }
 
 mod input;
-
-use rusty_oge::*;
-use rusty_oge::SolveResult;
+pub mod errors;
 
 fn main() {
     let args = CLI::parse();
@@ -25,10 +27,9 @@ fn main() {
     }
 }
 
-fn solve_by_num(number: u32, type_num: u8) -> SolveResult {
-    let answer = match number {
+fn solve_by_num(number: u32, type_num: u8) -> Result<Box<dyn Display>, Box<dyn Error>> {
+    match number {
         2 => task2::solve(input::read_task2_input, type_num),
-        _ => Err("Cannot find the task"),
-    }?;
-    Ok(answer)
+        _ => Err(Box::new(errors::CLIError::UnknownTask)),
+    }
 }

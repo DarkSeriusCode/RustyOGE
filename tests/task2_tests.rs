@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use rusty_oge::utils::SolveError;
 
 // ----------------------------------------------------------------------------
 
@@ -62,7 +63,7 @@ impl CodeType {
 /// Пытается решить задание, если не получается - паникуем
 fn try_solve<S>(solver: S, codes: CodeType, input: Vec<&str>, true_answer: &str)
 where
-    S: FnOnce(HashMap<String, String>, Vec<String>) -> Result<String, &'static str>,
+    S: FnOnce(HashMap<String, String>, Vec<String>) -> Result<String, SolveError>,
 {
     let codes = codes.get();
     let input = Vec::from_iter(input.iter().map(|item| item.to_string()));
