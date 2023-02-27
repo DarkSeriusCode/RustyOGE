@@ -6,6 +6,7 @@ pub enum SolveError {
     UnableToSolve,
     NoInputData,
     UnknownTaskType,
+    Other(String),
 }
 
 impl SolveError {
@@ -14,6 +15,7 @@ impl SolveError {
             Self::UnableToSolve => "Не могу решить задачу!",
             Self::NoInputData => "Нет входных данных!",
             Self::UnknownTaskType => "Неизвестный тип задачи!",
+            Self::Other(msg) => msg.as_str(),
         }
     }
 }
