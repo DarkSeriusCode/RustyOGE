@@ -2,26 +2,28 @@ use std::path::PathBuf;
 
 use regex::Regex;
 
-pub const PROGRAM_INPUT_REGEX: &str = r"\((.?\d+), (.?\d+)\)[;\.]";
+use crate::utils::SolveError;
+
+pub const PROGRAM_INPUT_REGEX: &str = r"([^\(]?\d+,?\s?)+";
 
 // --------------------------------------------------------------------------------------
 
-pub struct ProgramInput(pub String, pub String);
+pub type ProgramInput = Vec<String>;
 
 // --------------------------------------------------------------------------------------
 
-/// file_path - Путь до файла с программой
-/// program_input - Входные данные для программы
 pub struct InputData {
-    pub file_path: PathBuf,
-    pub program_input: String,
+    pub file_path: PathBuf,       // Путь до файла с программой 
+    pub program_input: String,    // Входные данные для программы
+    pub expected_output: String,  // Ожидаемый вывод программы
 }
 
 impl InputData {
-    pub fn new(file_path: PathBuf, program_input: String) -> Self {
+    pub fn new(file_path: PathBuf, program_input: &str, expected_out: &str) -> Self {
         Self {
             file_path: file_path.clone(),
-            program_input,
+            program_input: program_input.to_string(),
+            expected_output: expected_out.to_string(),
         }
     }
 
@@ -37,4 +39,8 @@ impl InputData {
         true
     }
 }
+
+// --------------------------------------------------------------------------------------
+
+pub type SolveResult = Result<String, SolveError>;
 

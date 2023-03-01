@@ -1,22 +1,32 @@
 use std::path::Path;
 
 use crate::task6::core;
-use crate::SolveResult;
+use crate::task6::types::{SolveResult, ProgramInput};
+use crate::utils::SolveError;
 
 pub const SOLVERS_COUNT: u8 = 1;
 
 // --------------------------------------------------------------------------------------
 
-/// Возвращает строку формата "u8;u8"
-pub fn solve_type1(program_path: &Path, program_input: &String) -> SolveResult {
-    let args = core::format_program_input(program_input);
-    let mut right_answer_count = 0;
+fn get_program_outputs(path: &Path, args: &Vec<ProgramInput>) -> Result<Vec<String>, SolveError> {
+    let mut outputs = Vec::new();
 
     for arg in args {
-        let program_output = core::run_program(program_path, &arg)?;
-        if program_output == "YES" {
-            right_answer_count += 1;
+        match core::run_program(path, &arg) {
+            Ok(answer) => outputs.push(answer),
+            Err(_) => return Err(SolveError::Other("Не могу запустить программу!".to_string())),
         }
     }
-    Ok(right_answer_count.to_string())
+
+    Ok(outputs)
 }
+
+// --------------------------------------------------------------------------------------
+
+/// Решает первый тип задачи: считает сколько раз программа вывела 'expected_out'
+pub fn solve_type1(prog_path: &Path, prog_input: &str, expected_out: &str) -> SolveResult {
+    let args = core::format_program_input(prog_input);
+    let outputs = get_program_outputs(prog_path, &args)?;
+    Ok(outputs.iter().filter(|i| *i == expected_out).count().to_string())
+}
+

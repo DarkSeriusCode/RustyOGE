@@ -1,33 +1,28 @@
 mod core;
 pub mod solvers;
 pub mod types;
-
-use crate::utils::Error;
-use std::boxed::Box;
-use std::fmt::Display;
 pub use types::InputData;
 
-pub fn solve<F>(input: F, type_num: u8) -> Result<String, Box<dyn Display>>
+use std::boxed::Box;
+use std::fmt::Display;
+use std::error::Error;
+
+use crate::utils::SolveError;
+
+pub fn solve<F, E>(input: F, type_num: u8) -> Result<Box<dyn Display>, Box<dyn Error>>
 where
-    F: FnOnce() -> Result<types::InputData, &'static str>,
+    F: FnOnce() -> Result<types::InputData, E>,
+    E: Error + 'static,
 {
     if type_num > solvers::SOLVERS_COUNT {
-        return Err(Box::new(Error::UnknownTaskType));
+        return Err(Box::new(SolveError::UnknownTaskType));
     }
-    let (file_path, program_input) = match input() {
-        Ok(InputData {
-            file_path,
-            program_input,
-        }) => (file_path, program_input),
-        Err(err) => return Err(Box::new(err)),
-    };
-    let answer_res = match type_num {
-        1 => solvers::solve_type1(&file_path, &program_input),
-        _ => todo!(),
-    };
+    let InputData {file_path, program_input, expected_output } = input()?;
 
-    match answer_res {
-        Ok(answer) => Ok(answer),
-        Err(err) => Err(Box::new(err)),
-    }
+    // Решаем задачу, если ошибка, то возвращаем её
+    let res = match type_num {
+        1 => solvers::solve_type1(&file_path, &program_input, &expected_output),
+        _ => todo!(),
+    }?;
+    Ok(Box::new(res))
 }
