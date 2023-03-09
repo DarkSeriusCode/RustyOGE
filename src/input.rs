@@ -1,6 +1,7 @@
+use std::path::PathBuf;
 use std::io::{self, Write};
 use std::collections::HashMap;
-use rusty_oge::task2;
+use rusty_oge::{task2, task6};
 use crate::errors::CLIError;
 
 // Выводит `prompt` и ждёт ввод пользователя
@@ -47,4 +48,21 @@ pub fn read_task2_input() -> Result<task2::InputData, CLIError> {
 
 // --------------------------------------------------------------------------------------
 
+pub fn read_task6_input() -> Result<task6::InputData, CLIError> {
+    let path_str = input("Введите путь до файла с программой: ")?;
+    let input_string = input("Введите входные данные: ")?;
+    let expected_output = input("Что должна вывести программа (пиши с учётом регистра): ")?;
 
+    let mut path = PathBuf::new();
+    path.push(&path_str);
+
+    let input_data = task6::InputData::new(
+        path,
+        &input_string,
+        &expected_output,
+    );
+    if !input_data.is_valid() {
+        return Err(CLIError::IncorrectInput);
+    }
+    Ok(input_data)
+}

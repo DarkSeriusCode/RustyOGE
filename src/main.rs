@@ -30,6 +30,7 @@ fn main() {
 fn solve_by_num(number: u32, type_num: u8) -> Result<Box<dyn Display>, Box<dyn Error>> {
     match number {
         2 => task2::solve(input::read_task2_input, type_num),
+        6 => task6::solve(input::read_task6_input, type_num),
         _ => Err(Box::new(errors::CLIError::UnknownTask)),
     }
 }
