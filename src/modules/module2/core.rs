@@ -1,4 +1,4 @@
-use crate::task2::types::Codes;
+use crate::module2::types::Codes;
 
 /// Алгоритм, декодирующий строку всеми возможными способами
 /// по таблице символов.

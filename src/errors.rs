@@ -5,7 +5,7 @@ use std::fmt::Display;
 pub enum CLIError {
     ReadingError,
     IncorrectInput,
-    UnknownTask,
+    UnknownProblem,
 }
 
 impl CLIError {
@@ -13,7 +13,7 @@ impl CLIError {
         match self {
             Self::ReadingError => "Ошибка чтения!",
             Self::IncorrectInput => "Некорректные входные данные!",
-            Self::UnknownTask => "Неизвестная задача!",
+            Self::UnknownProblem => "Неизвестная задача!",
         }
     }
 }

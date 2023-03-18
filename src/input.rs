@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 use std::io::{self, Write};
 use std::collections::HashMap;
-use rusty_oge::{task2, task6};
+use rusty_oge::{module2, module6};
 use crate::errors::CLIError;
 
 // Выводит `prompt` и ждёт ввод пользователя
@@ -30,7 +30,7 @@ fn input_until_end(prompt: &str) -> Result<Vec<String>, CLIError> {
 
 // --------------------------------------------------------------------------------------
 
-pub fn read_task2_input() -> Result<task2::InputData, CLIError> {
+pub fn read_module2_input() -> Result<module2::InputData, CLIError> {
     let mut codes: HashMap<String, String> = HashMap::new();
 
     for s in input_until_end("Введите букву и код через пробел")? {
@@ -43,12 +43,12 @@ pub fn read_task2_input() -> Result<task2::InputData, CLIError> {
 
     let encoded_strings = input_until_end("Введите строки")?;
 
-    Ok(task2::InputData::new(codes, encoded_strings))
+    Ok(module2::InputData::new(codes, encoded_strings))
 }
 
 // --------------------------------------------------------------------------------------
 
-pub fn read_task6_input() -> Result<task6::InputData, CLIError> {
+pub fn read_module6_input() -> Result<module6::InputData, CLIError> {
     let path_str = input("Введите путь до файла с программой: ")?;
     let input_string = input("Введите входные данные: ")?;
     let expected_output = input("Что должна вывести программа (пиши с учётом регистра): ")?;
@@ -56,7 +56,7 @@ pub fn read_task6_input() -> Result<task6::InputData, CLIError> {
     let mut path = PathBuf::new();
     path.push(&path_str);
 
-    let input_data = task6::InputData::new(
+    let input_data = module6::InputData::new(
         path,
         &input_string,
         &expected_output,

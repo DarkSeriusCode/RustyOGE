@@ -4,7 +4,7 @@ use std::io::{self, Read, Write};
 
 use regex::Regex;
 
-use crate::task6::types::{ProgramInput, PROGRAM_INPUT_REGEX};
+use crate::module6::types::{ProgramInput, PROGRAM_INPUT_REGEX};
 
 // Во входных данных для обозначения минуса и других символов может встретиться несколько 
 // Unicode символов поэтому их необходимо заменить на ASCII

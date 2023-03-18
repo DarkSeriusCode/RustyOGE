@@ -1,7 +1,7 @@
 use std::env;
 use std::path::{Path, PathBuf};
 
-const PROGRAMS_DIR_STR: &str = "tests/task6_files";
+const PROGRAMS_DIR_STR: &str = "tests/module6_files";
 
 // --------------------------------------------------------------------------------------
 
@@ -17,7 +17,7 @@ fn path_to(fname: &str) -> PathBuf {
 
 pub mod type1 {
     use super::{path_to, Path};
-    use rusty_oge::task6::solvers::solve_type1;
+    use rusty_oge::module6::solvers::solve_type1;
 
     /// Пытается решить задание, если не получается - паникуем
     fn try_solve(path: &Path, args: &str, expected_out: &str, expected_count: u32) {

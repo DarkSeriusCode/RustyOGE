@@ -30,7 +30,7 @@ const ENG_CODES: [(&str, &str); 26] = [
 
 fn get_codes(raw_codes: Vec<(&str, &str)>) -> HashMap<String, String> {
     let mut map = HashMap::new();
-    
+ 
     for (letter, code) in raw_codes {
         map.insert(code.to_string(), letter.to_string());
     }
@@ -77,7 +77,7 @@ where
 // --------------------------------------------------------------------------------------
 
 pub mod type1 {
-    use rusty_oge::task2::solvers::solve_type1;
+    use rusty_oge::module2::solvers::solve_type1;
     use super::CodeType::{self, *};
 
     fn try_solve(code_type: CodeType, input: Vec<&str>, true_answer: &str) {
@@ -492,7 +492,7 @@ pub mod type1 {
 }
 
 pub mod type2 {
-    use rusty_oge::task2::solvers::solve_type2;
+    use rusty_oge::module2::solvers::solve_type2;
     use super::CodeType::{self, Custom};
 
     fn try_solve(codes: CodeType, input: &str, true_answer: &str) {
@@ -529,7 +529,7 @@ pub mod type2 {
 }
 
 pub mod type3 {
-    use rusty_oge::task2::solvers::solve_type3;
+    use rusty_oge::module2::solvers::solve_type3;
     use super::CodeType::{self, Custom};
 
     fn try_solve(codes: CodeType, input: &str, true_answer: &str) {
@@ -566,7 +566,7 @@ pub mod type3 {
 }
 
 pub mod type4 {
-    use rusty_oge::task2::solvers::solve_type4;
+    use rusty_oge::module2::solvers::solve_type4;
     use super::CodeType::{self, Custom};
 
     fn try_solve(codes: CodeType, input: &str, true_answer: &str) {
@@ -638,7 +638,7 @@ pub mod type4 {
 }
 
 pub mod type5 {
-    use rusty_oge::task2::solvers::solve_type5;
+    use rusty_oge::module2::solvers::solve_type5;
     use super::CodeType::{self, Custom};
 
     fn try_solve(codes: CodeType, input: &str, true_answer: &str) {

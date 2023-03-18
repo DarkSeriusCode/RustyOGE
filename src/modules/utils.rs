@@ -5,7 +5,7 @@ use std::fmt::Display;
 pub enum SolveError {
     UnableToSolve,
     NoInputData,
-    UnknownTaskType,
+    UnknownProblemType,
     Other(String),
 }
 
@@ -14,7 +14,7 @@ impl SolveError {
         match self {
             Self::UnableToSolve => "Не могу решить задачу!",
             Self::NoInputData => "Нет входных данных!",
-            Self::UnknownTaskType => "Неизвестный тип задачи!",
+            Self::UnknownProblemType => "Неизвестный тип задачи!",
             Self::Other(msg) => msg.as_str(),
         }
     }

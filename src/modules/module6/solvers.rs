@@ -1,7 +1,7 @@
 use std::path::Path;
 
-use crate::task6::core;
-use crate::task6::types::{SolveResult, ProgramInput};
+use crate::module6::core;
+use crate::module6::types::{SolveResult, ProgramInput};
 use crate::utils::SolveError;
 
 pub const SOLVERS_COUNT: u8 = 1;
