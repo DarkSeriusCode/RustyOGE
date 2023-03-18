@@ -34,7 +34,7 @@ rusty_oge -h
 |№3                                                                                    |  ❌  |
 |№4                                                                                    |  ❌  |
 |№5                                                                                    |  ❌  |
-|№6                                                                                    |  ❌  |
+|[№6](https://github.com/DarkSeriusCode/RustyOGE/blob/dev/src/tasks/task6/README.md)   |  ✅  |
 |№7                                                                                    |  ❌  |
 |№8                                                                                    |  ❌  |
 |№9                                                                                    |  ❌  |
