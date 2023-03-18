@@ -1,7 +1,8 @@
 // Про типы задач можно посмотреть в README.md
 use std::collections::HashSet;
 use crate::utils::SolveError;
-use crate::module2::types::{Codes, SolveResult};
+use crate::module2::types::Codes;
+use crate::utils::SolveResult;
 use crate::module2::core::decode;
 
 pub const SOLVERS_COUNT: u8 = 5;

@@ -2,8 +2,6 @@ use std::path::PathBuf;
 
 use regex::Regex;
 
-use crate::utils::SolveError;
-
 pub const PROGRAM_INPUT_REGEX: &str = r"([^\(]?\d+,?\s?)+";
 
 // --------------------------------------------------------------------------------------
@@ -39,8 +37,4 @@ impl InputData {
         true
     }
 }
-
-// --------------------------------------------------------------------------------------
-
-pub type SolveResult = Result<String, SolveError>;
 

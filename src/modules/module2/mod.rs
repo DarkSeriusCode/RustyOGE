@@ -6,10 +6,9 @@ pub use types::InputData;
 use crate::utils::SolveError;
 
 use std::boxed::Box;
-use std::fmt::Display;
 use std::error::Error;
 
-pub fn solve<F, E>(input: F, type_num: u8) -> Result<Box<dyn Display>, Box<dyn Error>>
+pub fn solve<F, E>(input: F, type_num: u8) -> Result<String, Box<dyn Error>>
 where
     F: FnOnce() -> Result<types::InputData, E>,
     E: Error + 'static,
@@ -27,6 +26,6 @@ where
         5 => solvers::solve_type5(codes, encoded_strings),
         _ => todo!(),
     }?;
-    Ok(Box::new(res))
+    Ok(res)
 }
 

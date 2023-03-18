@@ -1,6 +1,5 @@
 use clap::Parser;
 use std::boxed::Box;
-use std::fmt::Display;
 use std::error::Error;
 use rusty_oge::*;
 
@@ -27,7 +26,7 @@ fn main() {
     }
 }
 
-fn solve_by_num(number: u32, type_num: u8) -> Result<Box<dyn Display>, Box<dyn Error>> {
+fn solve_by_num(number: u32, type_num: u8) -> Result<String, Box<dyn Error>> {
     match number {
         2 => module2::solve(input::read_module2_input, type_num),
         6 => module6::solve(input::read_module6_input, type_num),

@@ -32,3 +32,6 @@ impl Error for SolveError {
     }
 }
 
+// --------------------------------------------------------------------------------------
+
+pub type SolveResult = Result<String, SolveError>;

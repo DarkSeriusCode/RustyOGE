@@ -4,12 +4,11 @@ pub mod types;
 pub use types::InputData;
 
 use std::boxed::Box;
-use std::fmt::Display;
 use std::error::Error;
 
 use crate::utils::SolveError;
 
-pub fn solve<F, E>(input: F, type_num: u8) -> Result<Box<dyn Display>, Box<dyn Error>>
+pub fn solve<F, E>(input: F, type_num: u8) -> Result<String, Box<dyn Error>>
 where
     F: FnOnce() -> Result<types::InputData, E>,
     E: Error + 'static,
@@ -24,5 +23,5 @@ where
         1 => solvers::solve_type1(&file_path, &program_input, &expected_output),
         _ => todo!(),
     }?;
-    Ok(Box::new(res))
+    Ok(res)
 }
