@@ -1,11 +1,27 @@
 use std::error::Error;
 use std::fmt::Display;
+use std::collections::HashSet;
 
-#[derive(Debug)]
+/// Результат решения задачи.
+pub type SolveResult = Result<String, SolveError>;
+
+// ------------------------------------------------------------------------------------------------
+
+/// Данные, которые могут быть проверены на валидность.
+/// Этот `trait` **должна** реализовывать каждая структура входных данных.
+pub trait Validated {
+    /// Проверяет корректность данных. Если всё хорошо возвращает `true`, иначе - `false`
+    fn is_valid(&self) -> bool;
+}
+
+// ------------------------------------------------------------------------------------------------
+
+/// Перечисление возможных ошибок при решении задачи.
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum SolveError {
+    /// Задачу нельзя решить.
     UnableToSolve,
-    NoInputData,
-    UnknownProblemType,
+    /// Что-то другое.
     Other(String),
 }
 
@@ -13,8 +29,6 @@ impl SolveError {
     pub fn message(&self) -> &str {
         match self {
             Self::UnableToSolve => "Не могу решить задачу!",
-            Self::NoInputData => "Нет входных данных!",
-            Self::UnknownProblemType => "Неизвестный тип задачи!",
             Self::Other(msg) => msg.as_str(),
         }
     }
@@ -32,6 +46,22 @@ impl Error for SolveError {
     }
 }
 
-// --------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 
-pub type SolveResult = Result<String, SolveError>;
+/// Возвращает `true`, если ни один символ в строке не повторяется, иначе `false`
+pub fn has_unique_chars(string: &String) -> bool {
+    let set: HashSet<char> = HashSet::from_iter(string.chars());
+    set.len() == string.chars().count()
+}
+
+/// Возвращает отсортированный `Vec`, содержащий все повторяющиеся символы в `string`
+pub fn get_repeating_chars(string: &str) -> Vec<char> {
+    let mut string_set: HashSet<char> = HashSet::from_iter(string.chars());
+    let repeating_chars: HashSet<char> = HashSet::from_iter(string.chars()
+                                                           .filter(|ch| !string_set.remove(ch)));
+
+    let mut v = Vec::from_iter(repeating_chars.iter().map(|c| c.to_owned()));
+    v.sort();
+    v
+}
+

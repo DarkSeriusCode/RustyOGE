@@ -9,27 +9,23 @@ struct CLI {
     /// The number of the task
     #[arg(long)]
     problem_num: u32,
-
-    /// The type of the task
-    #[arg(long)]
-    problem_type: u8,
 }
 
 mod input;
-pub mod errors;
+mod errors;
 
 fn main() {
     let args = CLI::parse();
-    match solve_by_num(args.problem_num, args.problem_type) {
+    match solve_by_num(args.problem_num) {
         Ok(a) => println!("Ответ: {a}"),
         Err(err) => eprintln!("{err}"),
     }
 }
 
-fn solve_by_num(number: u32, type_num: u8) -> Result<String, Box<dyn Error>> {
+fn solve_by_num(number: u32) -> Result<String, Box<dyn Error>> {
     match number {
-        2 => module2::solve(input::read_module2_input, type_num),
-        6 => module6::solve(input::read_module6_input, type_num),
+        2 => Ok(module2::solve(input::read_module2_input()?)?),
+        // 6 => module6::solve(input::read_module6_input),
         _ => Err(Box::new(errors::CLIError::UnknownProblem)),
     }
 }
