@@ -1,5 +1,8 @@
+extern crate rusty_oge;
+
 use std::collections::HashMap;
-use rusty_oge::utils::SolveError;
+use rusty_oge::module2::*;
+use rusty_oge::utils::Validated;
 
 // ----------------------------------------------------------------------------
 
@@ -26,7 +29,7 @@ const ENG_CODES: [(&str, &str); 26] = [
     ("Y", "25"), ("Z", "26")
 ];
 
-// ----------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 
 fn get_codes(raw_codes: Vec<(&str, &str)>) -> HashMap<String, String> {
     let mut map = HashMap::new();
@@ -58,604 +61,743 @@ impl CodeType {
     }
 }
 
-// --------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 
-/// Пытается решить задание, если не получается - паникуем
-fn try_solve<S>(solver: S, codes: CodeType, input: Vec<&str>, true_answer: &str)
-where
-    S: FnOnce(HashMap<String, String>, Vec<String>) -> Result<String, SolveError>,
-{
-    let codes = codes.get();
-    let input = Vec::from_iter(input.iter().map(|item| item.to_string()));
-
-    match solver(codes, input) {
-        Ok(answer) => assert_eq!(answer, true_answer),
-        Err(err_msg) => panic!("{err_msg}"),
+fn try_solve(input_data: InputData, right_answer: &str) {
+    match solve(input_data) {
+        Ok(answer) => assert_eq!(answer, right_answer),
+        Err(err) => panic!("{}", err),
     }
 }
 
-// --------------------------------------------------------------------------------------
-
-pub mod type1 {
-    use rusty_oge::module2::solvers::solve_type1;
-    use super::CodeType::{self, *};
-
-    fn try_solve(code_type: CodeType, input: Vec<&str>, true_answer: &str) {
-        super::try_solve(solve_type1, code_type, input, true_answer);
-    }
-
-    #[test]
-    fn problem7() {
-        try_solve(Numbers, vec!["10111101", "1010110", "10111000"], "НОС");
-    }
-
-    #[test]
-    fn problem27() {
-        try_solve(Numbers, vec!["100101000", "101111100", "100111101"], "КОД"); 
-    }
-
-    #[test]
-    fn problem47() {
-        try_solve(Numbers, vec!["1010110", "100000101", "00011110001"], "СОДА");
-    }
-
-    #[test]
-    fn problem67() {
-        try_solve(Numbers, vec!["10111101", "00011110", "100111101"], "СОН");
-    }
-
-    #[test]
-    fn problem87() {
-        try_solve(Numbers, vec!["100101000", "100000101", "0110001"], "АДА");
-    }
-
-    #[test]
-    fn problem107() {
-        try_solve(Numbers, vec!["10111101", "100111101", "0000110"], "САН");
-    }
-
-    #[test]
-    fn problem127() {
-        try_solve(Numbers, vec!["1010110", "11110001", "100000101"], "ОДА");
-    }
-
-    #[test]
-    fn problem227() {
-        let codes = Custom(vec![("А", "*-"), ("Г", "--*"), ("М", "--"),
-                                ("К", "-*-"), ("Ю", "**--")]);
-        try_solve(codes, vec!["--*-----***---*-*-"], "МАМГЮКА");
-    }
-
-    #[test]
-    fn problem247() {
-        let codes = Custom(vec![("Н", "-*"), ("К", "-*-"), ("И", "**"),
-                                ("Л", "*-**"), ("М", "--")]);
-        try_solve(codes, vec!["-*-*-*--**-**-*-**"], "ННКНЛКИ");
-    }
-
-    #[test]
-    fn problem267() {
-        let codes = Custom(vec![("А", "*-"), ("Д", "-**"), ("Л", "*-**"),
-                                ("Т", "-"), ("Ж", "***-")]);
-        try_solve(codes, vec!["*--***-**--**-**-*--"], "АДЛТДДТАТ");
-    }
-
-    #[test]
-    fn problem287() {
-        let codes = Custom(vec![("К", "+_+"), ("Л", "_*"), ("М", "*+"), 
-                                ("Н", "_++"), ("О", "*"), ("П", "__+"),
-                                ("Р", "__")]);
-        try_solve(codes, vec!["*+_++_++___*"], "МННРЛ");
-    }
-
-    #[test]
-    fn problem327() {
-        try_solve(Russian, vec!["3135420", "2102030", "1331320", "2033510"], "БИТЬ");
-    }
-
-    #[test]
-    fn problem348() {
-        try_solve(Russian, vec!["20335", "21120", "31321", "51201"], "ДАТА");
-    }
-
-    #[test]
-    fn problem368() {
-        try_solve(Russian, vec!["112233", "135793", "203014", "412030"], "ГАТЬ");
-    }
-
-    #[test]
-    fn problem388() {
-        try_solve(Russian, vec!["1012", "1210", "1565", "5651"], "ДЕДА");
-    }
-
-    #[test]
-    fn problem408() {
-        try_solve(Russian, vec!["8102030", "8112131", "8112233", "8152535"], "ЖИТЬ");
-    }
-
-    #[test]
-    fn problem428() {
-        try_solve(Russian, vec!["3102030", "3102033", "3112030", "3112233"], "ВИТЬ");
-    }
-
-    #[test]
-    fn problem448() {
-        try_solve(English, vec!["2016", "2345", "4523", "6120"], "FAT");
-    }
-
-    #[test]
-    fn problem468() {
-        try_solve(English, vec!["1234", "2013", "3120", "4321"], "CAT");
-    }
-
-    #[test]
-    fn problem488() {
-        try_solve(English, vec!["18205", "20158", "20518", "81205"], "HATE");
-    }
-
-    #[test]
-    fn problem508() {
-        try_solve(English, vec!["17205", "20127", "20217", "71205"], "GATE");
-    }
-
-    #[test]
-    fn problem528() {
-        try_solve(English, vec!["121", "245", "913", "935"], "ICE");
-    }
-
-    #[test]
-    fn problem548() {
-        let codes = Custom(vec![("Р", "C?"), ("Ы", "??C"), ("Б", "??"),
-                                ("К", "?C"), ("А", "?C?")]);
-        try_solve(codes, vec!["????C?C"], "БЫК");
-    }
-
-    #[test]
-    fn problem568() {
-        let codes = Custom(vec![("М", "C?"), ("Ы", "?CC"), ("Ш", "??"),
-                                ("К", "?C"), ("А", "?C?")]);
-        try_solve(codes, vec!["C??C??C"], "МАК");
-    }
-
-    #[test]
-    fn problem588() {
-        let codes = Custom(vec![("Л", "?C"), ("Е", "???"), ("Н", "CC"),
-                                ("К", "C?"), ("А", "CC?")]);
-        try_solve(codes, vec!["?CCC?C?"], "ЛАК");
-    }
-
-    #[test]
-    fn problem608() {
-        let codes = Custom(vec![("М", "?C"), ("И", "???"), ("Ш", "CC"),
-                                ("К", "C?"), ("А", "CC?")]);
-        try_solve(codes, vec!["?CCC?CC"], "МАШ");
-    }
-
-    #[test]
-    fn problem628() {
-        let codes = Custom(vec![("Б", "110"), ("И", "01"), ("С", "100"),
-                                ("Е", "10"), ("Р", "11")]);
-        try_solve(codes, vec!["11010001100"], "БСИС");
-    }
-
-    #[test]
-    fn problem648() {
-        let codes = Custom(vec![("М", "01"), ("Е", "100"), ("Т", "110"), 
-                                ("Л", "101"), ("А", "10")]);
-        try_solve(codes, vec!["1101000110"], "ТЕМА");
-    }
-
-    #[test]
-    fn problem668() {
-        let codes = Custom(vec![("А", "10"), ("Б", "110"), ("В", "12"), 
-                                ("Г", "102"), ("Д", "0"), ("Е", "22"), ("Ж", "122")]);
-        try_solve(codes, vec!["101212210102"], "АВЖАГ")
-    }
-
-    #[test]
-    fn problem708() {
-        let codes = Custom(vec![("А", "*-"), ("Д", "-**"), ("Ж", "*-**"),
-                                ("Л", "-"), ("Т", "***-")]);
-        try_solve(codes, vec!["*--***-**--**-*--"], "АДЖЛДЛАЛ");
-    }
-
-    #[test]
-    fn problem751() {
-        let codes = Custom(vec![("К", "!!?"), ("И", "!!"), ("С", "?!"),
-                                ("Л", "???"), ("О", "?!")]);
-        try_solve(codes, vec!["!!??!???"], "КОЛ");
-    }
-
-    #[test]
-    fn problem771() {
-        let codes = Custom(vec![("Р", "!!?"), ("Е", "!!"), ("Д", "!?"),
-                                ("И", "???"), ("С", "?!")]);
-        try_solve(codes, vec!["?!!!!?"], "СЕД");
-    }
-
-    #[test]
-    fn problem803() {
-        let codes = Custom(vec![("Ш", "01"), ("К", "11"), ("О", "100"),
-                                ("Л", "101"), ("А", "10")]);
-        try_solve(codes, vec!["1011011"], "ЛАК");
-    }
-
-    #[test]
-    fn problem823() {
-        let codes = Custom(vec![("С", "110"), ("А", "01"), ("Д", "100"), 
-                                ("И", "10"), ("К", "11")]);
-        try_solve(codes, vec!["1011110"], "ИКС");
-    }
-
-    #[test]
-    fn problem845() {
-        let codes = Custom(vec![("П", "@@@&"), ("Р", "@&&"), ("И", "&@"),
-                                ("В", "&&@"), ("Е", "&&&@"), ("Т", "@&@")]);
-        try_solve(codes, vec!["&&@&&&@@&@&&&@@&&"], "ВЕТЕР");
-    }
-
-    #[test]
-    fn problem865() {
-        let codes = Custom(vec![("В", "@@@"), ("О", "@&"), ("Л", "&@@"),
-                                ("Г", "&@&"), ("А", "&&&")]);
-        try_solve(codes, vec!["&@&@&&@@@&@@@&&&"], "ГОЛОВА");
-    }
-
-    #[test]
-    fn problem886() {
-        let codes = Custom(vec![("С", "110"), ("М", "10"), ("А", "00"),
-                                ("О", "001"), ("Р", "101"), ("К", "010")]);
-        try_solve(codes, vec!["10001101110"], "МОРС");
-    }
-
-    #[test]
-    fn problem906() {
-        let codes = Custom(vec![("С", "100"), ("М", "01"), ("А", "00"), 
-                                ("О", "001"), ("Р", "101"), ("К", "010")]);
-        try_solve(codes, vec!["101001010"], "РОК");
-    }
-
-    #[test]
-    fn problem926() {
-        let codes = Custom(vec![("Р", "CF"), ("Ы", "FFC"), ("В", "FF"), 
-                                ("О", "FC"), ("С", "FCF")]);
-        try_solve(codes, vec!["FFFCCFFCF"], "ВОРС");
-    }
-
-    #[test]
-    fn problem946() {
-        let codes = Custom(vec![("К", "CF"), ("О", "FFC"), ("В", "FF"),
-                                ("Е", "FC"), ("Р", "FCF")]);
-        try_solve(codes, vec!["FFFCCFFFC"], "ВЕКО");
-    }
-
-    #[test]
-    fn problem1018() {
-        let codes = Custom(vec![("П", "!!?"), ("И", "!!"), ("Р", "!?"),
-                                ("А", "???"), ("Т", "?!")]);
-        try_solve(codes, vec!["!?!!?!???"], "РИТА");
-    }
-
-    #[test]
-    fn problem1038() {
-        let codes = Custom(vec![("С", "!!?"), ("В", "!!"), ("И", "!?"),
-                                ("Т", "???"), ("Е", "?!"), ("Р", "!!!")]);
-        try_solve(codes, vec!["!!!?????!"], "ВИТЕ");
-    }
-
-    #[test]
-    fn problem1078() {
-        try_solve(Numbers2, vec!["0100100101", "011011111100", "0100110001"], "ВВОД");
-    }
-
-    #[test]
-    fn problem1121() {
-        let codes = Custom(vec![("Т", "-"), ("А", "*-"), ("У", "**-"), ("Ж", "***-"),
-                                ("Х", "****")]);
-        try_solve(codes, vec!["**-***-*--*-****-"], "УЖАТАХТ");
-    }
-
-    #[test]
-    fn problem1161() {
-        let codes = Custom(vec![("А", "*"), ("Б", "-++"), ("В", "--+"), ("Г", "*+"),
-                                ("Д", "-*"), ("Е", "+-+"), ("Ж", "**-")]);
-        try_solve(codes, vec!["*+-++-**-**"], "ГБДАДА");
-    }
-
-    #[test]
-    fn problem4548() {
-        try_solve(Russian, vec!["92610", "36910", "13131", "23456"], "ВЕЗИ");
-    }
-
-    #[test]
-    fn problem4585() {
-        try_solve(Numbers2, vec!["11101001", "010111011", "01001010"], "РОВ");
-    }
-
-    #[test]
-    fn problem4644() {
-        let codes = Custom(vec![("И", "**"), ("А", "*-"), ("Н", "-*"), ("Г", "--*"),
-                                ("Ч", "---*")]);
-        try_solve(codes, vec!["*-**-*--*---**--*"], "АИНГЧАН");
-    }
-
-    #[test]
-    fn problem4717() {
-        try_solve(Numbers2, vec!["01001001", "11101001", "10001010"], "ДАР");
-    }
-
-    #[test]
-    fn problem4776() {
-        try_solve(Russian, vec!["31212", "12987", "10926", "36510"], "ВЕДИ");
-    }
-
-    #[test]
-    fn problem4893() {
-        try_solve(Numbers2, vec!["011111010", "01001001", "01001010"], "ВОР");
-    }
-
-    #[test]
-    fn problem4932() {
-        try_solve(Numbers2, vec!["0100100101", "010111100", "10011101001"], "РОД");
-    }
-
-    #[test]
-    fn problem5124() {
-        let codes = Custom(vec![("М", "--"), ("Н", "-*"), ("С", "***"), ("У", "**-"),
-                                ("А", "*-")]);
-        try_solve(codes, vec!["*---**--*****--*"], "АМУНСАН");
-    }
-
-    #[test]
-    fn problem5264() {
-        let codes = Custom(vec![("К", "+-+"), ("Л", "-*"), ("М", "*+"), ("Н", "-++"),
-                                ("О", "*"), ("П", "--+"), ("Р", "--")]);
-        try_solve(codes, vec!["*+-++-++---*"], "МННРЛ");
-    }
-
-    #[test]
-    fn problem5307() {
-        try_solve(Numbers2, vec!["01001001", "0100100101", "111011111100"], "ОВОД");
-    }
-
-    #[test]
-    fn problem5393() {
-        let codes = Custom(vec![("С", "***"), ("У", "**-"), ("А", "*-"), ("М", "--"),
-                                ("Н", "-*")]);
-        try_solve(codes, vec!["-*--*-**-*-***--"], "НМАУАСМ");
-    }
-
-    #[test]
-    fn problem5552() {
-        try_solve(Numbers2, vec!["01001010", "0100110001", "01000110001"], "РУДА");
-    }
-
-    #[test]
-    fn problem5655() {
-        try_solve(Numbers2, vec!["01001010", "11110001", "0100100101"], "ОДА");
-    }
-
-    #[test]
-    fn problem5775() {
-        let codes = Custom(vec![("А", "*"), ("Б", "-++"), ("В", "--+"), ("Г", "*+"),
-                                ("Е", "-*"), ("И", "+-+"), ("К", "**-")]);
-        try_solve(codes, vec!["*+-++-**-**"], "ГБЕАЕА");
-    }
-
-    #[test]
-    fn problem5800() {
-        try_solve(Numbers2, vec!["01001010", "01111110001", "10011101001"], "ВОДА")
-    }
-
-    #[test]
-    fn problem5886() {
-        try_solve(Numbers2, vec!["0110001", "0100110001", "10011101001"], "АДА");
-    }
-
-    #[test]
-    fn problem6260() {
-        try_solve(Numbers2, vec!["11101001", "100111", "0100100101"], "ДО");
-    }
-
-    #[test]
-    fn problem6421() {
-        try_solve(Numbers2, vec!["01001001", "100011111010", "10011101001"], "ДВОР");
-    }
-
-    #[test]
-    fn problem12851() {
-        let codes = Custom(vec![("А", "01"), ("В", "10"), ("К", "000"), ("О", "111"),
-                                ("Р", "0011"), ("Т", "1101")]);
-        try_solve(codes, vec!["101110011111110101"], "ВОРОТА");
-    }
-
-    #[test]
-    fn problem18170() {
-        let codes = Custom(vec![("И", "**"), ("А", "*-"), ("Н", "-*"), ("Г", "--*"),
-                                ("Ч", "---*")]);
-        try_solve(codes, vec!["*-**-*--*---**--*"], "АИНГЧАН");
-    }
-
-    #[test]
-    fn problem18185() {
-        let codes = Custom(vec![("И", "**"), ("А", "*-"), ("Н", "-*"), ("Г", "--*"),
-                                ("Ч", "---*")]);
-        try_solve(codes, vec!["-**-**--**----*"], "НАИГАЧ");
-    }
-
-    #[test]
-    fn problem18423() {
-        let codes = Custom(vec![("А", "01"), ("Б", "100"), ("К", "101"), ("Л", "111"),
-                                ("О", "00"), ("С", "110")]);
-        try_solve(codes, vec!["001001110110100"], "ОБЛАКО");
-    }
+fn make_input_data(codes: CodeType, strs: Vec<&str>, spec: ProblemSpec) -> InputData {
+    let input_data = InputData {
+        codes: codes.get(),
+        encoded_strings: Vec::from_iter(strs.iter().map(|s| s.to_string())),
+        spec,
+    };
+    assert!(input_data.is_valid());
+    input_data
 }
 
-pub mod type2 {
-    use rusty_oge::module2::solvers::solve_type2;
-    use super::CodeType::{self, Custom};
+// ------------------------------------------------------------------------------------------------
 
-    fn try_solve(codes: CodeType, input: &str, true_answer: &str) {
-        super::try_solve(solve_type2, codes, vec![input], true_answer);
-    }
-
-    #[test]
-    fn problem147() {
-        let codes = Custom(vec![("К", "@+"), ("Л", "~+"), ("М", "+@"),
-                                   ("П", "@~+"), ("О", "+"), ("И", "~")]);
-        try_solve(codes, "+~+~+@@~+", "ОЛИМП");
-    }
-
-    #[test]
-    fn problem167() {
-        let codes = Custom(vec![("Н", "~"), ("М", "*"), ("Л", "*@"),
-                                   ("И", "@~*"), ("Т", "@*"), ("О", "~*")]);
-        try_solve(codes, "*@@~**~*~", "ЛИМОН");
-    }
-
-    #[test]
-    fn problem187() {
-        let codes = Custom(vec![("Ж", "+#"), ("Е", "+^#"), ("С", "#"),
-                                    ("А", "^"), ("К", "^#"), ("Л", "#+")]);
-        try_solve(codes, "#++^##^#^", "ЛЕСКА");
-    }
-
-    #[test]
-    fn problem207() {
-        let codes = Custom(vec![("А", "+#"), ("Е", "#+"), ("Л", "~"),
-                                    ("П", "#"), ("Т", "+~#"), ("О", "~#")]);
-        try_solve(codes, "#~#~#++~#", "ПОЛЕТ");
-    }
+#[test]
+fn problem7() {
+    let input = make_input_data(CodeType::Numbers, vec!["10111101", "1010110", "10111000"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "НОС");
 }
 
-pub mod type3 {
-    use rusty_oge::module2::solvers::solve_type3;
-    use super::CodeType::{self, Custom};
-
-    fn try_solve(codes: CodeType, input: &str, true_answer: &str) {
-        super::try_solve(solve_type3, codes, vec![input], true_answer);
-    }
-
-    #[test]
-    fn problem1101() {
-        let codes = Custom(vec![("Ж", "+#"), ("З", "+^#"), ("И", "#"), ("Й", "^"),
-                                ("К", "^#"), ("Л", "#+")]);
-        try_solve(codes, "#++^##^#^", "5");
-    }
-
-    #[test]
-    fn problem1240() {
-        let codes = Custom(vec![("Н", "~"), ("М", "*"), ("Л", "*@"), ("И", "@~*"),
-                                ("Т", "@*"), ("О", "~*")]);
-        try_solve(codes, "*@@~**~*~", "5");
-    }
-
-    #[test]
-    fn problem6221() {
-        let codes = Custom(vec![("К", "@+"), ("Л", "~+"), ("М", "+@"), ("Н", "@~+"),
-                                ("О", "+"), ("П", "~")]);
-        try_solve(codes, "+~+~+@@~+", "5");
-    }
-
-    #[test]
-    fn problem18256() {
-        let codes = Custom(vec![("К", "@+"), ("Л", "~+"), ("М", "+@"), ("Н", "@~+"),
-                                ("О", "+"), ("П", "~")]);
-        try_solve(codes, "+~+~@~+", "4");
-    }
+#[test]
+fn problem27() {
+    let input = make_input_data(CodeType::Numbers, vec!["100101000", "101111100", "100111101"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "КОД"); 
 }
 
-pub mod type4 {
-    use rusty_oge::module2::solvers::solve_type4;
-    use super::CodeType::{self, Custom};
-
-    fn try_solve(codes: CodeType, input: &str, true_answer: &str) {
-        super::try_solve(solve_type4, codes, vec![input], true_answer);
-    }
-
-    #[test]
-    fn problem1141() {
-        let codes = Custom(vec![("А", "*-"), ("Д", "-**"), ("Л", "*-**"), ("Т", "-"),
-                                ("Ж", "***-")]);
-        try_solve(codes, "*--***-**--**-*--", "8");
-    }
-
-    #[test]
-    fn problem4565() {
-        let codes = Custom(vec![("Е", "*"), ("Н", "-*"), ("О", "---"), ("З", "--**"),
-                                ("Щ", "--*-")]);
-        try_solve(codes, "-***---*", "5");
-    }
-
-    #[test]
-    fn problem4689() {
-        let codes = Custom(vec![("А", "*-"), ("Г", "--*"), ("И", "**"), ("П", "*--*"),
-                                ("М", "--")]);
-        try_solve(codes, "*-*--*--**-**--*", "6");
-    }
-
-    #[test]
-    fn problem4742() {
-        let codes = Custom(vec![("Т", "-"), ("А", "*-"), ("У", "**-"), ("Ж", "***-"),
-                                ("Х", "****")]);
-        try_solve(codes, "***-**-***-*-**-", "5");
-    }
-
-    #[test]
-    fn problem5311() {
-        let codes = Custom(vec![("А", "~"), ("Б", "o++"), ("В", "oo+"), ("Г", "~+"),
-                                ("Д", "o~"), ("Е", "+o+"), ("Ё", "~~o")]);
-        try_solve(codes, "~+o++o~~o~~", "6");
-    }
-
-    #[test]
-    fn problem6197() {
-        let codes = Custom(vec![("Т", "-"), ("А", "*-"), ("У", "**-"), ("Ж", "***-"),
-                                ("Х", "****")]);
-        try_solve(codes, "-*-*-**--*--", "7");
-    }
-
-    #[test]
-    fn problem6354() {
-        let codes = Custom(vec![("Т", "-"), ("А", "*-"), ("У", "**-"), ("Ж", "***-"),
-                                ("Х", "****")]);
-        try_solve(codes, "**-*-***-*--**-", "6");
-    }
-
-    #[test]
-    fn problem18211() {
-        let codes = Custom(vec![("Е", "0"), ("Н", "10"), ("О", "111"), ("З", "1100"),
-                                ("Щ", "1101")]);
-        try_solve(codes, "11110010011000", "7");
-    }
-
-    #[test]
-    fn problem18226() {
-        let codes = Custom(vec![("А", "01"), ("Г", "110"), ("И", "00"), ("П", "0110"),
-                                ("М", "11")]);
-        try_solve(codes, "0101101100100110", "6");
-    }
+#[test]
+fn problem47() {
+    let input = make_input_data(CodeType::Numbers, vec!["1010110", "100000101", "00011110001"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "СОДА");
 }
 
-pub mod type5 {
-    use rusty_oge::module2::solvers::solve_type5;
-    use super::CodeType::{self, Custom};
-
-    fn try_solve(codes: CodeType, input: &str, true_answer: &str) {
-        super::try_solve(solve_type5, codes, vec![input], true_answer);
-    }
-
-    #[test]
-    fn problem4835() {
-        let codes = Custom(vec![("А", "..o.."), ("Б", ".o..o"), ("В", ".oo.o"),
-                                ("Г", ".oooo"), ("Д", "...o."), ("Е", ".o.oo")]);
-        try_solve(codes, "...o..o.oo...o..oooo.o.oo", "ДЕ");
-    }
-
-    #[test]
-    fn problem5755() {
-        let codes = Custom(vec![("А", "..o.."), ("Б", ".o..o"), ("В", ".oo.o"),
-                                ("Г", ".oooo"), ("Д", "...o."), ("Е", ".o.oo")]);
-        try_solve(codes, ".o..o.o.oo.o..o..o....o..", "БА");
-    }
+#[test]
+fn problem67() {
+    let input = make_input_data(CodeType::Numbers, vec!["10111101", "00011110", "100111101"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "СОН");
 }
+
+#[test]
+fn problem87() {
+    let input = make_input_data(CodeType::Numbers, vec!["100101000", "100000101", "0110001"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "АДА");
+}
+
+#[test]
+fn problem107() {
+    let input = make_input_data(CodeType::Numbers, vec!["10111101", "100111101", "0000110"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "САН");
+}
+
+#[test]
+fn problem127() {
+    let input = make_input_data(CodeType::Numbers, vec!["1010110", "11110001", "100000101"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ОДА");
+}
+
+#[test]
+fn problem227() {
+    let codes = CodeType::Custom(vec![("А", "*-"), ("Г", "--*"), ("М", "--"),
+                            ("К", "-*-"), ("Ю", "**--")]);
+    let input = make_input_data(codes, vec!["--*-----***---*-*-"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "МАМГЮКА");
+}
+
+#[test]
+fn problem247() {
+    let codes = CodeType::Custom(vec![("Н", "-*"), ("К", "-*-"), ("И", "**"),
+                            ("Л", "*-**"), ("М", "--")]);
+    let input = make_input_data(codes, vec!["-*-*-*--**-**-*-**"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ННКНЛКИ");
+}
+
+#[test]
+fn problem267() {
+    let codes = CodeType::Custom(vec![("А", "*-"), ("Д", "-**"), ("Л", "*-**"),
+                            ("Т", "-"), ("Ж", "***-")]);
+    let input = make_input_data(codes, vec!["*--***-**--**-**-*--"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "АДЛТДДТАТ");
+}
+
+#[test]
+fn problem287() {
+    let codes = CodeType::Custom(vec![("К", "+_+"), ("Л", "_*"), ("М", "*+"), 
+                            ("Н", "_++"), ("О", "*"), ("П", "__+"),
+                            ("Р", "__")]);
+    let input = make_input_data(codes, vec!["*+_++_++___*"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "МННРЛ");
+}
+
+#[test]
+fn problem327() {
+    let input = make_input_data(CodeType::Russian, vec!["3135420", "2102030", "1331320", "2033510"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "БИТЬ");
+}
+
+#[test]
+fn problem348() {
+    let input = make_input_data(CodeType::Russian, vec!["20335", "21120", "31321", "51201"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ДАТА");
+}
+
+#[test]
+fn problem368() {
+    let input = make_input_data(CodeType::Russian, vec!["112233", "135793", "203014", "412030"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ГАТЬ");
+}
+
+#[test]
+fn problem388() {
+    let input = make_input_data(CodeType::Russian, vec!["1012", "1210", "1565", "5651"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ДЕДА");
+}
+
+#[test]
+fn problem408() {
+    let input = make_input_data(CodeType::Russian, vec!["8102030", "8112131", "8112233", "8152535"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ЖИТЬ");
+}
+
+#[test]
+fn problem428() {
+    let input = make_input_data(CodeType::Russian, vec!["3102030", "3102033", "3112030", "3112233"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ВИТЬ");
+}
+
+#[test]
+fn problem448() {
+    let input = make_input_data(CodeType::English, vec!["2016", "2345", "4523", "6120"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "FAT");
+}
+
+#[test]
+fn problem468() {
+    let input = make_input_data(CodeType::English, vec!["1234", "2013", "3120", "4321"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "CAT");
+}
+
+#[test]
+fn problem488() {
+    let input = make_input_data(CodeType::English, vec!["18205", "20158", "20518", "81205"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "HATE");
+}
+
+#[test]
+fn problem508() {
+    let input = make_input_data(CodeType::English, vec!["17205", "20127", "20217", "71205"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "GATE");
+}
+
+#[test]
+fn problem528() {
+    let input = make_input_data(CodeType::English, vec!["121", "245", "913", "935"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ICE");
+}
+
+#[test]
+fn problem548() {
+    let codes = CodeType::Custom(vec![("Р", "C?"), ("Ы", "??C"), ("Б", "??"),
+                            ("К", "?C"), ("А", "?C?")]);
+    let input = make_input_data(codes, vec!["????C?C"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "БЫК");
+}
+
+#[test]
+fn problem568() {
+    let codes = CodeType::Custom(vec![("М", "C?"), ("Ы", "?CC"), ("Ш", "??"),
+                            ("К", "?C"), ("А", "?C?")]);
+    let input = make_input_data(codes, vec!["C??C??C"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "МАК");
+}
+
+#[test]
+fn problem588() {
+    let codes = CodeType::Custom(vec![("Л", "?C"), ("Е", "???"), ("Н", "CC"),
+                            ("К", "C?"), ("А", "CC?")]);
+    let input = make_input_data(codes, vec!["?CCC?C?"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ЛАК");
+}
+
+#[test]
+fn problem608() {
+    let codes = CodeType::Custom(vec![("М", "?C"), ("И", "???"), ("Ш", "CC"),
+                            ("К", "C?"), ("А", "CC?")]);
+    let input = make_input_data(codes, vec!["?CCC?CC"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "МАШ");
+}
+
+#[test]
+fn problem628() {
+    let codes = CodeType::Custom(vec![("Б", "110"), ("И", "01"), ("С", "100"),
+                            ("Е", "10"), ("Р", "11")]);
+    let input = make_input_data(codes, vec!["11010001100"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "БСИС");
+}
+
+#[test]
+fn problem648() {
+    let codes = CodeType::Custom(vec![("М", "01"), ("Е", "100"), ("Т", "110"), 
+                            ("Л", "101"), ("А", "10")]);
+    let input = make_input_data(codes, vec!["1101000110"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ТЕМА");
+}
+
+#[test]
+fn problem668() {
+    let codes = CodeType::Custom(vec![("А", "10"), ("Б", "110"), ("В", "12"), 
+                            ("Г", "102"), ("Д", "0"), ("Е", "22"), ("Ж", "122")]);
+    let input = make_input_data(codes, vec!["101212210102"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "АВЖАГ")
+}
+
+#[test]
+fn problem708() {
+    let codes = CodeType::Custom(vec![("А", "*-"), ("Д", "-**"), ("Ж", "*-**"),
+                            ("Л", "-"), ("Т", "***-")]);
+    let input = make_input_data(codes, vec!["*--***-**--**-*--"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "АДЖЛДЛАЛ");
+}
+
+#[test]
+fn problem751() {
+    let codes = CodeType::Custom(vec![("К", "!!?"), ("И", "!!"), ("С", "?!"),
+                            ("Л", "???"), ("О", "?!")]);
+    let input = make_input_data(codes, vec!["!!??!???"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "КОЛ");
+}
+
+#[test]
+fn problem771() {
+    let codes = CodeType::Custom(vec![("Р", "!!?"), ("Е", "!!"), ("Д", "!?"),
+                            ("И", "???"), ("С", "?!")]);
+    let input = make_input_data(codes, vec!["?!!!!?"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "СЕД");
+}
+
+#[test]
+fn problem803() {
+    let codes = CodeType::Custom(vec![("Ш", "01"), ("К", "11"), ("О", "100"),
+                            ("Л", "101"), ("А", "10")]);
+    let input = make_input_data(codes, vec!["1011011"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ЛАК");
+}
+
+#[test]
+fn problem823() {
+    let codes = CodeType::Custom(vec![("С", "110"), ("А", "01"), ("Д", "100"), 
+                            ("И", "10"), ("К", "11")]);
+    let input = make_input_data(codes, vec!["1011110"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ИКС");
+}
+
+#[test]
+fn problem845() {
+    let codes = CodeType::Custom(vec![("П", "@@@&"), ("Р", "@&&"), ("И", "&@"),
+                            ("В", "&&@"), ("Е", "&&&@"), ("Т", "@&@")]);
+    let input = make_input_data(codes, vec!["&&@&&&@@&@&&&@@&&"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ВЕТЕР");
+}
+
+#[test]
+fn problem865() {
+    let codes = CodeType::Custom(vec![("В", "@@@"), ("О", "@&"), ("Л", "&@@"),
+                            ("Г", "&@&"), ("А", "&&&")]);
+    let input = make_input_data(codes, vec!["&@&@&&@@@&@@@&&&"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ГОЛОВА");
+}
+
+#[test]
+fn problem886() {
+    let codes = CodeType::Custom(vec![("С", "110"), ("М", "10"), ("А", "00"),
+                            ("О", "001"), ("Р", "101"), ("К", "010")]);
+    let input = make_input_data(codes, vec!["10001101110"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "МОРС");
+}
+
+#[test]
+fn problem906() {
+    let codes = CodeType::Custom(vec![("С", "100"), ("М", "01"), ("А", "00"), 
+                            ("О", "001"), ("Р", "101"), ("К", "010")]);
+    let input = make_input_data(codes, vec!["101001010"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "РОК");
+}
+
+#[test]
+fn problem926() {
+    let codes = CodeType::Custom(vec![("Р", "CF"), ("Ы", "FFC"), ("В", "FF"), 
+                            ("О", "FC"), ("С", "FCF")]);
+    let input = make_input_data(codes, vec!["FFFCCFFCF"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ВОРС");
+}
+
+#[test]
+fn problem946() {
+    let codes = CodeType::Custom(vec![("К", "CF"), ("О", "FFC"), ("В", "FF"),
+                            ("Е", "FC"), ("Р", "FCF")]);
+    let input = make_input_data(codes, vec!["FFFCCFFFC"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ВЕКО");
+}
+
+#[test]
+fn problem1018() {
+    let codes = CodeType::Custom(vec![("П", "!!?"), ("И", "!!"), ("Р", "!?"),
+                            ("А", "???"), ("Т", "?!")]);
+    let input = make_input_data(codes, vec!["!?!!?!???"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "РИТА");
+}
+
+#[test]
+fn problem1038() {
+    let codes = CodeType::Custom(vec![("С", "!!?"), ("В", "!!"), ("И", "!?"),
+                            ("Т", "???"), ("Е", "?!"), ("Р", "!!!")]);
+    let input = make_input_data(codes, vec!["!!!?????!"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ВИТЕ");
+}
+
+#[test]
+fn problem1078() {
+    let input = make_input_data(CodeType::Numbers2, vec!["0100100101", "011011111100", "0100110001"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ВВОД");
+}
+
+#[test]
+fn problem1121() {
+    let codes = CodeType::Custom(vec![("Т", "-"), ("А", "*-"), ("У", "**-"), ("Ж", "***-"),
+                            ("Х", "****")]);
+    let input = make_input_data(codes, vec!["**-***-*--*-****-"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "УЖАТАХТ");
+}
+
+#[test]
+fn problem1161() {
+    let codes = CodeType::Custom(vec![("А", "*"), ("Б", "-++"), ("В", "--+"), ("Г", "*+"),
+                            ("Д", "-*"), ("Е", "+-+"), ("Ж", "**-")]);
+    let input = make_input_data(codes, vec!["*+-++-**-**"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ГБДАДА");
+}
+
+#[test]
+fn problem4548() {
+    let input = make_input_data(CodeType::Russian, vec!["92610", "36910", "13131", "23456"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ВЕЗИ");
+}
+
+#[test]
+fn problem4585() {
+    let input = make_input_data(CodeType::Numbers2, vec!["11101001", "010111011", "01001010"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "РОВ");
+}
+
+#[test]
+fn problem4644() {
+    let codes = CodeType::Custom(vec![("И", "**"), ("А", "*-"), ("Н", "-*"), ("Г", "--*"),
+                            ("Ч", "---*")]);
+    let input = make_input_data(codes, vec!["*-**-*--*---**--*"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "АИНГЧАН");
+}
+
+#[test]
+fn problem4717() {
+    let input = make_input_data(CodeType::Numbers2, vec!["01001001", "11101001", "10001010"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ДАР");
+}
+
+#[test]
+fn problem4776() {
+    let input = make_input_data(CodeType::Russian, vec!["31212", "12987", "10926", "36510"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ВЕДИ");
+}
+
+#[test]
+fn problem4893() {
+    let input = make_input_data(CodeType::Numbers2, vec!["011111010", "01001001", "01001010"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ВОР");
+}
+
+#[test]
+fn problem4932() {
+    let input = make_input_data(CodeType::Numbers2, vec!["0100100101", "010111100", "10011101001"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "РОД");
+}
+
+#[test]
+fn problem5124() {
+    let codes = CodeType::Custom(vec![("М", "--"), ("Н", "-*"), ("С", "***"), ("У", "**-"),
+                            ("А", "*-")]);
+    let input = make_input_data(codes, vec!["*---**--*****--*"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "АМУНСАН");
+}
+
+#[test]
+fn problem5264() {
+    let codes = CodeType::Custom(vec![("К", "+-+"), ("Л", "-*"), ("М", "*+"), ("Н", "-++"),
+                            ("О", "*"), ("П", "--+"), ("Р", "--")]);
+    let input = make_input_data(codes, vec!["*+-++-++---*"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "МННРЛ");
+}
+
+#[test]
+fn problem5307() {
+    let input = make_input_data(CodeType::Numbers2, vec!["01001001", "0100100101", "111011111100"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ОВОД");
+}
+
+#[test]
+fn problem5393() {
+    let codes = CodeType::Custom(vec![("С", "***"), ("У", "**-"), ("А", "*-"), ("М", "--"),
+                            ("Н", "-*")]);
+    let input = make_input_data(codes, vec!["-*--*-**-*-***--"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "НМАУАСМ");
+}
+
+#[test]
+fn problem5552() {
+    let input = make_input_data(CodeType::Numbers2, vec!["01001010", "0100110001", "01000110001"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "РУДА");
+}
+
+#[test]
+fn problem5655() {
+    let input = make_input_data(CodeType::Numbers2, vec!["01001010", "11110001", "0100100101"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ОДА");
+}
+
+#[test]
+fn problem5775() {
+    let codes = CodeType::Custom(vec![("А", "*"), ("Б", "-++"), ("В", "--+"), ("Г", "*+"),
+                            ("Е", "-*"), ("И", "+-+"), ("К", "**-")]);
+    let input = make_input_data(codes, vec!["*+-++-**-**"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ГБЕАЕА");
+}
+
+#[test]
+fn problem5800() {
+    let input = make_input_data(CodeType::Numbers2, vec!["01001010", "01111110001", "10011101001"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ВОДА")
+}
+
+#[test]
+fn problem5886() {
+    let input = make_input_data(CodeType::Numbers2, vec!["0110001", "0100110001", "10011101001"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "АДА");
+}
+
+#[test]
+fn problem6260() {
+    let input = make_input_data(CodeType::Numbers2, vec!["11101001", "100111", "0100100101"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ДО");
+}
+
+#[test]
+fn problem6421() {
+    let input = make_input_data(CodeType::Numbers2, vec!["01001001", "100011111010", "10011101001"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ДВОР");
+}
+
+#[test]
+fn problem12851() {
+    let codes = CodeType::Custom(vec![("А", "01"), ("В", "10"), ("К", "000"), ("О", "111"),
+                            ("Р", "0011"), ("Т", "1101")]);
+    let input = make_input_data(codes, vec!["101110011111110101"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ВОРОТА");
+}
+
+#[test]
+fn problem18170() {
+    let codes = CodeType::Custom(vec![("И", "**"), ("А", "*-"), ("Н", "-*"), ("Г", "--*"),
+                            ("Ч", "---*")]);
+    let input = make_input_data(codes, vec!["*-**-*--*---**--*"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "АИНГЧАН");
+}
+
+#[test]
+fn problem18185() {
+    let codes = CodeType::Custom(vec![("И", "**"), ("А", "*-"), ("Н", "-*"), ("Г", "--*"),
+                            ("Ч", "---*")]);
+    let input = make_input_data(codes, vec!["-**-**--**----*"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "НАИГАЧ");
+}
+
+#[test]
+fn problem18423() {
+    let codes = CodeType::Custom(vec![("А", "01"), ("Б", "100"), ("К", "101"), ("Л", "111"),
+                            ("О", "00"), ("С", "110")]);
+    let input = make_input_data(codes, vec!["001001110110100"],
+                                ProblemSpec::new(true, false, OutputDataType::DecodedString));
+    try_solve(input, "ОБЛАКО");
+}
+
+// ------------------------------------------------------------------------------------------------
+
+#[test]
+fn problem147() {
+    let codes = CodeType::Custom(vec![("К", "@+"), ("Л", "~+"), ("М", "+@"),
+                               ("П", "@~+"), ("О", "+"), ("И", "~")]);
+    let input = make_input_data(codes, vec!["+~+~+@@~+"],
+                                ProblemSpec::new(false, true, OutputDataType::DecodedString));
+    try_solve(input, "ОЛИМП");
+}
+
+#[test]
+fn problem167() {
+    let codes = CodeType::Custom(vec![("Н", "~"), ("М", "*"), ("Л", "*@"),
+                               ("И", "@~*"), ("Т", "@*"), ("О", "~*")]);
+    let input = make_input_data(codes, vec!["*@@~**~*~"],
+                                ProblemSpec::new(false, true, OutputDataType::DecodedString));
+    try_solve(input, "ЛИМОН");
+}
+
+#[test]
+fn problem187() {
+    let codes = CodeType::Custom(vec![("Ж", "+#"), ("Е", "+^#"), ("С", "#"),
+                                ("А", "^"), ("К", "^#"), ("Л", "#+")]);
+    let input = make_input_data(codes, vec!["#++^##^#^"],
+                                ProblemSpec::new(false, true, OutputDataType::DecodedString));
+    try_solve(input, "ЛЕСКА");
+}
+
+#[test]
+fn problem207() {
+    let codes = CodeType::Custom(vec![("А", "+#"), ("Е", "#+"), ("Л", "~"),
+                                ("П", "#"), ("Т", "+~#"), ("О", "~#")]);
+    let input = make_input_data(codes, vec!["#~#~#++~#"],
+                                ProblemSpec::new(false, true, OutputDataType::DecodedString));
+    try_solve(input, "ПОЛЕТ");
+}
+
+// ------------------------------------------------------------------------------------------------
+
+#[test]
+fn problem1101() {
+    let codes = CodeType::Custom(vec![("Ж", "+#"), ("З", "+^#"), ("И", "#"), ("Й", "^"),
+                            ("К", "^#"), ("Л", "#+")]);
+    let input = make_input_data(codes, vec!["#++^##^#^"],
+                                ProblemSpec::new(false, true, OutputDataType::Length));
+    try_solve(input, "5");
+}
+
+#[test]
+fn problem1240() {
+    let codes = CodeType::Custom(vec![("Н", "~"), ("М", "*"), ("Л", "*@"), ("И", "@~*"),
+                            ("Т", "@*"), ("О", "~*")]);
+    let input = make_input_data(codes, vec!["*@@~**~*~"],
+                                ProblemSpec::new(false, true, OutputDataType::Length));
+    try_solve(input, "5");
+}
+
+#[test]
+fn problem6221() {
+    let codes = CodeType::Custom(vec![("К", "@+"), ("Л", "~+"), ("М", "+@"), ("Н", "@~+"),
+                            ("О", "+"), ("П", "~")]);
+    let input = make_input_data(codes, vec!["+~+~+@@~+"],
+                                ProblemSpec::new(false, true, OutputDataType::Length));
+    try_solve(input, "5");
+}
+
+#[test]
+fn problem18256() {
+    let codes = CodeType::Custom(vec![("К", "@+"), ("Л", "~+"), ("М", "+@"), ("Н", "@~+"),
+                            ("О", "+"), ("П", "~")]);
+    let input = make_input_data(codes, vec!["+~+~@~+"],
+                                ProblemSpec::new(false, true, OutputDataType::Length));
+    try_solve(input, "4");
+}
+
+// ------------------------------------------------------------------------------------------------
+
+#[test]
+fn problem1141() {
+    let codes = CodeType::Custom(vec![("А", "*-"), ("Д", "-**"), ("Л", "*-**"), ("Т", "-"),
+                            ("Ж", "***-")]);
+    let input = make_input_data(codes, vec!["*--***-**--**-*--"],
+                                ProblemSpec::new(true, false, OutputDataType::Length));
+    try_solve(input, "8");
+}
+
+#[test]
+fn problem4565() {
+    let codes = CodeType::Custom(vec![("Е", "*"), ("Н", "-*"), ("О", "---"), ("З", "--**"),
+                            ("Щ", "--*-")]);
+    let input = make_input_data(codes, vec!["-***---*"],
+                                ProblemSpec::new(true, false, OutputDataType::Length));
+    try_solve(input, "5");
+}
+
+#[test]
+fn problem4689() {
+    let codes = CodeType::Custom(vec![("А", "*-"), ("Г", "--*"), ("И", "**"), ("П", "*--*"),
+                            ("М", "--")]);
+    let input = make_input_data(codes, vec!["*-*--*--**-**--*"],
+                                ProblemSpec::new(true, false, OutputDataType::Length));
+    try_solve(input, "6");
+}
+
+#[test]
+fn problem4742() {
+    let codes = CodeType::Custom(vec![("Т", "-"), ("А", "*-"), ("У", "**-"), ("Ж", "***-"),
+                            ("Х", "****")]);
+    let input = make_input_data(codes, vec!["***-**-***-*-**-"],
+                                ProblemSpec::new(true, false, OutputDataType::Length));
+    try_solve(input, "5");
+}
+
+#[test]
+fn problem5311() {
+    let codes = CodeType::Custom(vec![("А", "~"), ("Б", "o++"), ("В", "oo+"), ("Г", "~+"),
+                            ("Д", "o~"), ("Е", "+o+"), ("Ё", "~~o")]);
+    let input = make_input_data(codes, vec!["~+o++o~~o~~"],
+                                ProblemSpec::new(true, false, OutputDataType::Length));
+    try_solve(input, "6");
+}
+
+#[test]
+fn problem6197() {
+    let codes = CodeType::Custom(vec![("Т", "-"), ("А", "*-"), ("У", "**-"), ("Ж", "***-"),
+                            ("Х", "****")]);
+    let input = make_input_data(codes, vec!["-*-*-**--*--"],
+                                ProblemSpec::new(true, false, OutputDataType::Length));
+    try_solve(input, "7");
+}
+
+#[test]
+fn problem6354() {
+    let codes = CodeType::Custom(vec![("Т", "-"), ("А", "*-"), ("У", "**-"), ("Ж", "***-"),
+                            ("Х", "****")]);
+    let input = make_input_data(codes, vec!["**-*-***-*--**-"],
+                                ProblemSpec::new(true, false, OutputDataType::Length));
+    try_solve(input, "6");
+}
+
+#[test]
+fn problem18211() {
+    let codes = CodeType::Custom(vec![("Е", "0"), ("Н", "10"), ("О", "111"), ("З", "1100"),
+                            ("Щ", "1101")]);
+    let input = make_input_data(codes, vec!["11110010011000"],
+                                ProblemSpec::new(true, false, OutputDataType::Length));
+    try_solve(input, "7");
+}
+
+#[test]
+fn problem18226() {
+    let codes = CodeType::Custom(vec![("А", "01"), ("Г", "110"), ("И", "00"), ("П", "0110"),
+                            ("М", "11")]);
+    let input = make_input_data(codes, vec!["0101101100100110"],
+                                ProblemSpec::new(true, false, OutputDataType::Length));
+    try_solve(input, "6");
+}
+
+// ------------------------------------------------------------------------------------------------
+
+#[test]
+fn problem4835() {
+    let codes = CodeType::Custom(vec![("А", "..o.."), ("Б", ".o..o"), ("В", ".oo.o"),
+                            ("Г", ".oooo"), ("Д", "...o."), ("Е", ".o.oo")]);
+    let input = make_input_data(codes, vec!["...o..o.oo...o..oooo.o.oo"],
+                                ProblemSpec::new(true, false, OutputDataType::RepeatingChars));
+    try_solve(input, "ДЕ");
+}
+
+#[test]
+fn problem5755() {
+    let codes = CodeType::Custom(vec![("А", "..o.."), ("Б", ".o..o"), ("В", ".oo.o"),
+                            ("Г", ".oooo"), ("Д", "...o."), ("Е", ".o.oo")]);
+    let input = make_input_data(codes, vec![".o..o.o.oo.o..o..o....o.."],
+                                ProblemSpec::new(true, false, OutputDataType::RepeatingChars));
+    try_solve(input, "АБ");
+}
+
