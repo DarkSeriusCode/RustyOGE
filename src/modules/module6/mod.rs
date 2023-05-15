@@ -1,27 +1,48 @@
 mod core;
-pub mod solvers;
-pub mod types;
-pub use types::InputData;
+mod consts;
+mod types;
 
-use std::boxed::Box;
-use std::error::Error;
+pub use types::*;
+use consts::ALT_CHARS;
+use crate::utils::{SolveError, SolveResult};
 
-use crate::utils::SolveError;
+// ------------------------------------------------------------------------------------------------
 
-pub fn solve<F, E>(input: F, type_num: u8) -> Result<String, Box<dyn Error>>
-where
-    F: FnOnce() -> Result<types::InputData, E>,
-    E: Error + 'static,
-{
-    if type_num > solvers::SOLVERS_COUNT {
-        return Err(Box::new(SolveError::UnknownProblemType));
+/// Во входных данных иногда может встретиться несколько Unicode символов для обозначения одного и
+/// того же знака. Поэтому заменяем их на ASCII
+fn replace_unicode_chars(string: &str) -> String {
+    let mut string = string.to_string();
+    for (unicode_ch_list, ch) in ALT_CHARS {
+        for unicode_ch in unicode_ch_list {
+            string = string.replace(*unicode_ch, &ch.to_string());
+        }
     }
-    let InputData {file_path, program_input, expected_output } = input()?;
-
-    // Решаем задачу, если ошибка, то возвращаем её
-    let res = match type_num {
-        1 => solvers::solve_type1(&file_path, &program_input, &expected_output),
-        _ => todo!(),
-    }?;
-    Ok(res)
+    string.to_string()
 }
+
+// ------------------------------------------------------------------------------------------------
+
+/// Решает задачу и возвращает результат решения.
+pub fn solve(input_data: InputData) -> SolveResult {
+    // Поиск Python
+    let python_interpreter = match core::find_python() {
+        Some(cmd) => cmd,
+        None => return Err(SolveError::Other("Не найден Python!".to_string())),
+    };
+
+    let ascii_program_input = replace_unicode_chars(&input_data.program_input);
+    let program_args: Vec<Vec<String>> = core::convert_program_input(&ascii_program_input);
+    let mut correct_output_count = 0;
+
+    // Запуск программы
+    for args in &program_args {
+        match core::run_program(&python_interpreter, &input_data.file_path, args) {
+            Ok(output) if output == input_data.spec.excepted_output => correct_output_count += 1,
+            Ok(_) => (),
+            Err(e) => return Err(SolveError::Other(format!("Ошибка запуска программы: {e}"))),
+        }
+    }
+
+    Ok(correct_output_count.to_string())
+}
+
