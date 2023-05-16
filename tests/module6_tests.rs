@@ -30,7 +30,7 @@ fn make_input_data(fname: &str, program_input: &str, excepted_output: &str) -> I
     let input_data = InputData {
         file_path: path_to(fname),
         program_input: program_input.to_string(),
-        spec: types::ProblemSpec { excepted_output: excepted_output.to_string(), },
+        spec: ProblemSpec { excepted_output: excepted_output.to_string(), },
     };
     assert!(input_data.is_valid());
     input_data
