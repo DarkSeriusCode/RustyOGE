@@ -1,0 +1,9 @@
+[package]
+name = "rusty_oge-cli"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rusty_oge = { path = ".." }
+clap = { version = "4.0", features = ["derive"]  }
+
