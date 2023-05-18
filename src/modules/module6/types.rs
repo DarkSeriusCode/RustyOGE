@@ -11,12 +11,12 @@ use crate::module6::consts::PROGRAM_INPUT_REGEX;
 #[derive(PartialEq, Eq, Clone)]
 pub struct ProblemSpec {
     /// Ожидаемый вывод программы
-    pub excepted_output: String,
+    pub expected_output: String,
 }
 
 impl ProblemSpec {
-    pub fn new(excepted_output: String) -> Self {
-        Self { excepted_output }
+    pub fn new(expected_output: String) -> Self {
+        Self { expected_output }
     }
 }
 
