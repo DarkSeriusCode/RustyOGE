@@ -25,7 +25,7 @@ fn main() {
 fn solve_by_num(number: u32) -> Result<String, Box<dyn Error>> {
     match number {
         2 => Ok(module2::solve(input::read_module2_input()?)?),
-        // 6 => module6::solve(input::read_module6_input),
+        6 => Ok(module6::solve(input::read_module6_input()?)?),
         _ => Err(Box::new(errors::CLIError::UnknownProblem)),
     }
 }

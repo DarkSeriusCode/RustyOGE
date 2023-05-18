@@ -1,6 +1,7 @@
+use std::path::PathBuf;
 use std::io::{self, Write};
 use std::collections::HashMap;
-use rusty_oge::module2;
+use rusty_oge::{module2, module6};
 use rusty_oge::utils::Validated;
 use crate::errors::CLIError;
 
@@ -100,6 +101,26 @@ pub fn read_module2_input() -> Result<module2::InputData, CLIError> {
 
     let spec = module2::ProblemSpec::new(only_decode, only_unique_chars, *data_format);
     let input_data = module2::InputData::new(codes, encoded_strings, spec);
+    if !input_data.is_valid() {
+        return Err(CLIError::IncorrectInput);
+    }
+
+    Ok(input_data)
+}
+
+// ------------------------------------------------------------------------------------------------
+
+pub fn read_module6_input() -> Result<module6::InputData, CLIError> {
+    let path = input("Введите путь до файла с программой: ")?;
+    let input_string = input("Введите данные для программы: ")?;
+    let expected_output = input("Что должна вывести программа: ")?;
+
+    let mut program_path_buf = PathBuf::new();
+    program_path_buf.push(&path);
+
+    let spec = module6::ProblemSpec::new(expected_output);
+    let input_data = module6::InputData::new(&program_path_buf, &input_string, spec);
+
     if !input_data.is_valid() {
         return Err(CLIError::IncorrectInput);
     }
