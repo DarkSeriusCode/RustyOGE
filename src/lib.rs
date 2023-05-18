@@ -16,6 +16,6 @@ mod modules;
 pub use modules::module2;
 pub use modules::module6;
 
-pub use modules::utils;
+pub mod utils;
 pub use utils::{SolveResult, SolveError};
 
