@@ -9,6 +9,6 @@ repository = "https://github.com/DarkSeriusCode/RustyOGE"
 readme = "README.md"
 
 [dependencies]
-rusty_oge = { path = ".." }
+rusty_oge = { version = "1.0", path = ".." }
 clap = { version = "4.0", features = ["derive"]  }
 
