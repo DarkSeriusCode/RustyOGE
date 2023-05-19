@@ -1,4 +1,12 @@
 # RustyOGE
+<div align="center">
+
+![Crates.io](https://img.shields.io/crates/v/rusty_oge?color=orange)
+![docs.rs](https://img.shields.io/docsrs/rusty_oge)
+![GitHub repo size](https://img.shields.io/github/repo-size/DarkSeriusCode/RustyOGE)
+
+</div>
+
 Библиотека для решения задач из первой части ОГЭ по информатике за 2023 год. Задачи брались с [этого](https://inf-oge.sdamgia.ru/prob_catalog) сайта.
 
 Также имеется [CLI](https://github.com/DarkSeriusCode/RustyOGE/tree/main/cli/README.md).
