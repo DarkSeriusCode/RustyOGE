@@ -1,7 +1,12 @@
 [package]
 name = "rusty_oge"
-version = "0.1.0"
+description = "Библиотека, решающая задачки из ОГЭ по информатике."
+version = "1.0.0"
+authors = ["DarkSeriusCode"]
 edition = "2021"
+license = "MIT"
+repository = "https://github.com/DarkSeriusCode/RustyOGE"
+readme = "README.md"
 
 [dependencies]
 regex = "1.7.1"
