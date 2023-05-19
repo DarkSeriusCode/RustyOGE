@@ -1,7 +1,12 @@
 [package]
 name = "rusty_oge-cli"
+description = "CLI обёртка над библиотекой rusty_oge"
+authors = ["DarkSeriusCode"]
 version = "0.2.0"
 edition = "2021"
+license = "MIT"
+repository = "https://github.com/DarkSeriusCode/RustyOGE"
+readme = "README.md"
 
 [dependencies]
 rusty_oge = { path = ".." }

@@ -251,7 +251,7 @@ dependencies = [
 
 [[package]]
 name = "rusty_oge"
-version = "0.1.0"
+version = "1.0.1"
 dependencies = [
  "regex",
 ]
