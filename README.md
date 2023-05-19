@@ -1,14 +1,18 @@
 # RustyOGE
-Решает задачки из первой части ОГЭ по информатике за 2023 год. Задачи брались с [этого](https://inf-oge.sdamgia.ru/prob_catalog) сайта.
+Библиотека для решения задач из первой части ОГЭ по информатике за 2023 год. Задачи брались с [этого](https://inf-oge.sdamgia.ru/prob_catalog) сайта.
 
-## Установка
-Для компиляции и установки CLI потребуется установить `Rust`
+Также имеется [CLI](https://github.com/DarkSeriusCode/RustyOGE/tree/main/cli/README.md).
+
+## Использование
+Добавить библиотеку в проект:
+```toml
+[dependencies]
+rusty_oge = "1.0.0"
 ```
-git clone https://github.com/DarkSeriusCode/RustyOGE
-cd RustyOGE
-cargo install --path cli
-rusty_oge-cli -h
-```
+или
+`cargo add rusty_oge`
+
+Примеры использования можно найти в [документации](https://docs.rs/rusty_oge/1.0.0)
 
 ## Тесты
 Все тесты составлены на основе заданий с [сайта](https://inf-oge.sdamgia.ru/prob_catalog).
@@ -39,3 +43,4 @@ rusty_oge-cli -h
 |№10  |  ❌  |
 |№11  |  ❌  |
 |№12  |  ❌  |
+
