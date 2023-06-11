@@ -49,7 +49,7 @@ pub mod module2;
 ///     file_path: Path::new("tests/module6_files/10458.py").to_path_buf(),
 ///     program_input: "(1, 2); (11, 2); (1, 12); (11, 12); (–11, –12); (–11, 12); (–12, 11); (10, 10); (10, 5).".to_string(),
 ///     spec: ProblemSpec {
-///         excepted_output: "YES".to_string(),
+///         expected_output: "YES".to_string(),
 ///     },
 /// };
 ///
@@ -62,3 +62,5 @@ pub mod module2;
 /// ```
 pub mod module6;
 
+/// Модуль 10-го задания
+pub mod module10;
