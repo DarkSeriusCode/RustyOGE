@@ -3,7 +3,7 @@ use std::path::Path;
 use std::process::{Command, Stdio};
 
 use regex::Regex;
-use crate::module6::consts::{PROGRAM_INPUT_REGEX, PYTHON_INTERPRETER_CMDS};
+use super::consts::{PROGRAM_INPUT_REGEX, PYTHON_INTERPRETER_CMDS};
 
 /// Конвертирует входные данные из формата `(a, b, ...); (c, d, ...)` в формат
 /// `vec![vec![a, b, ...], vec![c, d, ...]]`

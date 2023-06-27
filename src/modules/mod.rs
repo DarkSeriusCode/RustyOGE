@@ -64,3 +64,4 @@ pub mod module6;
 
 /// Модуль 10-го задания
 pub mod module10;
+

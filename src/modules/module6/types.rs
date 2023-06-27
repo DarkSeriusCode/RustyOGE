@@ -2,7 +2,7 @@ use regex::Regex;
 use std::path::{Path, PathBuf};
 
 use crate::utils;
-use crate::module6::consts::PROGRAM_INPUT_REGEX;
+use super::consts::PROGRAM_INPUT_REGEX;
 
 // ------------------------------------------------------------------------------------------------
 
