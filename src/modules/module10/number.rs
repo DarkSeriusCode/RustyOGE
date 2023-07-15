@@ -138,3 +138,23 @@ impl cmp::Ord for Number {
     }
 }
 
+/// Создаёт [`Number`](crate::module10::Number), если не удаётся - паникует.
+///
+/// ## Пример
+/// ```rust
+/// use rusty_oge::num;
+///
+/// // Не паникует, число корректно
+/// let valid_num = num!("10", 2);
+///
+/// // Паника! В двоичной системе счисления нет цифры 8
+/// // let invalid_num = num!("18", 2);
+/// ```
+#[macro_export]
+macro_rules! num {
+    ($num:literal, $base:literal) => {
+        $crate::module10::Number::new($num, $base)
+            .expect(&format!("Invalid Number! (\"{}\", {})", $num, $base))
+    };
+}
+
