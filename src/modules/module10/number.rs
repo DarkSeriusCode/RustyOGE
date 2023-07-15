@@ -41,8 +41,8 @@ pub struct Number {
 }
 
 impl Number {
-    /// Создаёт число в заданной системе счисления. При этом никаких проверок на корректность
-    /// записи числа не производиться!
+    /// Создаёт число в заданной системе счисления. Также число можно создать,
+    /// используя [макрос `num`](crate::num)
     pub fn new(number: &str, base: u32) -> Result<Self, ConvertionError> {
         let num = Self {
             number: number.to_string(),

@@ -63,5 +63,25 @@ pub mod module2;
 pub mod module6;
 
 /// Модуль 10-го задания
+///
+/// Модуль для решения десятого задания ОГЭ по информатике. ([каталог заданий](https://inf-oge.sdamgia.ru/test?a=view_many&cat_id[]=45&cat_id[]=23&cat_id[]=46&filter=all))
+///
+/// Пример решения [задания](https://inf-oge.sdamgia.ru/problem?id=16018) где требуется перевести число в другую систему счисления.
+/// ```rust
+/// use rusty_oge::{num, utils::Validated};
+/// use rusty_oge::module10::{InputData, ProblemSpec, solve};
+///
+/// let input_data = InputData {
+///     numbers: vec![num!("1100110", 2)],
+///     spec: ProblemSpec::Convert(10),
+/// };
+///
+/// // Проверим корректность данных
+/// assert!(input_data.is_valid());
+///
+/// let right_answer = "102".to_string();
+///
+/// assert_eq!(solve(input_data), Ok(right_answer));
+/// ```
 pub mod module10;
 
