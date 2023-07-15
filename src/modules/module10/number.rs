@@ -43,26 +43,28 @@ pub struct Number {
 impl Number {
     /// Создаёт число в заданной системе счисления. При этом никаких проверок на корректность
     /// записи числа не производиться!
-    pub fn new(number: &str, base: u32) -> Self {
-        Self {
+    pub fn new(number: &str, base: u32) -> Result<Self, ConvertionError> {
+        let num = Self {
             number: number.to_string(),
             base,
-        }
+        };
+
+        num.convert(base)
     }
 
     /// Переводит число в систему счисления с основанием `base`
     pub fn convert(&self, base: u32) -> Result<Self, ConvertionError> {
-        let is_negative = self.number.starts_with('-');
         if base > 36 { return Err(ConvertionError::VeryBigBase); }
 
+        let is_negative = self.number.starts_with('-');
+        let number = if is_negative { &self.number[1..] } else { &self.number };
+
         // Переводим сначала в десятичню.
-        let in_decimal = Self::to_decimal(&self.number, self.base)?;
+        let in_decimal = Self::to_decimal(number, self.base)?;
 
         // Переводим число в число с необходимым основанием
         let mut in_needed_base = Self::from_decimal(in_decimal, base)?;
-        if is_negative {
-            in_needed_base.insert(0, '-');
-        }
+        if is_negative { in_needed_base.insert(0, '-'); }
 
         Ok(Self {
             number: in_needed_base,
@@ -112,7 +114,11 @@ impl fmt::Display for Number {
 
 impl cmp::PartialEq for Number {
     fn eq(&self, other: &Self) -> bool {
-        self.convert(10).unwrap().number == other.convert(10).unwrap().number
+        let self_num = self.convert(10);
+        let other_num = other.convert(10);
+
+        if self_num.is_err() || other_num.is_err() { return false; }
+        self_num.unwrap().number() == other_num.unwrap().number()
     }
 }
 
@@ -120,9 +126,8 @@ impl cmp::Eq for Number {}
 
 impl cmp::PartialOrd for Number {
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
-        // Избавиться от этих постоянных unwrap'ов
-        let self_num: i32 = self.convert(10).unwrap().number().parse().unwrap();
-        let other_num: i32 = other.convert(10).unwrap().number().parse().unwrap();
+        let self_num: i32 = self.convert(10).ok()?.number().parse().ok()?;
+        let other_num: i32 = other.convert(10).ok()?.number().parse().ok()?;
         self_num.partial_cmp(&other_num)
     }
 }
