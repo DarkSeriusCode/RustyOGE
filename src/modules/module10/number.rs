@@ -1,8 +1,5 @@
 use std::{fmt, error, cmp};
 
-/// Результат конвертирования числа
-pub type ConvertionResult = Result<Number, ConvertionError>;
-
 /// Перечисление ошибок, возникаемых при конвертации
 #[derive(Debug)]
 pub enum ConvertionError {
@@ -13,7 +10,7 @@ pub enum ConvertionError {
 }
 
 impl ConvertionError {
-    /// Возвращает сообщение ошибки
+    /// Возвращает сообщение об ошибке
     pub fn message(&self) -> &str {
         match self {
             Self::VeryBigBase    => "Основание больше 36",
@@ -37,16 +34,17 @@ impl fmt::Display for ConvertionError {
 // ------------------------------------------------------------------------------------------------
 
 #[derive(Debug, Clone)]
-/// Представляет число с неким основанием
+/// Представляет число в системе счисления с неким основанием
 pub struct Number {
     number: String,
     base: u32,
 }
 
 impl Number {
-    /// Создаёт число с указанным основанием
+    /// Создаёт число в заданной системе счисления. При этом никаких проверок на корректность
+    /// записи числа не производиться!
     pub fn new(number: &str, base: u32) -> Self {
-         Self {
+        Self {
             number: number.to_string(),
             base,
         }
@@ -54,10 +52,10 @@ impl Number {
 
     /// Переводит число в систему счисления с основанием `base`
     pub fn convert(&self, base: u32) -> Result<Self, ConvertionError> {
-        let is_negative = self.number.starts_with('-').into();
+        let is_negative = self.number.starts_with('-');
         if base > 36 { return Err(ConvertionError::VeryBigBase); }
 
-        // Переводим сначала в десятичню. Если значение есть в кэше - берём его
+        // Переводим сначала в десятичню.
         let in_decimal = Self::to_decimal(&self.number, self.base)?;
 
         // Переводим число в число с необходимым основанием
@@ -88,7 +86,8 @@ impl Number {
         u32::from_str_radix(number_str, base).map_err(|_| ConvertionError::InvalidInteger)
     }
 
-    /// Переводит не отрицательное число в десятичной системе счисления в число с основанием `base`
+    /// Переводит не отрицательное число из десятичной системе счисления в систему счисления с
+    /// основанием `base`
     ///
     /// # Паникует
     /// Если `base` больше 36

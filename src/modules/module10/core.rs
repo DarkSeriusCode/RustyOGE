@@ -17,7 +17,7 @@ fn convert_all(numbers: &Vec<Number>, base: u32) -> Option<Vec<Number>> {
 
 // ------------------------------------------------------------------------------------------------
 
-/// Ищет среди чисел `numbers` минимальное или максимальное
+/// Ищет среди чисел `numbers` минимальное или максимальное в десятичной системе счисления
 pub fn find_num(numbers: &Vec<Number>, what_find: NumberToFind) -> SolveResult {
     let nums_in_decimal = convert_all(numbers, 10).ok_or(SolveError::UnableToSolve)?;
 
@@ -35,7 +35,7 @@ pub fn convert(number: &Number, base: u32) -> SolveResult {
     }
 }
 
-/// Находит число с наибольшей/наименьшей суммой цифр
+/// Находит число с наибольшей/наименьшей суммой цифр в заданной системе счисления
 pub fn find_digits_sum(numbers: &Vec<Number>, base: u32, what_find: NumberToFind) -> SolveResult {
     let converted_numbers = convert_all(numbers, base).ok_or(SolveError::UnableToSolve)?;
     let mut sums = vec![];
@@ -54,7 +54,7 @@ pub fn find_digits_sum(numbers: &Vec<Number>, base: u32, what_find: NumberToFind
 
 }
 
-/// Находит число с наибольшим/наименьшим количеством единиц
+/// Находит число, имеющее максимальное/минимальное количество единиц в двоичной системе счисления.
 pub fn find_ones_count(numbers: &Vec<Number>, what_find: NumberToFind) -> SolveResult {
     let converted_numbers = convert_all(numbers, 2).ok_or(SolveError::UnableToSolve)?;
     let mut ones = vec![];
