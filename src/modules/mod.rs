@@ -4,12 +4,11 @@
 ///
 /// Пример решения [этого](https://inf-oge.sdamgia.ru/problem?id=7) задания
 /// ```rust
-/// use std::collections::HashMap;
-/// use rusty_oge::{SolveResult, utils::Validated};
+/// use rusty_oge::utils::Validated;
 /// use rusty_oge::module2::{InputData, OutputDataType, ProblemSpec, Codes, solve};
 ///
 /// let input_data = InputData {
-///     codes: HashMap::from_iter([
+///     codes: Codes::from_iter([
 ///     ("01", "А"), ("100", "Д"), ("101", "К"), ("10", "Н"), ("111", "О"), ("000", "С")
 ///     ].map(|(code, letter)| (code.to_string(), letter.to_string()))
 ///     ),
@@ -32,7 +31,6 @@
 ///
 /// assert_eq!(solve(input_data), Ok(right_answer));
 /// ```
-/// Само собой это можно записать и короче, но для лучшего понимания мы написали подробнее.
 pub mod module2;
 
 /// Модуль 6-го задания
@@ -42,7 +40,7 @@ pub mod module2;
 /// Пример решения [этого](https://inf-oge.sdamgia.ru/problem?id=10458) задания
 /// ```rust
 /// use std::path::Path;
-/// use rusty_oge::{SolveResult, utils::Validated};
+/// use rusty_oge::utils::Validated;
 /// use rusty_oge::module6::{InputData, ProblemSpec, solve};
 ///
 /// let input_data = InputData {
