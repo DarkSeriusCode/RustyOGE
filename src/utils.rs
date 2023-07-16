@@ -49,13 +49,13 @@ impl Error for SolveError {
 // ------------------------------------------------------------------------------------------------
 
 /// Возвращает `true`, если ни один символ в строке не повторяется, иначе `false`
-pub fn has_unique_chars(string: &String) -> bool {
+pub(crate) fn has_unique_chars(string: &String) -> bool {
     let set: HashSet<char> = HashSet::from_iter(string.chars());
     set.len() == string.chars().count()
 }
 
 /// Возвращает отсортированный `Vec`, содержащий все повторяющиеся символы в `string`
-pub fn get_repeating_chars(string: &str) -> Vec<char> {
+pub(crate) fn get_repeating_chars(string: &str) -> Vec<char> {
     let mut string_set: HashSet<char> = HashSet::from_iter(string.chars());
     let repeating_chars: HashSet<char> = HashSet::from_iter(string.chars()
                                                            .filter(|ch| !string_set.remove(ch)));
