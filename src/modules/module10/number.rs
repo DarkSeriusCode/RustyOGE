@@ -35,14 +35,41 @@ impl fmt::Display for ConvertionError {
 
 #[derive(Debug, Clone)]
 /// Представляет число в системе счисления с неким основанием
+///
+/// # Пример
+/// ```rust
+/// use rusty_oge::module10::Number;
+///
+/// let my_num_in_hex = Number::new("ABC", 16).unwrap();
+/// let my_num_in_dec = my_num_in_hex.convert(10).expect("Cannot convert!");
+///
+/// // ABC в десятичной системе счисления это 2748
+/// assert_eq!(my_num_in_dec.number(), "2748");
+///
+/// // Числа равны, т.к сравниваются их записи в десятичной системе счисления
+/// assert_eq!(my_num_in_hex, my_num_in_dec);
+/// ```
 pub struct Number {
     number: String,
     base: u32,
 }
 
 impl Number {
-    /// Создаёт число в заданной системе счисления. Также число можно создать,
-    /// используя [макрос `num`](crate::num)
+    /// Создаёт число в заданной системе счисления.
+    ///
+    /// Если число не корректно (не соответствует системе счисления), возвращает `Err`.
+    /// Макрос [`num`](crate::num) также создаёт `Number`, но паникует при не корректном числе.
+    ///
+    /// # Пример
+    /// ```rust
+    /// use rusty_oge::{num, module10::Number};
+    ///
+    /// let valid_num = Number::new("3C", 16);
+    /// assert!(valid_num.is_ok());
+    ///
+    /// let invalid_num = Number::new("19", 8);
+    /// assert!(invalid_num.is_err()); // Т.к в восьмеричной системе счисления нет цифры 9
+    /// ```
     pub fn new(number: &str, base: u32) -> Result<Self, ConvertionError> {
         let num = Self {
             number: number.to_string(),

@@ -75,6 +75,7 @@ pub enum OutputDataType {
 }
 
 impl OutputDataType {
+    /// Форматирует строку выходных данных в соответствии с `Self`
     pub fn format(&self, output_data: &str) -> String {
         match self {
             Self::DecodedString  => output_data.to_string(),

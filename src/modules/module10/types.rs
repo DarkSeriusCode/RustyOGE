@@ -7,7 +7,9 @@ use crate::utils;
 /// Какое число требуется найти
 #[derive(PartialEq, Eq, Clone, Copy)]
 pub enum NumberToFind {
+    /// Нужно найти минимальное число
     Min,
+    /// Нужно найти максимальное число
     Max,
 }
 
