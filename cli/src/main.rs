@@ -3,14 +3,13 @@ use std::boxed::Box;
 use std::error::Error;
 use rusty_oge::*;
 
-/// Helps you to solve OGE tasks
 #[derive(Parser)]
 struct CLI {
-    /// The number of the task
     #[arg(long)]
     problem_num: u32,
 }
 
+mod input_utils;
 mod input;
 mod errors;
 
