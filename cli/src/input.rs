@@ -5,4 +5,6 @@ mod input_utils;
 pub mod module2;
 /// Получет входные данные для module6 из stdin
 pub mod module6;
+/// Получет входные данные для module10 из stdin
+pub mod module10;
 
