@@ -9,7 +9,6 @@ struct CLI {
     problem_num: u32,
 }
 
-mod input_utils;
 mod input;
 mod errors;
 
@@ -23,8 +22,8 @@ fn main() {
 
 fn solve_by_num(number: u32) -> Result<String, Box<dyn Error>> {
     match number {
-        2 => Ok(module2::solve(input::read_module2_input()?)?),
-        6 => Ok(module6::solve(input::read_module6_input()?)?),
+        2  => Ok(module2::solve(input::module2::get_input()?)?),
+        6  => Ok(module6::solve(input::module6::get_input()?)?),
         _ => Err(Box::new(errors::CLIError::UnknownProblem)),
     }
 }
