@@ -15,7 +15,7 @@ impl Display for CLIError {
         use CLIError::*;
         let err_msg = match self {
             ReadingError      => "Ошибка чтения".to_string(),
-            IncorrectInput(e) => format!("Некорректные входные данные {}!", e.to_string()),
+            IncorrectInput(e) => format!("Некорректный ввод {}!", e.to_string()),
             InvalidInputData  => "Введёные данные не прошли валидацию!".to_string(),
             UnknownProblem(n) => format!("Неизвестная задача под номером {}!", n),
         };

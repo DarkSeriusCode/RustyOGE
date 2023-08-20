@@ -1,23 +1,28 @@
 use std::io::{self, Write};
+use std::fmt::Display;
+use std::str::FromStr;
 
 use crate::errors::CLIError;
 
 /// Выводит `prompt` и ждёт ввод пользователя
-pub fn input(prompt: &str) -> Result<String, CLIError> {
+pub fn input<T: FromStr>(prompt: &(impl Display + ?Sized)) -> Result<T, CLIError> {
     print!("{prompt}");
-    io::stdout().flush().unwrap();
-    let mut buff = String::new();
-    io::stdin().read_line(&mut buff).map_err(|_| CLIError::ReadingError)?;
-    Ok(buff.trim().to_string())
+    io::stdout().flush().expect("An error has occurred when printing to stdout!");
+
+    let mut buffer = String::new();
+    io::stdin().read_line(&mut buffer).map_err(|_| CLIError::ReadingError)?;
+
+    T::from_str(buffer.trim())
+        .map_err(|_| CLIError::IncorrectInput("Возможно ожидасля другой тип данных".into()))
 }
 
 /// Спрашивает пользователя о чём-либо.
 pub fn ask(question: &str) -> Result<bool, CLIError> {
     loop {
-        match input(&format!("{} [да/нет]", question))?.to_lowercase().as_str() {
+        match input::<String>(&format!("{} [да/нет]", question))?.to_lowercase().as_str() {
             "да" => return Ok(true),
             "нет" => return Ok(false),
-            _ => println!("Неверный ввод! Попробуёте ещё раз!"),
+            _ => println!("Неверный ввод! Попробуёте ещё раз!\n"),
         }
     }
 }
@@ -31,10 +36,9 @@ pub fn choose<'t, T: ?Sized>(prompt: &str, options: &[(&str, &'t T)]) -> Result<
             println!("{index}. {key}.");
         }
 
-        match input("> ")?.parse::<usize>() {
-            Ok(num) if num <= options.len() => return Ok(&options.get(num).unwrap().1),
-            Ok(num) => println!("Варианта {num} не существует!"),
-            Err(_) => println!("Ошибка ввода!"),
+        match input::<usize>("> ")? {
+            num if num <= options.len() => return Ok(&options.get(num).unwrap().1),
+            num => println!("Варианта {num} не существует!\n"),
         }
     }
 }
@@ -45,7 +49,7 @@ pub fn input_until_end(prompt: &str) -> Result<Vec<String>, CLIError> {
     let mut strings = Vec::new();
 
     loop {
-        let buff = input("")?;
+        let buff: String = input("")?;
         if buff == "end" { break; }
         strings.push(buff);
     }

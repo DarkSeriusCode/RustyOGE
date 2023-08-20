@@ -66,9 +66,6 @@ fn get_number_to_find() -> Result<module10::NumberToFind, CLIError> {
 }
 
 fn get_base() -> Result<u32, CLIError> {
-    let base = input("Введите основание системы счисления: ")?;
-    Ok(base.parse::<u32>()
-           .map_err(|_| CLIError::IncorrectInput(format!("{base} не число!").into()))?
-    )
+    input("Введите основание системы счисления: ")
 }
 
