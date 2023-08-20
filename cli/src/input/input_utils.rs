@@ -44,16 +44,21 @@ pub fn choose<'t, T: ?Sized>(prompt: &str, options: &[(&str, &'t T)]) -> CLIResu
     }
 }
 
-/// Выводит `prompt` и читает строки из `stdin` пока не будет введено end
-pub fn input_until_end(prompt: &str) -> CLIResult<Vec<String>> {
+/// Выводит `prompt` и данные строки из `stdin` пока не будет введено end
+pub fn input_until_end<T>(prompt: &(impl Display + ?Sized)) -> CLIResult<Vec<T>>
+where
+    T: FromStr,
+{
     println!("{prompt} (в конце введите end)");
-    let mut strings = Vec::new();
+    let mut inputed_data = Vec::new();
 
     loop {
-        let buff: String = input("")?;
-        if buff == "end" { break; }
-        strings.push(buff);
+        let buffer: String = input("")?;
+        if buffer == "end" { break; }
+        let data_from_str = T::from_str(&buffer)
+            .map_err(|_| CLIError::IncorrectInput(buffer.into()))?;
+        inputed_data.push(data_from_str);
     }
-    Ok(strings)
+    Ok(inputed_data)
 }
 

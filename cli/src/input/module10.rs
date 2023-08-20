@@ -3,7 +3,7 @@ use rusty_oge::module10::{InputData, ProblemSpec, Number};
 use rusty_oge::utils::Validated;
 
 use crate::errors::CLIError;
-use crate::utils::CLIResult;
+use crate::utils::{CLIResult, Pair};
 use super::input_utils::*;
 
 const FINDNUM_TEXT: &str       = "Найти наибольшее/наименьшее число в десятичной системе счисления";
@@ -36,22 +36,13 @@ pub fn get_input() -> CLIResult<module10::InputData> {
 fn get_numbers() -> CLIResult<Vec<Number>> {
     let mut numbers = vec![];
 
-    let raw_input = input_until_end("Введите число и его систему счисления через пробел.")?;
+    let raw_input: Vec<Pair<String, u32>> = input_until_end("Введите число и основание его \
+                                                             системы счисления через пробел.")?;
 
-    for line in raw_input {
-        let pair: Vec<&str> = line.split_whitespace().collect();
-        if pair.len() != 2 {
-            return Err(CLIError::IncorrectInput(
-                    format!("{:?} вы должны ввести ДВА значения", pair).into()
-            ));
-        }
-
-        let num = pair[0];
-        let base: u32 = pair[1].parse().map_err(|_| CLIError::IncorrectInput(
-                format!("{} не является числом!", pair[1]).into()
-        ))?;
-
-        numbers.push(Number::new(num, base).map_err(|e| CLIError::IncorrectInput(e.into()))?);
+    for pair in raw_input {
+        let num = pair.first();
+        let base = pair.second();
+        numbers.push(Number::new(num, *base).map_err(|e| CLIError::IncorrectInput(e.into()))?);
     }
 
     Ok(numbers)

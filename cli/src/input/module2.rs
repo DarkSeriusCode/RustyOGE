@@ -2,21 +2,15 @@ use rusty_oge::module2;
 use rusty_oge::utils::Validated;
 
 use crate::errors::CLIError;
-use crate::utils::CLIResult;
+use crate::utils::{CLIResult, Pair};
 use super::input_utils::*;
 
 pub fn get_input() -> CLIResult<module2::InputData> {
     // Получаем символы и их коды
     let mut codes = module2::Codes::new();
-    for s in input_until_end("Введите букву и код через пробел")? {
-        let pair = Vec::from_iter(s.split_whitespace());
-        if pair.len() != 2 {
-            // TODO: Rewrite error message
-            return Err(CLIError::IncorrectInput(
-                       format!("{:?} вы должны ввести ДВА значения", pair).into()
-            ));
-        }
-        codes.insert(pair[1].to_string(), pair[0].to_string());
+
+    for s in input_until_end::<Pair<String, String>>("Введите букву и её код через пробел")? {
+        codes.insert(s.second().to_owned(), s.first().to_owned());
     }
 
     // Получаем закодированные строки
