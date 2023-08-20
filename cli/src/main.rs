@@ -25,6 +25,6 @@ fn solve_by_num(number: u32) -> Result<String, Box<dyn Error>> {
         2  => Ok(module2::solve(input::module2::get_input()?)?),
         6  => Ok(module6::solve(input::module6::get_input()?)?),
         10 => Ok(module10::solve(input::module10::get_input()?)?),
-        _ => Err(Box::new(errors::CLIError::UnknownProblem)),
+        n  => Err(errors::CLIError::UnknownProblem(n).into()),
     }
 }

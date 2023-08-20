@@ -9,24 +9,24 @@ const FINDNUM_TEXT: &str       = "Найти наибольшее/наимень
 const CONVERT_TEXT: &str       = "Перевести число в другую систему счисления";
 const FINDDIGITSSUM_TEXT: &str = "Найти число, сумма цифр которого наибольшая/наименьшая в\
                                   заданной системе счисления";
-const FINDONESCOUNT: &str      = "Найти число с наименьшим/наибольшим числом единиц в двоичной\
+const FINDONESCOUNT_TEXT: &str = "Найти число с наименьшим/наибольшим числом единиц в двоичной\
                                   системе счисления";
 
-enum ProblemSpecType {
-    FindNum,
-    Convert,
-    FindDigitsSum,
-    FindOnesCount,
-}
+const SPEC_OPTIONS: [(&'static str, &dyn Fn() -> Result<ProblemSpec, CLIError>);4] = [
+    (FINDNUM_TEXT,       &|| Ok(ProblemSpec::FindNum(get_number_to_find()?))),
+    (CONVERT_TEXT,       &|| Ok(ProblemSpec::Convert(get_base()?))),
+    (FINDDIGITSSUM_TEXT, &|| Ok(ProblemSpec::FindDigitsSum(get_base()?, get_number_to_find()?))),
+    (FINDONESCOUNT_TEXT, &|| Ok(ProblemSpec::FindOnesCount(get_number_to_find()?))),
+];
 
 pub fn get_input() -> Result<module10::InputData, CLIError> {
     let numbers = get_numbers()?;
-    let spec = get_spec()?;
+    let spec = choose("Что требуется сделать в задаче?", &SPEC_OPTIONS)?()?;
 
     let input_data = InputData::new(numbers, spec);
 
     if !input_data.is_valid() {
-        return Err(CLIError::IncorrectInput);
+        return Err(CLIError::InvalidInputData);
     }
 
     Ok(input_data)
@@ -39,33 +39,21 @@ fn get_numbers() -> Result<Vec<Number>, CLIError> {
 
     for line in raw_input {
         let pair: Vec<&str> = line.split_whitespace().collect();
-        if pair.len() != 2 { return Err(CLIError::IncorrectInput); }
+        if pair.len() != 2 {
+            return Err(CLIError::IncorrectInput(
+                    format!("{:?} вы должны ввести ДВА значения", pair).into()
+            ));
+        }
 
         let num = pair[0];
-        let base: u32 = pair[1].parse().map_err(|_| CLIError::IncorrectInput)?;
+        let base: u32 = pair[1].parse().map_err(|_| CLIError::IncorrectInput(
+                format!("{} не является числом!", pair[1]).into()
+        ))?;
 
-        numbers.push(Number::new(num, base).map_err(|_| CLIError::IncorrectInput)?);
+        numbers.push(Number::new(num, base).map_err(|e| CLIError::IncorrectInput(e.into()))?);
     }
 
     Ok(numbers)
-}
-
-// FIXME: Сделать ввод ProblemSpec проще и понятнее
-fn get_spec() -> Result<module10::ProblemSpec, CLIError> {
-    let spec_type = choose("Что требуется сделать в задаче?", &[
-            (FINDNUM_TEXT,       &ProblemSpecType::FindNum),
-            (CONVERT_TEXT,       &ProblemSpecType::Convert),
-            (FINDDIGITSSUM_TEXT, &ProblemSpecType::FindDigitsSum),
-            (FINDONESCOUNT ,     &ProblemSpecType::FindOnesCount),
-    ])?;
-
-    match spec_type {
-        &ProblemSpecType::FindNum       => Ok(ProblemSpec::FindNum(get_number_to_find()?)),
-        &ProblemSpecType::Convert       => get_convert_spec(),
-        &ProblemSpecType::FindDigitsSum => get_find_digits_sum_spec(),
-        &ProblemSpecType::FindOnesCount => Ok(ProblemSpec::FindOnesCount(get_number_to_find()?)),
-    }
-
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -77,14 +65,10 @@ fn get_number_to_find() -> Result<module10::NumberToFind, CLIError> {
     ]).map(|ok| ok.to_owned())
 }
 
-fn get_convert_spec() -> Result<ProblemSpec, CLIError> {
-    Ok(ProblemSpec::Convert(input("В систему счисления с каким основанием нужно перевести число: ")?
-        .parse::<u32>()
-        .map_err(|_| CLIError::IncorrectInput)?))
-}
-
-fn get_find_digits_sum_spec() -> Result<ProblemSpec, CLIError> {
-    let base = input("Основание системы счисления: ")?.parse().map_err(|_| CLIError::IncorrectInput)?;
-    Ok(ProblemSpec::FindDigitsSum(base, get_number_to_find()?))
+fn get_base() -> Result<u32, CLIError> {
+    let base = input("Введите основание системы счисления: ")?;
+    Ok(base.parse::<u32>()
+           .map_err(|_| CLIError::IncorrectInput(format!("{base} не число!").into()))?
+    )
 }
 

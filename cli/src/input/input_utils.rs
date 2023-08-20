@@ -23,7 +23,7 @@ pub fn ask(question: &str) -> Result<bool, CLIError> {
 }
 
 /// Выводит `prompt` и даёт пользователю выбрать один из вариантов
-pub fn choose<'t, T>(prompt: &str, options: &[(&str, &'t T)]) -> Result<&'t T, CLIError> {
+pub fn choose<'t, T: ?Sized>(prompt: &str, options: &[(&str, &'t T)]) -> Result<&'t T, CLIError> {
     println!("{prompt}");
 
     loop {

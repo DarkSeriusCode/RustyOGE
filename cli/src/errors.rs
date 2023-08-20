@@ -1,31 +1,27 @@
 use std::error::Error;
 use std::fmt::Display;
+use std::boxed::Box;
 
 #[derive(Debug)]
 pub enum CLIError {
     ReadingError,
-    IncorrectInput,
-    UnknownProblem,
-}
-
-impl CLIError {
-    pub fn message(&self) -> &str {
-        match self {
-            Self::ReadingError => "Ошибка чтения!",
-            Self::IncorrectInput => "Некорректные входные данные!",
-            Self::UnknownProblem => "Неизвестная задача!",
-        }
-    }
+    IncorrectInput(Box<dyn Error>),
+    InvalidInputData,
+    UnknownProblem(u32),
 }
 
 impl Display for CLIError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.message())
+        use CLIError::*;
+        let err_msg = match self {
+            ReadingError      => "Ошибка чтения".to_string(),
+            IncorrectInput(e) => format!("Некорректные входные данные {}!", e.to_string()),
+            InvalidInputData  => "Введёные данные не прошли валидацию!".to_string(),
+            UnknownProblem(n) => format!("Неизвестная задача под номером {}!", n),
+        };
+
+        write!(f, "{}", err_msg)
     }
 }
 
-impl Error for CLIError {
-    fn description(&self) -> &str {
-        self.message()
-    }
-}
+impl Error for CLIError {}

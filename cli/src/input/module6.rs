@@ -18,7 +18,7 @@ pub fn get_input() -> Result<module6::InputData, CLIError> {
     let input_data = module6::InputData::new(&program_path_buf, &input_string, spec);
 
     if !input_data.is_valid() {
-        return Err(CLIError::IncorrectInput);
+        return Err(CLIError::InvalidInputData);
     }
 
     Ok(input_data)
