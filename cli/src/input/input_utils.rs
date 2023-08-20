@@ -3,9 +3,10 @@ use std::fmt::Display;
 use std::str::FromStr;
 
 use crate::errors::CLIError;
+use crate::utils::CLIResult;
 
 /// Выводит `prompt` и ждёт ввод пользователя
-pub fn input<T: FromStr>(prompt: &(impl Display + ?Sized)) -> Result<T, CLIError> {
+pub fn input<T: FromStr>(prompt: &(impl Display + ?Sized)) -> CLIResult<T> {
     print!("{prompt}");
     io::stdout().flush().expect("An error has occurred when printing to stdout!");
 
@@ -17,7 +18,7 @@ pub fn input<T: FromStr>(prompt: &(impl Display + ?Sized)) -> Result<T, CLIError
 }
 
 /// Спрашивает пользователя о чём-либо.
-pub fn ask(question: &str) -> Result<bool, CLIError> {
+pub fn ask(question: &str) -> CLIResult<bool> {
     loop {
         match input::<String>(&format!("{} [да/нет]", question))?.to_lowercase().as_str() {
             "да" => return Ok(true),
@@ -28,7 +29,7 @@ pub fn ask(question: &str) -> Result<bool, CLIError> {
 }
 
 /// Выводит `prompt` и даёт пользователю выбрать один из вариантов
-pub fn choose<'t, T: ?Sized>(prompt: &str, options: &[(&str, &'t T)]) -> Result<&'t T, CLIError> {
+pub fn choose<'t, T: ?Sized>(prompt: &str, options: &[(&str, &'t T)]) -> CLIResult<&'t T> {
     println!("{prompt}");
 
     loop {
@@ -44,7 +45,7 @@ pub fn choose<'t, T: ?Sized>(prompt: &str, options: &[(&str, &'t T)]) -> Result<
 }
 
 /// Выводит `prompt` и читает строки из `stdin` пока не будет введено end
-pub fn input_until_end(prompt: &str) -> Result<Vec<String>, CLIError> {
+pub fn input_until_end(prompt: &str) -> CLIResult<Vec<String>> {
     println!("{prompt} (в конце введите end)");
     let mut strings = Vec::new();
 

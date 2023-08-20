@@ -3,6 +3,7 @@ use rusty_oge::module10::{InputData, ProblemSpec, Number};
 use rusty_oge::utils::Validated;
 
 use crate::errors::CLIError;
+use crate::utils::CLIResult;
 use super::input_utils::*;
 
 const FINDNUM_TEXT: &str       = "Найти наибольшее/наименьшее число в десятичной системе счисления";
@@ -19,7 +20,7 @@ const SPEC_OPTIONS: [(&'static str, &dyn Fn() -> Result<ProblemSpec, CLIError>);
     (FINDONESCOUNT_TEXT, &|| Ok(ProblemSpec::FindOnesCount(get_number_to_find()?))),
 ];
 
-pub fn get_input() -> Result<module10::InputData, CLIError> {
+pub fn get_input() -> CLIResult<module10::InputData> {
     let numbers = get_numbers()?;
     let spec = choose("Что требуется сделать в задаче?", &SPEC_OPTIONS)?()?;
 
@@ -32,7 +33,7 @@ pub fn get_input() -> Result<module10::InputData, CLIError> {
     Ok(input_data)
 }
 
-fn get_numbers() -> Result<Vec<Number>, CLIError> {
+fn get_numbers() -> CLIResult<Vec<Number>> {
     let mut numbers = vec![];
 
     let raw_input = input_until_end("Введите число и его систему счисления через пробел.")?;
@@ -58,14 +59,14 @@ fn get_numbers() -> Result<Vec<Number>, CLIError> {
 
 // ------------------------------------------------------------------------------------------------
 
-fn get_number_to_find() -> Result<module10::NumberToFind, CLIError> {
+fn get_number_to_find() -> CLIResult<module10::NumberToFind> {
     choose("Найти", &[
             ("Минимальное число", &module10::NumberToFind::Min),
             ("Максимальное число", &module10::NumberToFind::Max),
     ]).map(|ok| ok.to_owned())
 }
 
-fn get_base() -> Result<u32, CLIError> {
+fn get_base() -> CLIResult<u32> {
     input("Введите основание системы счисления: ")
 }
 

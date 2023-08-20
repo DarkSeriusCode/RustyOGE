@@ -4,9 +4,10 @@ use rusty_oge::module6;
 use rusty_oge::utils::Validated;
 
 use crate::errors::CLIError;
+use crate::utils::CLIResult;
 use super::input_utils::*;
 
-pub fn get_input() -> Result<module6::InputData, CLIError> {
+pub fn get_input() -> CLIResult<module6::InputData> {
     let path: PathBuf           = input("Введите путь до файла с программой: ")?;
     let input_string: String    = input("Введите данные для программы: ")?;
     let expected_output: String = input("Что должна вывести программа: ")?;

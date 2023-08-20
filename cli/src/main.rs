@@ -11,6 +11,7 @@ struct CLI {
 
 mod input;
 mod errors;
+mod utils;
 
 fn main() {
     let args = CLI::parse();
