@@ -15,8 +15,8 @@ pub fn get_input() -> CLIResult<module6::InputData> {
     let spec = module6::ProblemSpec::new(expected_output);
     let input_data = module6::InputData::new(&path, &input_string, spec);
 
-    if !input_data.is_valid() {
-        return Err(CLIError::InvalidInputData);
+    if let Err(validation_error_text) = input_data.valid() {
+        return Err(CLIError::InvalidInputData(validation_error_text));
     }
 
     Ok(input_data)

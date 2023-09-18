@@ -25,7 +25,7 @@
 /// };
 ///
 /// // Удостоверимся, что ввели правильные данные
-/// assert!(input_data.is_valid());
+/// assert!(input_data.valid().is_ok());
 ///
 /// let right_answer = "НОС".to_string();
 ///
@@ -52,7 +52,7 @@ pub mod module2;
 /// };
 ///
 /// // Удостоверимся, что ввели правильные данные
-/// assert!(input_data.is_valid());
+/// assert!(input_data.valid().is_ok());
 ///
 /// let right_answer = "5".to_string();
 ///
@@ -75,7 +75,7 @@ pub mod module6;
 /// };
 ///
 /// // Проверим корректность данных
-/// assert!(input_data.is_valid());
+/// assert!(input_data.valid().is_ok());
 ///
 /// let right_answer = "102".to_string();
 ///

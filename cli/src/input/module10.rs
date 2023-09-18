@@ -26,8 +26,8 @@ pub fn get_input() -> CLIResult<module10::InputData> {
 
     let input_data = InputData::new(numbers, spec);
 
-    if !input_data.is_valid() {
-        return Err(CLIError::InvalidInputData);
+    if let Err(validation_error_text) = input_data.valid() {
+        return Err(CLIError::InvalidInputData(validation_error_text));
     }
 
     Ok(input_data)
@@ -35,7 +35,6 @@ pub fn get_input() -> CLIResult<module10::InputData> {
 
 fn get_numbers() -> CLIResult<Vec<Number>> {
     let mut numbers = vec![];
-
     let raw_input: Vec<Pair<String, u32>> = input_until_end("Введите число и основание его \
                                                              системы счисления через пробел.")?;
 
@@ -60,4 +59,3 @@ fn get_number_to_find() -> CLIResult<module10::NumberToFind> {
 fn get_base() -> CLIResult<u32> {
     input("Введите основание системы счисления: ")
 }
-

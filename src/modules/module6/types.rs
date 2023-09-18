@@ -44,14 +44,13 @@ impl InputData {
 }
 
 impl utils::Validated for InputData {
-    fn is_valid(&self) -> bool {
+    fn valid(&self) -> Result<(), String> {
         if !self.file_path.exists() {
-            return false;
+            return Err(format!("Пути {} не существует!", self.file_path.to_str().unwrap()));
         }
         if !Regex::new(PROGRAM_INPUT_REGEX).unwrap().is_match(&self.program_input) {
-            return false;
+            return Err(format!("Неправильный формат входных данных ({})!", self.program_input));
         }
-        true
+        Ok(())
     }
 }
-

@@ -21,11 +21,7 @@ pub struct ProblemSpec {
 
 impl ProblemSpec {
     pub fn new(one_decoding: bool, unique_chars: bool, output_data_type: OutputDataType) -> Self {
-        Self {
-            one_decoding,
-            unique_chars,
-            output_data_type,
-        }
+        Self { one_decoding, unique_chars, output_data_type, }
     }
 }
 
@@ -44,20 +40,17 @@ pub struct InputData {
 
 impl InputData {
     pub fn new(codes: Codes, encoded_strings: Vec<String>, spec: ProblemSpec) -> Self {
-        Self {
-            codes,
-            encoded_strings,
-            spec,
-        }
+        Self { codes, encoded_strings, spec, }
     }
 }
 
 impl utils::Validated for InputData {
-    fn is_valid(&self) -> bool {
+    fn valid(&self) -> Result<(), String> {
         if self.spec.unique_chars && self.encoded_strings.len() != 1 {
-            return false;
+            return Err("Для поиска расшифровки с уникальными символами вы \
+                       должны ввести ОДНУ строку".into());
         }
-        true
+        Ok(())
     }
 }
 
@@ -84,4 +77,3 @@ impl OutputDataType {
         }
     }
 }
-

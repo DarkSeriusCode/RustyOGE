@@ -32,8 +32,8 @@ pub fn get_input() -> CLIResult<module2::InputData> {
 
     let spec = module2::ProblemSpec::new(only_decode, only_unique_chars, *data_format);
     let input_data = module2::InputData::new(codes, encoded_strings, spec);
-    if !input_data.is_valid() {
-        return Err(CLIError::InvalidInputData);
+    if let Err(validation_error_text) = input_data.valid() {
+        return Err(CLIError::InvalidInputData(validation_error_text));
     }
 
     Ok(input_data)

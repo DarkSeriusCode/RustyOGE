@@ -44,8 +44,10 @@ impl InputData {
 }
 
 impl utils::Validated for InputData {
-    fn is_valid(&self) -> bool {
-        self.numbers.len() != 0
+    fn valid(&self) -> Result<(), String> {
+        if self.numbers.len() == 0 {
+            return Err("Вы должны ввести хотя бы одно число!".into())
+        }
+        Ok(())
     }
 }
-

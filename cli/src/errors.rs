@@ -6,7 +6,7 @@ use std::boxed::Box;
 pub enum CLIError {
     ReadingError,
     IncorrectInput(Box<dyn Error>),
-    InvalidInputData,
+    InvalidInputData(String),
     UnknownProblem(u32),
 }
 
@@ -14,10 +14,10 @@ impl Display for CLIError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         use CLIError::*;
         let err_msg = match self {
-            ReadingError      => "Ошибка чтения".to_string(),
-            IncorrectInput(e) => format!("Некорректный ввод {}!", e.to_string()),
-            InvalidInputData  => "Введёные данные не прошли валидацию!".to_string(),
-            UnknownProblem(n) => format!("Неизвестная задача под номером {}!", n),
+            ReadingError        => "Ошибка чтения".to_string(),
+            IncorrectInput(e)   => format!("Некорректный ввод {}!", e.to_string()),
+            InvalidInputData(e) => format!("Введёные данные не прошли валидацию! {e}!"),
+            UnknownProblem(n)   => format!("Неизвестная задача под номером {}!", n),
         };
 
         write!(f, "{}", err_msg)

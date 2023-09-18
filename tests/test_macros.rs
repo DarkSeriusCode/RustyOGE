@@ -9,7 +9,7 @@ macro_rules! Test {
         #[test]
         fn $name() {
             let input_data = $crate::InputData::new($($input),+, $spec);
-            assert!(input_data.is_valid());
+            assert!(input_data.valid().is_ok());
             let answer = $crate::solve(input_data).expect("");
             assert_eq!(answer, $output);
         }
