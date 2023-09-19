@@ -4,8 +4,7 @@ use std::path::{Path, PathBuf};
 use crate::utils::Validated;
 use super::consts::PROGRAM_INPUT_REGEX;
 
-/// Детали выполнения задания. Указывает как имено обработать данные
-/// и какие из них выводить.
+/// Детали решения задачи. Хранит дополнительную информацию о задаче.
 #[derive(PartialEq, Eq, Clone)]
 pub struct ProblemSpec {
     /// Ожидаемый вывод программы

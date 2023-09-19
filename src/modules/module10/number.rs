@@ -88,10 +88,12 @@ impl Number {
         Ok(Self { number: in_needed_base, base })
     }
 
+    /// Возвращает само число
     pub fn number(&self) -> String {
         self.number.clone()
     }
 
+    /// Возвращает основание числа
     pub fn base(&self) -> u32 {
         self.base
     }

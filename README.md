@@ -15,7 +15,7 @@
 Добавить библиотеку в проект:
 ```toml
 [dependencies]
-rusty_oge = "1.0.0"
+rusty_oge = "1.1.0"
 ```
 или
 `cargo add rusty_oge`
