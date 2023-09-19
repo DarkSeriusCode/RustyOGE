@@ -11,4 +11,4 @@ readme = "README.md"
 [dependencies]
 rusty_oge = { version = "1.0", path = ".." }
 clap = { version = "4.0", features = ["derive"]  }
-
+colored = "2.0.4"

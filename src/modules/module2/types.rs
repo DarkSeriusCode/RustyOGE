@@ -46,6 +46,9 @@ impl InputData {
 
 impl utils::Validated for InputData {
     fn valid(&self) -> Result<(), String> {
+        if self.encoded_strings.len() == 0 {
+            return Err("Вы должны ввести хотя бы одну строку!".into());
+        }
         if self.spec.unique_chars && self.encoded_strings.len() != 1 {
             return Err("Для поиска расшифровки с уникальными символами вы \
                        должны ввести ОДНУ строку".into());

@@ -6,9 +6,10 @@ use crate::errors::CLIError;
 use crate::utils::{CLIResult, Pair};
 use super::input_utils::*;
 
-const FINDNUM_TEXT: &str       = "Найти наибольшее/наименьшее число в десятичной системе счисления";
+const FINDNUM_TEXT: &str       = "Найти максимальное/минимальное число в десятичной системе\
+                                  счисления";
 const CONVERT_TEXT: &str       = "Перевести число в другую систему счисления";
-const FINDDIGITSSUM_TEXT: &str = "Найти число, сумма цифр которого наибольшая/наименьшая в\
+const FINDDIGITSSUM_TEXT: &str = "Найти число, с наибольшей/наименьшей суммой цифр в\
                                   заданной системе счисления";
 const FINDONESCOUNT_TEXT: &str = "Найти число с наименьшим/наибольшим числом единиц в двоичной\
                                   системе счисления";
@@ -57,5 +58,5 @@ fn get_number_to_find() -> CLIResult<module10::NumberToFind> {
 }
 
 fn get_base() -> CLIResult<u32> {
-    input("Введите основание системы счисления: ")
+    input("Введите основание системы счисления:")
 }
