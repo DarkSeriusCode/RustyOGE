@@ -13,6 +13,8 @@ mod utils;
 
 const AVAILABLE_PROBLEMS: [u32;3] = [2, 6, 10];
 
+// ------------------------------------------------------------------------------------------------
+
 #[derive(Parser)]
 struct CLI {
     /// The number of the problem to be solved
@@ -23,6 +25,8 @@ struct CLI {
     #[arg(long, short)]
     list: bool,
 }
+
+// ------------------------------------------------------------------------------------------------
 
 fn main() {
     let args = CLI::parse();
@@ -42,6 +46,8 @@ fn main() {
         Err(err) => eprintln!("{}", err.to_string().bold().red()),
     }
 }
+
+// ------------------------------------------------------------------------------------------------
 
 fn solve_by_num(number: u32) -> Result<String, Box<dyn Error>> {
     match number {

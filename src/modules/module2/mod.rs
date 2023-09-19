@@ -1,9 +1,9 @@
+use crate::utils::{self, SolveError, SolveResult};
+
 mod core;
 mod types;
 
 pub use types::*;
-use crate::utils::{self, SolveError, SolveResult};
-
 
 /// Решает задачу и возвращает результат решения.
 pub fn solve(input_data: InputData) -> SolveResult {
@@ -34,4 +34,3 @@ pub fn solve(input_data: InputData) -> SolveResult {
 
     Ok(output_data_type.format(first_decoded_str))
 }
-

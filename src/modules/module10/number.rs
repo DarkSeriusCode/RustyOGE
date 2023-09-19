@@ -1,4 +1,6 @@
-use std::{fmt, error, cmp};
+use std::fmt::Display;
+use std::error::Error;
+use std::cmp::{PartialEq, Eq, PartialOrd, Ord, Ordering};
 
 /// Перечисление ошибок, возникаемых при конвертации
 #[derive(Debug)]
@@ -9,27 +11,17 @@ pub enum ConvertionError {
     InvalidInteger,
 }
 
-impl ConvertionError {
-    /// Возвращает сообщение об ошибке
-    pub fn message(&self) -> &str {
-        match self {
+impl Display for ConvertionError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let err_msg = match self {
             Self::VeryBigBase    => "Основание больше 36",
             Self::InvalidInteger => "Некоректное число",
-        }
+        };
+        write!(f, "{err_msg}")
     }
 }
 
-impl error::Error for ConvertionError {
-    fn description(&self) -> &str {
-        self.message()
-    }
-}
-
-impl fmt::Display for ConvertionError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.message())
-    }
-}
+impl Error for ConvertionError {}
 
 // ------------------------------------------------------------------------------------------------
 
@@ -93,10 +85,7 @@ impl Number {
         let mut in_needed_base = Self::from_decimal(in_decimal, base)?;
         if is_negative { in_needed_base.insert(0, '-'); }
 
-        Ok(Self {
-            number: in_needed_base,
-            base,
-        })
+        Ok(Self { number: in_needed_base, base })
     }
 
     pub fn number(&self) -> String {
@@ -133,13 +122,13 @@ impl Number {
     }
 }
 
-impl fmt::Display for Number {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl Display for Number {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.number)
     }
 }
 
-impl cmp::PartialEq for Number {
+impl PartialEq for Number {
     fn eq(&self, other: &Self) -> bool {
         let self_num = self.convert(10);
         let other_num = other.convert(10);
@@ -149,21 +138,23 @@ impl cmp::PartialEq for Number {
     }
 }
 
-impl cmp::Eq for Number {}
+impl Eq for Number {}
 
-impl cmp::PartialOrd for Number {
-    fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
+impl PartialOrd for Number {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         let self_num: i32 = self.convert(10).ok()?.number().parse().ok()?;
         let other_num: i32 = other.convert(10).ok()?.number().parse().ok()?;
         self_num.partial_cmp(&other_num)
     }
 }
 
-impl cmp::Ord for Number {
-    fn cmp(&self, other: &Self) -> cmp::Ordering {
+impl Ord for Number {
+    fn cmp(&self, other: &Self) -> Ordering {
         self.partial_cmp(other).unwrap()
     }
 }
+
+// ------------------------------------------------------------------------------------------------
 
 /// Создаёт [`Number`](crate::module10::Number), если не удаётся - паникует.
 ///
@@ -184,4 +175,3 @@ macro_rules! num {
             .expect(&format!("Invalid Number! (\"{}\", {})", $num, $base))
     };
 }
-

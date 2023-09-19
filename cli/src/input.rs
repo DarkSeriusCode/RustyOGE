@@ -7,4 +7,3 @@ pub mod module2;
 pub mod module6;
 /// Получет входные данные для module10 из stdin
 pub mod module10;
-

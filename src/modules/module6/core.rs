@@ -3,6 +3,7 @@ use std::path::Path;
 use std::process::{Command, Stdio};
 
 use regex::Regex;
+
 use super::consts::{PROGRAM_INPUT_REGEX, PYTHON_INTERPRETER_CMDS};
 
 /// Конвертирует входные данные из формата `(a, b, ...); (c, d, ...)` в формат
@@ -18,6 +19,8 @@ pub fn convert_program_input(program_input_str: &str) -> Vec<Vec<String>> {
     res
 }
 
+//-------------------------------------------------------------------------------------------------
+
 /// Проверяет наличие Python и возвращает команду для его зауска
 pub fn find_python() -> Option<String> {
     for command in PYTHON_INTERPRETER_CMDS {
@@ -32,9 +35,11 @@ pub fn find_python() -> Option<String> {
     None
 }
 
+//-------------------------------------------------------------------------------------------------
+
 /// Запускает Python программу с входными данными и возвращает вывод программы
 pub fn run_program(python_cmd: &str, program_path: &Path,
-                   program_args: &Vec<String>) -> Result<String, io::Error>
+                   program_args: &Vec<String>) -> io::Result<String>
 {
     let program_path = program_path.to_str().unwrap();
     let program_args = program_args.join("\n");
@@ -54,4 +59,3 @@ pub fn run_program(python_cmd: &str, program_path: &Path,
     proc.stdout.as_mut().unwrap().read_to_string(&mut buffer)?;
     Ok(buffer.trim().to_string())
 }
-

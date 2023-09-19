@@ -1,5 +1,5 @@
-use std::error::Error;
 use std::fmt::Display;
+use std::error::Error;
 use std::collections::HashSet;
 
 /// Результат решения задачи.
@@ -27,26 +27,17 @@ pub enum SolveError {
     Other(String),
 }
 
-impl SolveError {
-    pub fn message(&self) -> &str {
-        match self {
-            Self::UnableToSolve => "Не могу решить задачу!",
-            Self::Other(msg) => msg.as_str(),
-        }
-    }
-}
-
 impl Display for SolveError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.message())
+        let err_msg = match self {
+            Self::UnableToSolve => "Не могу решить задачу!",
+            Self::Other(msg) => msg.as_str(),
+        };
+        write!(f, "{err_msg}")
     }
 }
 
-impl Error for SolveError {
-    fn description(&self) -> &str {
-        self.message()
-    }
-}
+impl Error for SolveError {}
 
 // ------------------------------------------------------------------------------------------------
 

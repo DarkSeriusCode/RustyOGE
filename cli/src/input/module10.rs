@@ -21,6 +21,8 @@ const SPEC_OPTIONS: [(&'static str, &dyn Fn() -> Result<ProblemSpec, CLIError>);
     (FINDONESCOUNT_TEXT, &|| Ok(ProblemSpec::FindOnesCount(get_number_to_find()?))),
 ];
 
+// ------------------------------------------------------------------------------------------------
+
 pub fn get_input() -> CLIResult<module10::InputData> {
     let numbers = get_numbers()?;
     let spec = choose("Что требуется сделать в задаче?", &SPEC_OPTIONS)?()?;
@@ -47,8 +49,6 @@ fn get_numbers() -> CLIResult<Vec<Number>> {
 
     Ok(numbers)
 }
-
-// ------------------------------------------------------------------------------------------------
 
 fn get_number_to_find() -> CLIResult<module10::NumberToFind> {
     choose("Найти", &[

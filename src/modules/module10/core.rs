@@ -1,6 +1,12 @@
 use super::{Number, NumberToFind, SolveResult, SolveError};
 
-// ------------------------------------------------------------------------------------------------
+/// Обёртка над `Number::convert()`, возвращающая `SolveResult`, вместо `ConvertionResult`
+pub fn convert(number: &Number, base: u32) -> SolveResult {
+    match number.convert(base) {
+        Ok(n)  => Ok(n.number()),
+        Err(_) => Err(SolveError::UnableToSolve),
+    }
+}
 
 /// Переводит все числа в `Vec` в числа с требуемым основанием
 fn convert_all(numbers: &Vec<Number>, base: u32) -> Option<Vec<Number>> {
@@ -27,13 +33,6 @@ pub fn find_num(numbers: &Vec<Number>, what_find: NumberToFind) -> SolveResult {
     }.unwrap().number())
 }
 
-/// Обёртка над `Number::convert()`, возвращающая `SolveResult`, вместо `ConvertionResult`
-pub fn convert(number: &Number, base: u32) -> SolveResult {
-    match number.convert(base) {
-        Ok(n)  => Ok(n.number()),
-        Err(_) => Err(SolveError::UnableToSolve),
-    }
-}
 
 /// Находит число с наибольшей/наименьшей суммой цифр в заданной системе счисления
 pub fn find_digits_sum(numbers: &Vec<Number>, base: u32, what_find: NumberToFind) -> SolveResult {
@@ -68,4 +67,3 @@ pub fn find_ones_count(numbers: &Vec<Number>, what_find: NumberToFind) -> SolveR
         NumberToFind::Max => ones.iter().max(),
     }.unwrap().to_string())
 }
-

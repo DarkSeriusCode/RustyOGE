@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::utils;
+use crate::utils::{self, Validated};
 
 /// Алиас для сокращённой записи таблиц кодов. Ключ - код, значение - символ
 pub type Codes = HashMap<String, String>;
@@ -44,7 +44,7 @@ impl InputData {
     }
 }
 
-impl utils::Validated for InputData {
+impl Validated for InputData {
     fn valid(&self) -> Result<(), String> {
         if self.encoded_strings.len() == 0 {
             return Err("Вы должны ввести хотя бы одну строку!".into());

@@ -11,12 +11,11 @@
 //! ## Примеры
 //! В документации к каждому модулю можно найти пример его работы.
 
+pub mod utils;
 mod modules;
 
 pub use modules::module2;
 pub use modules::module6;
 pub use modules::module10;
 
-pub mod utils;
 pub use utils::{SolveResult, SolveError};
-

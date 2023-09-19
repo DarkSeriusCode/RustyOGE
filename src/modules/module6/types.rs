@@ -1,10 +1,8 @@
 use regex::Regex;
 use std::path::{Path, PathBuf};
 
-use crate::utils;
+use crate::utils::Validated;
 use super::consts::PROGRAM_INPUT_REGEX;
-
-// ------------------------------------------------------------------------------------------------
 
 /// Детали выполнения задания. Указывает как имено обработать данные
 /// и какие из них выводить.
@@ -43,7 +41,7 @@ impl InputData {
     }
 }
 
-impl utils::Validated for InputData {
+impl Validated for InputData {
     fn valid(&self) -> Result<(), String> {
         if !self.file_path.exists() {
             return Err(format!("Пути {} не существует!", self.file_path.to_str().unwrap()));

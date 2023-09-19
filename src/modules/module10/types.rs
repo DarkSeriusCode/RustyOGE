@@ -1,8 +1,5 @@
 use crate::module10::Number;
-
-use crate::utils;
-
-// ------------------------------------------------------------------------------------------------
+use crate::utils::Validated;
 
 /// Какое число требуется найти
 #[derive(PartialEq, Eq, Clone, Copy)]
@@ -12,6 +9,8 @@ pub enum NumberToFind {
     /// Нужно найти максимальное число
     Max,
 }
+
+// ------------------------------------------------------------------------------------------------
 
 /// Детали выполнения задания. Указывает, что требуется найти в задаче.
 #[derive(PartialEq, Eq, Clone, Copy)]
@@ -28,6 +27,8 @@ pub enum ProblemSpec {
     FindOnesCount(NumberToFind),
 }
 
+// ------------------------------------------------------------------------------------------------
+
 /// Входные данные задачи.
 #[derive(PartialEq, Eq, Clone)]
 pub struct InputData {
@@ -43,7 +44,7 @@ impl InputData {
     }
 }
 
-impl utils::Validated for InputData {
+impl Validated for InputData {
     fn valid(&self) -> Result<(), String> {
         if self.numbers.len() == 0 {
             return Err("Вы должны ввести хотя бы одно число!".into())

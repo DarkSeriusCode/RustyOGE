@@ -1,26 +1,11 @@
+use crate::utils::{SolveError, SolveResult};
+
 mod core;
 mod consts;
 mod types;
 
 pub use types::*;
 use consts::ALT_CHARS;
-use crate::utils::{SolveError, SolveResult};
-
-// ------------------------------------------------------------------------------------------------
-
-/// Во входных данных иногда может встретиться несколько Unicode символов для обозначения одного и
-/// того же знака. Поэтому заменяем их на ASCII
-fn replace_unicode_chars(string: &str) -> String {
-    let mut string = string.to_string();
-    for (unicode_ch_list, ch) in ALT_CHARS {
-        for unicode_ch in unicode_ch_list {
-            string = string.replace(*unicode_ch, &ch.to_string());
-        }
-    }
-    string.to_string()
-}
-
-// ------------------------------------------------------------------------------------------------
 
 /// Решает задачу и возвращает результат решения.
 pub fn solve(input_data: InputData) -> SolveResult {
@@ -46,3 +31,16 @@ pub fn solve(input_data: InputData) -> SolveResult {
     Ok(correct_output_count.to_string())
 }
 
+// ------------------------------------------------------------------------------------------------
+
+/// Во входных данных иногда может встретиться несколько Unicode символов для обозначения одного и
+/// того же знака. Поэтому заменяем их на ASCII
+fn replace_unicode_chars(string: &str) -> String {
+    let mut string = string.to_string();
+    for (unicode_ch_list, ch) in ALT_CHARS {
+        for unicode_ch in unicode_ch_list {
+            string = string.replace(*unicode_ch, &ch.to_string());
+        }
+    }
+    string.to_string()
+}

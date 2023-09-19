@@ -8,7 +8,7 @@ pub fn decode(codes: &Codes, string: &String) -> Vec<String> {
     if let Some(letter) = codes.get(string) {
         // Пытаемся представить stirng не как один код, а как несколько
         let mut additional_letters = vec![];
-        for i in 1..=string_len { 
+        for i in 1..=string_len {
             if let Some(_) = codes.get(&string[..i].to_string()) {
                 additional_letters.extend(decode(&codes, &string[i..].to_string()));
             }
@@ -34,4 +34,3 @@ pub fn decode(codes: &Codes, string: &String) -> Vec<String> {
         return decoded_strings;
     }
 }
-

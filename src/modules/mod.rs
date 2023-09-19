@@ -82,4 +82,3 @@ pub mod module6;
 /// assert_eq!(solve(input_data), Ok(right_answer));
 /// ```
 pub mod module10;
-
