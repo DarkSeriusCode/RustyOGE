@@ -28,7 +28,7 @@ pub fn solve(input_data: InputData) -> SolveResult {
                                                           input_data.spec.unique_chars));
 
     if decoded_strings.len() == 0 {
-        return Err(SolveError::UnableToSolve);
+        return Err(SolveError("Не существует расшифровки, подходящей под требования!".into()));
     }
     let first_decoded_str = decoded_strings.first().unwrap();
 

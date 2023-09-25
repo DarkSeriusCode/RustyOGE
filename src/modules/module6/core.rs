@@ -4,6 +4,7 @@ use std::process::{Command, Stdio};
 
 use regex::Regex;
 
+use crate::SolveError;
 use super::consts::{PROGRAM_INPUT_REGEX, PYTHON_INTERPRETER_CMDS};
 
 /// Конвертирует входные данные из формата `(a, b, ...); (c, d, ...)` в формат
@@ -22,17 +23,17 @@ pub fn convert_program_input(program_input_str: &str) -> Vec<Vec<String>> {
 //-------------------------------------------------------------------------------------------------
 
 /// Проверяет наличие Python и возвращает команду для его зауска
-pub fn find_python() -> Option<String> {
+pub fn find_python() -> Result<String, SolveError> {
     for command in PYTHON_INTERPRETER_CMDS {
         let proc_res = Command::new(command)
             .stdout(Stdio::null())
             .arg("--version")
             .spawn();
         if proc_res.is_ok() {
-            return Some(command.to_string());
+            return Ok(command.to_string());
         }
     }
-    None
+    Err(SolveError("Не найден Python!".into()))
 }
 
 //-------------------------------------------------------------------------------------------------

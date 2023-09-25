@@ -10,10 +10,7 @@ use consts::ALT_CHARS;
 /// Решает задачу и возвращает результат решения.
 pub fn solve(input_data: InputData) -> SolveResult {
     // Поиск Python
-    let python_interpreter = match core::find_python() {
-        Some(cmd) => cmd,
-        None => return Err(SolveError::Other("Не найден Python!".to_string())),
-    };
+    let python_interpreter = core::find_python()?;
 
     let ascii_program_input = replace_unicode_chars(&input_data.program_input);
     let program_args: Vec<Vec<String>> = core::convert_program_input(&ascii_program_input);
@@ -24,7 +21,7 @@ pub fn solve(input_data: InputData) -> SolveResult {
         match core::run_program(&python_interpreter, &input_data.file_path, args) {
             Ok(output) if output == input_data.spec.expected_output => correct_output_count += 1,
             Ok(_) => (),
-            Err(e) => return Err(SolveError::Other(format!("Ошибка запуска программы: {e}"))),
+            Err(e) => return Err(SolveError(format!("Ошибка запуска программы ({e})").into())),
         }
     }
 

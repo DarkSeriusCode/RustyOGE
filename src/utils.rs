@@ -1,9 +1,21 @@
-use std::fmt::Display;
-use std::error::Error;
+use std::boxed::Box;
 use std::collections::HashSet;
+use std::error::Error;
+use std::fmt::Display;
 
 /// Результат решения задачи.
 pub type SolveResult = Result<String, SolveError>;
+/// Ошибка, возникающая во время решения задачи.
+#[derive(Debug)]
+pub struct SolveError(pub Box<dyn Error>);
+
+impl Display for SolveError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Невозможно решить задачу! Причина: {}", self)
+    }
+}
+
+impl Error for SolveError {}
 
 // ------------------------------------------------------------------------------------------------
 
@@ -15,29 +27,6 @@ pub trait Validated {
     /// непройденной валидации.
     fn valid(&self) -> Result<(), String>;
 }
-
-// ------------------------------------------------------------------------------------------------
-
-/// Перечисление возможных ошибок при решении задачи.
-#[derive(Debug, PartialEq, Eq, Clone)]
-pub enum SolveError {
-    /// Задачу нельзя решить.
-    UnableToSolve,
-    /// Что-то другое.
-    Other(String),
-}
-
-impl Display for SolveError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let err_msg = match self {
-            Self::UnableToSolve => "Не могу решить задачу!",
-            Self::Other(msg) => msg.as_str(),
-        };
-        write!(f, "{err_msg}")
-    }
-}
-
-impl Error for SolveError {}
 
 // ------------------------------------------------------------------------------------------------
 
