@@ -3,7 +3,6 @@ extern crate rusty_oge;
 use std::env;
 use std::path::PathBuf;
 use rusty_oge::module6::*;
-use rusty_oge::utils::Validated;
 
 #[macro_use]
 mod test_macros;

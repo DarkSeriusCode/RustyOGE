@@ -2,7 +2,6 @@ extern crate rusty_oge;
 
 use std::collections::HashMap;
 use rusty_oge::module2::*;
-use rusty_oge::utils::Validated;
 
 #[macro_use]
 mod test_macros;

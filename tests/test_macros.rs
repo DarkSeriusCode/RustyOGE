@@ -8,6 +8,7 @@ macro_rules! Test {
     ) => {
         #[test]
         fn $name() {
+            use rusty_oge::utils::Validated;
             let input_data = $crate::InputData::new($($input),+, $spec);
             assert!(input_data.valid().is_ok());
             let answer = $crate::solve(input_data).expect("");

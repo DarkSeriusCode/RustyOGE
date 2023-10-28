@@ -2,7 +2,6 @@ extern crate rusty_oge;
 
 use rusty_oge::num;
 use rusty_oge::module10::*;
-use rusty_oge::utils::Validated;
 
 #[macro_use]
 mod test_macros;
