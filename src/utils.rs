@@ -2,9 +2,15 @@ use std::boxed::Box;
 use std::collections::HashSet;
 use std::error::Error;
 use std::fmt::Display;
+use std::convert::From;
+
+use unrar::error as unrar_err;
 
 /// Результат решения задачи.
 pub type SolveResult = Result<String, SolveError>;
+
+// ------------------------------------------------------------------------------------------------
+
 /// Ошибка, возникающая во время решения задачи.
 #[derive(Debug)]
 pub struct SolveError(pub Box<dyn Error>);
@@ -15,7 +21,26 @@ impl Display for SolveError {
     }
 }
 
+impl PartialEq for SolveError {
+    fn eq(&self, other: &Self) -> bool {
+        self == other
+    }
+}
+
+impl From<unrar_err::UnrarError> for SolveError {
+    fn from(value: unrar_err::UnrarError) -> Self {
+        let when = match value.when {
+            unrar_err::When::Open    => "открытия архива",
+            unrar_err::When::Read    => "чтения архива",
+            unrar_err::When::Process => "обработки архива",
+        };
+
+        SolveError(format!("Во время {} произошла ошибка: {}", when, value.to_string()).into())
+    }
+}
+
 impl Error for SolveError {}
+impl Eq for SolveError {}
 
 // ------------------------------------------------------------------------------------------------
 

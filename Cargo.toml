@@ -10,6 +10,7 @@ readme = "README.md"
 
 [dependencies]
 regex = "1.7.1"
+unrar = "0.5.1"
 
 [workspace]
 members = [
