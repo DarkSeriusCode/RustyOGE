@@ -1,4 +1,5 @@
 use std::path::{PathBuf, Path};
+use std::ffi::OsString;
 
 use crate::utils::Validated;
 
@@ -6,9 +7,9 @@ use crate::utils::Validated;
 #[derive(Clone)]
 pub enum ProblemSpec {
     /// В задаче нужно посчитать файлы с определённым расширением.
-    WithExtencion(String),
+    WithExtencions(Vec<OsString>),
     /// В задаче нужно посчитать файлы с определённым расширением и объёмом.
-    WithExtencionAndSize(String, FileSize),
+    WithExtencionAndSize(OsString, FileSize),
 }
 
 // ------------------------------------------------------------------------------------------------

@@ -1,5 +1,4 @@
-use std::ffi::OsStr;
-
+use std::ffi::OsString;
 use crate::{SolveError, SolveResult};
 
 use unrar::Archive;
@@ -15,15 +14,15 @@ pub fn solve(input_data: InputData) -> SolveResult {
     let all_files = core::get_files_in_dir(archive, &input_data.search_dir)
         .map_err(|e| SolveError::from(e))?;
 
-    let (ext, size): (String, usize) = match input_data.spec {
-        ProblemSpec::WithExtencion(ext)              => (ext, usize::MAX),
-        ProblemSpec::WithExtencionAndSize(ext, size) => (ext, size.in_bytes()),
+    let (exts, size): (Vec<OsString>, usize) = match input_data.spec {
+        ProblemSpec::WithExtencions(exts)            => (exts, usize::MIN),
+        ProblemSpec::WithExtencionAndSize(ext, size) => (vec![ext], size.in_bytes()),
     };
 
     let filtered_files = all_files
         .iter()
-        .filter(|FileInfo(path, fsize)| path.extension().unwrap_or(OsStr::new("")) == ext.as_str()
-                                        && fsize.in_bytes() <= size);
+        .filter(|FileInfo(path, fsize)| exts.contains(&path.extension().unwrap_or_default().to_owned())
+                                        && fsize.in_bytes() >= size);
 
     Ok(filtered_files.count().to_string())
 }
