@@ -3,7 +3,7 @@ use std::error::Error;
 use std::cmp::{PartialEq, Eq, PartialOrd, Ord, Ordering};
 
 /// Перечисление ошибок, возникаемых при конвертации
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum ConvertionError {
     /// Основание больше 36
     VeryBigBase,

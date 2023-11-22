@@ -19,7 +19,7 @@ where
         let file_name = &file_entry.filename;
         let has_folder = file_name.components().take(2).any(|c| c.as_os_str() == folder.as_ref());
         if has_folder {
-            files.push(FileInfo(file_entry.filename, FileSize::Bytes(file_entry.unpacked_size)));
+            files.push(FileInfo::new(file_name, FileSize::Bytes(file_entry.unpacked_size)));
         }
     }
 

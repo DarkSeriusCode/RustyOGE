@@ -5,7 +5,7 @@ use crate::utils::Validated;
 use super::consts::PROGRAM_INPUT_REGEX;
 
 /// Детали решения задачи. Хранит дополнительную информацию о задаче.
-#[derive(PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct ProblemSpec {
     /// Ожидаемый вывод программы
     pub expected_output: String,
@@ -20,7 +20,7 @@ impl ProblemSpec {
 // ------------------------------------------------------------------------------------------------
 
 /// Входные данные задачи.
-#[derive(PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct InputData {
     /// Путь до файла с программой
     pub file_path: PathBuf,

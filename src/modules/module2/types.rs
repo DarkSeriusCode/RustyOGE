@@ -8,7 +8,7 @@ pub type Codes = HashMap<String, String>;
 // ------------------------------------------------------------------------------------------------
 
 /// Детали решения задачи. Указывает как имено нужно обработать данные.
-#[derive(PartialEq, Eq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub struct ProblemSpec {
     /// `true`, если нужно **только** найти строку с одной расшифровкой.
     pub one_decoding: bool,
@@ -27,7 +27,7 @@ impl ProblemSpec {
 // ------------------------------------------------------------------------------------------------
 
 /// Входные данные задачи.
-#[derive(PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct InputData {
     /// Таблица кодов
     pub codes: Codes,
@@ -59,7 +59,7 @@ impl Validated for InputData {
 // ------------------------------------------------------------------------------------------------
 
 /// Тип выходных данных
-#[derive(PartialEq, Eq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum OutputDataType {
     /// Возвращает декодированную строку
     DecodedString,

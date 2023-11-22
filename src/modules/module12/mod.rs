@@ -3,7 +3,7 @@ use crate::{SolveError, SolveResult};
 
 use unrar::Archive;
 
-pub mod types;
+mod types;
 mod core;
 
 pub use types::*;
@@ -21,8 +21,8 @@ pub fn solve(input_data: InputData) -> SolveResult {
 
     let filtered_files = all_files
         .iter()
-        .filter(|FileInfo(path, fsize)| exts.contains(&path.extension().unwrap_or_default().to_owned())
-                                        && fsize.in_bytes() >= size);
+        .filter(|finfo| exts.contains(&finfo.path.extension().unwrap_or_default().to_owned())
+                                      && finfo.size.in_bytes() >= size);
 
     Ok(filtered_files.count().to_string())
 }

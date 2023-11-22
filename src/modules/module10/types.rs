@@ -2,7 +2,7 @@ use crate::module10::Number;
 use crate::utils::Validated;
 
 /// Какое число требуется найти
-#[derive(PartialEq, Eq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum NumberToFind {
     /// Нужно найти минимальное число
     Min,
@@ -13,7 +13,7 @@ pub enum NumberToFind {
 // ------------------------------------------------------------------------------------------------
 
 /// Детали выполнения задания. Указывает, что требуется сделать в задаче.
-#[derive(PartialEq, Eq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum ProblemSpec {
     /// В задаче требуется найти наименьшее/наибольшее число в десятичной системе счисления
     FindNum(NumberToFind),
@@ -30,7 +30,7 @@ pub enum ProblemSpec {
 // ------------------------------------------------------------------------------------------------
 
 /// Входные данные задачи.
-#[derive(PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct InputData {
     /// Данные в задаче числа
     pub numbers: Vec<Number>,

@@ -83,5 +83,27 @@ pub mod module6;
 /// ```
 pub mod module10;
 
-/// Модуль 12
+/// Модуль 12-го задания
+///
+/// Модуль для решения десятого задания ОГЭ по информатике. ([каталог заданий](https://inf-oge.sdamgia.ru/test?a=view_many&cat_id[]=28&cat_id[]=47&filter=all))
+///
+/// Пример решения [задания](https://inf-oge.sdamgia.ru/problem?id=11322)
+/// ```rust
+/// use rusty_oge::utils::Validated;
+/// use rusty_oge::module12::{InputData, ProblemSpec, FileInfo, FileSize, solve};
+///
+/// let input_data = InputData {
+///     archive_path: "tests/module12_files/11322.rar".into(),
+///     search_dir: "Task12".into(),
+///     spec: ProblemSpec::WithExtencions(vec!["doc".into()]),
+/// };
+/// // Или используйте метод InputData::new()
+///
+/// // Проверим корректность данных
+/// assert!(input_data.valid().is_ok());
+///
+/// let right_answer = "3".to_string();
+///
+/// assert_eq!(solve(input_data), Ok(right_answer));
+/// ```
 pub mod module12;
