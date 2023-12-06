@@ -3,8 +3,7 @@ use std::path::PathBuf;
 use rusty_oge::module6;
 use rusty_oge::utils::Validated;
 
-use crate::errors::CLIError;
-use crate::utils::CLIResult;
+use crate::errors::{CLIResult, CLIError};
 use super::input_utils::*;
 
 pub fn get_input() -> CLIResult<module6::InputData> {

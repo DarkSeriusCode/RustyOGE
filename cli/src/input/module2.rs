@@ -1,8 +1,8 @@
 use rusty_oge::module2;
 use rusty_oge::utils::Validated;
 
-use crate::errors::CLIError;
-use crate::utils::{CLIResult, Pair};
+use crate::errors::{CLIResult, CLIError};
+use crate::utils::Pair;
 use super::input_utils::*;
 
 pub fn get_input() -> CLIResult<module2::InputData> {

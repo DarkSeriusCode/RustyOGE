@@ -2,8 +2,8 @@ use rusty_oge::module10;
 use rusty_oge::module10::{InputData, ProblemSpec, Number};
 use rusty_oge::utils::Validated;
 
-use crate::errors::CLIError;
-use crate::utils::{CLIResult, Pair};
+use crate::errors::{CLIResult, CLIError};
+use crate::utils::Pair;
 use super::input_utils::*;
 
 const FINDNUM_TEXT: &str       = "Найти максимальное/минимальное число в десятичной системе\

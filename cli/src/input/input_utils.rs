@@ -4,8 +4,7 @@ use std::str::FromStr;
 
 use colored::Colorize;
 
-use crate::errors::CLIError;
-use crate::utils::CLIResult;
+use crate::errors::{CLIResult, CLIError};
 
 // ------------------------------------------------------------------------------------------------
 

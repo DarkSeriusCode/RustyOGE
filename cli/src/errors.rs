@@ -2,6 +2,11 @@ use std::error::Error;
 use std::fmt::Display;
 use std::boxed::Box;
 
+/// Алиас для типа `Result<T, CLIError>`
+pub type CLIResult<T> = Result<T, CLIError>;
+
+// ------------------------------------------------------------------------------------------------
+
 #[derive(Debug)]
 pub enum CLIError {
     ReadingError,
