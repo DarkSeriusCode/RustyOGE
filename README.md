@@ -20,7 +20,7 @@ rusty_oge = "1.2.0"
 или
 `cargo add rusty_oge`
 
-Примеры использования можно найти в [документации](https://docs.rs/rusty_oge/1.0.0)
+Примеры использования можно найти в [документации](https://docs.rs/rusty_oge/1.2.0)
 
 ## Тесты
 Все тесты составлены на основе заданий с [сайта](https://inf-oge.sdamgia.ru/prob_catalog).
