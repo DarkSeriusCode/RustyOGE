@@ -4,6 +4,7 @@ use std::env;
 use std::path::PathBuf;
 
 use rusty_oge::module12::*;
+use rusty_oge::utils::data_size::DataSize;
 
 #[macro_use]
 mod test_macros;
@@ -254,20 +255,20 @@ Test! {
 Test! {
     Name = problem16020,
     Input = (&path_to("16020.rar"), "DEMO-12"),
-    Spec = ProblemSpec::WithExtencionAndSize("htm".into(), FileSize::Kb(1024)),
+    Spec = ProblemSpec::WithExtencionAndSize("htm".into(), DataSize::kb(1024)),
     Output = "3"
 }
 
 Test! {
     Name = problem18042,
     Input = (&path_to("18042.rar"), "DEMO-12"),
-    Spec = ProblemSpec::WithExtencionAndSize("rtf".into(), FileSize::Mb(2)),
+    Spec = ProblemSpec::WithExtencionAndSize("rtf".into(), DataSize::mb(2)),
     Output = "5"
 }
 
 Test! {
     Name = problem18762,
     Input = (&path_to("18762.rar"), "DEMO-12"),
-    Spec = ProblemSpec::WithExtencionAndSize("rtf".into(), FileSize::Mb(2)),
+    Spec = ProblemSpec::WithExtencionAndSize("rtf".into(), DataSize::mb(2)),
     Output = "5"
 }

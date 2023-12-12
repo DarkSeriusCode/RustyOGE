@@ -6,6 +6,8 @@ use std::convert::From;
 
 use unrar::error as unrar_err;
 
+pub mod data_size;
+
 /// Результат решения задачи.
 pub type SolveResult = Result<String, SolveError>;
 

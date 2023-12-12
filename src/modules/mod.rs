@@ -89,8 +89,8 @@ pub mod module10;
 ///
 /// Пример решения [задания](https://inf-oge.sdamgia.ru/problem?id=11322)
 /// ```rust
-/// use rusty_oge::utils::Validated;
-/// use rusty_oge::module12::{InputData, ProblemSpec, FileInfo, FileSize, solve};
+/// use rusty_oge::utils::{Validated, data_size::DataSize};
+/// use rusty_oge::module12::{InputData, ProblemSpec, FileInfo, solve};
 ///
 /// let input_data = InputData {
 ///     archive_path: "tests/module12_files/11322.rar".into(),

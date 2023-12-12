@@ -2,7 +2,7 @@ use std::path::PathBuf;
 use std::ffi::OsString;
 
 use rusty_oge::module12;
-use rusty_oge::utils::Validated;
+use rusty_oge::utils::{Validated, data_size::DataSize};
 
 use crate::errors::{CLIResult, CLIError};
 use crate::utils::Pair;
@@ -38,13 +38,13 @@ fn get_spec() -> CLIResult<module12::ProblemSpec> {
     Ok(spec)
 }
 
-fn get_file_size() -> CLIResult<module12::FileSize> {
+fn get_file_size() -> CLIResult<DataSize> {
     let raw_fsize: Pair<usize, String> = input("Введите размер и еденицу измерения (B, Kb, Mb)\
                                                 через пробел (пример: 2 Mb):")?;
     match raw_fsize.second().to_lowercase().as_str() {
-        "b"  => Ok(module12::FileSize::Bytes(*raw_fsize.first())),
-        "kb" => Ok(module12::FileSize::Kb(*raw_fsize.first())),
-        "mb" => Ok(module12::FileSize::Mb(*raw_fsize.first())),
+        "b"  => Ok(DataSize::bytes(*raw_fsize.first())),
+        "kb" => Ok(DataSize::kb(*raw_fsize.first())),
+        "mb" => Ok(DataSize::mb(*raw_fsize.first())),
         _    => Err(CLIError::IncorrectInput("Неверная единица измерения! Возможные варианты: B, \
                                              Kb, Mb".into())),
     }

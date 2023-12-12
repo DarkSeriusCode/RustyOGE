@@ -1,7 +1,10 @@
 use std::path::{PathBuf, Path};
 use std::ffi::OsString;
 
-use crate::utils::Validated;
+use crate::utils::{
+    Validated,
+    data_size::DataSize
+};
 
 /// Детали решения задания. Указывает, по какому критерию искать файлы для подсчёта.
 #[derive(Debug, Clone)]
@@ -10,7 +13,7 @@ pub enum ProblemSpec {
     WithExtencions(Vec<OsString>),
     /// В задаче нужно посчитать файлы с определённым расширением (`OsString`) и объёмом
     /// (`FileSize`).
-    WithExtencionAndSize(OsString, FileSize),
+    WithExtencionAndSize(OsString, DataSize),
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -55,38 +58,14 @@ impl Validated for InputData {
 #[derive(Debug, Clone)]
 pub struct FileInfo {
     pub path: PathBuf,
-    pub size: FileSize,
+    pub size: DataSize,
 }
 
 impl FileInfo {
-    pub fn new<P: AsRef<Path>>(path: P, size: FileSize) -> Self {
+    pub fn new<P: AsRef<Path>>(path: P, size: DataSize) -> Self {
         Self {
             path: path.as_ref().to_path_buf(),
             size,
-        }
-    }
-}
-
-// ------------------------------------------------------------------------------------------------
-
-/// Размер какого-либо файла.
-#[derive(Debug, Copy, Clone)]
-pub enum FileSize {
-    /// Размер файла указан в байтах
-    Bytes(usize),
-    /// Размер файла указан в килобайтах
-    Kb(usize),
-    /// Размер файла указан в мегабайтах
-    Mb(usize),
-}
-
-impl FileSize {
-    /// Переводит размер файла в байты
-    pub fn in_bytes(&self) -> usize {
-        match self {
-            Self::Bytes(n) => *n,
-            Self::Kb(n)    => n * 1024,
-            Self::Mb(n)    => n * 1048576,
         }
     }
 }
