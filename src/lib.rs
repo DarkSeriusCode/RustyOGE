@@ -15,6 +15,7 @@
 pub mod utils;
 mod modules;
 
+pub use modules::module1;
 pub use modules::module2;
 pub use modules::module6;
 pub use modules::module10;
