@@ -8,6 +8,14 @@ use unrar::error as unrar_err;
 
 pub mod data_size;
 
+const NORMALIZE_MAP: &[(&[&'static str], &'static str)] = &[
+    (&["  —"], " -"),
+    (&["−", "–", "—"], "-"),
+    (&["\u{2009}"], " ")
+];
+
+// ------------------------------------------------------------------------------------------------
+
 /// Результат решения задачи.
 pub type SolveResult = Result<String, SolveError>;
 
@@ -53,6 +61,18 @@ pub trait Validated {
     /// Возврашает `Ok(())` если валидация прошла успешно, иначе Err(String), с причиной
     /// непройденной валидации.
     fn valid(&self) -> Result<(), String>;
+}
+
+// ------------------------------------------------------------------------------------------------
+
+/// Во входных данных иногда может встретиться несколько Unicode символов для обозначения одного и
+/// того же знака. Эта функция заменяет их на ASCII
+pub fn normalize_text(text: &str) -> String {
+    let mut text = text.to_string();
+    for (patterns, replacer) in NORMALIZE_MAP {
+        patterns.iter().for_each(|p| text = text.replace(p, replacer));
+    }
+    text
 }
 
 // ------------------------------------------------------------------------------------------------
