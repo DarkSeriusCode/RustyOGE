@@ -12,6 +12,7 @@
 ///     text: InputText::ConcreteText("Обь, Лена, Волга, Москва, Макензи, Амазонка  — реки".into()),
 ///     spec: ProblemSpec::FindWord(8),
 /// };
+/// // Или используйте метод InputData::new()
 ///
 /// // Удостоверимся, что ввели правильные данные
 /// assert!(input_data.valid().is_ok());
@@ -34,6 +35,7 @@
 ///     },
 ///     spec: ProblemSpec::CalcTextSize(DataSizeUnit::Kb),
 /// };
+/// // Или используйте метод InputData::new()
 ///
 /// // Удостоверимся, что ввели правильные данные
 /// assert!(input_data.valid().is_ok());
@@ -68,12 +70,12 @@ pub mod module1;
 ///         output_data_type: OutputDataType::DecodedString,
 ///     }
 /// };
+/// // Или используйте метод InputData::new()
 ///
 /// // Удостоверимся, что ввели правильные данные
 /// assert!(input_data.valid().is_ok());
 ///
 /// let right_answer = "НОС".to_string();
-///
 /// assert_eq!(solve(input_data), Ok(right_answer));
 /// ```
 pub mod module2;
@@ -95,12 +97,12 @@ pub mod module2;
 ///         expected_output: "YES".to_string(),
 ///     },
 /// };
+/// // Или используйте метод InputData::new()
 ///
 /// // Удостоверимся, что ввели правильные данные
 /// assert!(input_data.valid().is_ok());
 ///
 /// let right_answer = "5".to_string();
-///
 /// assert_eq!(solve(input_data), Ok(right_answer));
 /// ```
 pub mod module6;
@@ -109,7 +111,9 @@ pub mod module6;
 ///
 /// Модуль для решения десятого задания ОГЭ по информатике. ([каталог заданий](https://inf-oge.sdamgia.ru/test?a=view_many&cat_id[]=45&cat_id[]=23&cat_id[]=46&filter=all))
 ///
-/// Пример решения [задания](https://inf-oge.sdamgia.ru/problem?id=16018) где требуется перевести число в другую систему счисления.
+/// ## Пример решения разных заданий.
+///
+/// [Задание](https://inf-oge.sdamgia.ru/problem?id=16018) где требуется перевести число в другую систему счисления.
 /// ```rust
 /// use rusty_oge::{num, utils::Validated};
 /// use rusty_oge::module10::{InputData, ProblemSpec, solve};
@@ -118,14 +122,34 @@ pub mod module6;
 ///     numbers: vec![num!("1100110", 2)],
 ///     spec: ProblemSpec::Convert(10),
 /// };
+/// // Или используйте метод InputData::new()
 ///
 /// // Проверим корректность данных
 /// assert!(input_data.valid().is_ok());
 ///
 /// let right_answer = "102".to_string();
-///
 /// assert_eq!(solve(input_data), Ok(right_answer));
 /// ```
+///
+/// [Задание](https://inf-oge.sdamgia.ru/problem?id=10323) где требуется найти максимальное/минимальное число в десятичной системе счисления.
+/// ```rust
+/// use rusty_oge::{num, utils::Validated};
+/// use rusty_oge::module10::{InputData, ProblemSpec, NumberToFind, solve};
+///
+/// let input_data = InputData {
+///     numbers: vec![num!("23", 16), num!("32", 8), num!("11110", 2)],
+///     spec: ProblemSpec::FindNum(NumberToFind::Max),
+/// };
+/// // Или используйте метод InputData::new()
+///
+/// // Проверим корректность данных
+/// assert!(input_data.valid().is_ok());
+///
+/// let right_answer = "35".to_string();
+/// assert_eq!(solve(input_data), Ok(right_answer));
+/// ```
+///
+/// см. [`ProblemSpec`](crate::module10::ProblemSpec)
 pub mod module10;
 
 /// Модуль 12-го задания
