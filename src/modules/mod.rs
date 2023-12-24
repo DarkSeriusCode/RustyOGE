@@ -1,3 +1,46 @@
+/// Модуль 1-го задания
+///
+/// Модуль для решения первого задания ОГЭ по информатике. ([каталог заданий](https://inf-oge.sdamgia.ru/test?a=view_many&cat_id[]=21&cat_id[]=33&cat_id[]=34&cat_id[]=35&filter=all))
+///
+/// Пример решения [этого](https://inf-oge.sdamgia.ru/problem?id=10313) задания
+/// ```rust
+/// use rusty_oge::utils::Validated;
+/// use rusty_oge::module1::{InputData, InputText, ProblemSpec, solve};
+///
+/// let input_data = InputData {
+///     bits_in_char: 8,
+///     text: InputText::ConcreteText("Обь, Лена, Волга, Москва, Макензи, Амазонка  — реки".into()),
+///     spec: ProblemSpec::FindWord(8),
+/// };
+///
+/// // Удостоверимся, что ввели правильные данные
+/// assert!(input_data.valid().is_ok());
+///
+/// let right_answer = "Москва".to_string();
+/// assert_eq!(solve(input_data), Ok(right_answer));
+/// ```
+///
+/// Или вот ещё пример [такого](https://inf-oge.sdamgia.ru/problem?id=18255) задания.
+/// ```rust
+/// use rusty_oge::utils::{Validated, data_size::DataSizeUnit};
+/// use rusty_oge::module1::{InputData, InputText, ProblemSpec, solve};
+///
+/// let input_data = InputData {
+///     bits_in_char: 16,
+///     text: InputText::TextInfo {
+///         pages: 10,
+///         lines: 32,
+///         chars: 48,
+///     },
+///     spec: ProblemSpec::CalcTextSize(DataSizeUnit::Kb),
+/// };
+///
+/// // Удостоверимся, что ввели правильные данные
+/// assert!(input_data.valid().is_ok());
+///
+/// let right_answer = "30".to_string();
+/// assert_eq!(solve(input_data), Ok(right_answer));
+/// ```
 pub mod module1;
 
 /// Модуль 2-го задания
