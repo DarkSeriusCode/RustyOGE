@@ -11,7 +11,7 @@ mod input;
 mod errors;
 mod utils;
 
-const AVAILABLE_PROBLEMS: [u32;4] = [2, 6, 10, 12];
+const AVAILABLE_PROBLEMS: [u32;5] = [1, 2, 6, 10, 12];
 
 // ------------------------------------------------------------------------------------------------
 
@@ -51,6 +51,7 @@ fn main() {
 
 fn solve_by_num(number: u32) -> Result<String, Box<dyn Error>> {
     match number {
+        1  => module1::solve(input::module1::get_input()?).map_err(|e| e.into()),
         2  => module2::solve(input::module2::get_input()?).map_err(|e| e.into()),
         6  => module6::solve(input::module6::get_input()?).map_err(|e| e.into()),
         10 => module10::solve(input::module10::get_input()?).map_err(|e| e.into()),

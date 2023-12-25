@@ -8,7 +8,6 @@ use crate::errors::{CLIResult, CLIError};
 use crate::utils::Pair;
 use super::input_utils::*;
 
-
 pub fn get_input() -> CLIResult<module12::InputData> {
     let archive_path: PathBuf = input("Введите путь до архива:")?;
     let search_folder: PathBuf = input("Введите каталог в котором нужно подсчитать файлы:")?;

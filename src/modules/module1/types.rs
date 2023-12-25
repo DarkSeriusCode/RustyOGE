@@ -4,7 +4,7 @@ use crate::utils::{self, Validated, data_size::DataSizeUnit};
 #[derive(Debug, Clone)]
 pub enum ProblemSpec {
     /// В задаче требуется найти слово, после добавления/вычёркивания текст стал изменился на
-    /// `usize`
+    /// `usize` байт
     FindWord(usize),
     /// В задаче требуется найти размер текста в `DataSizeUnit`
     CalcTextSize(DataSizeUnit),
