@@ -1,50 +1,65 @@
-use std::cmp::{PartialEq, Eq, PartialOrd, Ord, Ordering};
-use std::default::Default;
-use std::fmt::Display;
+use std::{
+    cmp::{PartialEq, Eq, PartialOrd, Ord, Ordering},
+    default::Default,
+    fmt::Display,
+    str::FromStr,
+    error::Error,
+};
 
+use regex::Regex;
+
+/// Единицы измерения информации
 #[derive(Debug, Clone, Copy)]
 #[repr(u32)]
-/// Единицы измерения информации
 pub enum DataSizeUnit {
     Bytes,
     Kb,
     Mb,
 }
 
-#[derive(Debug, Clone, Copy)]
+// ------------------------------------------------------------------------------------------------
+
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub enum ParseDataSizeError {
+    InvalidFormat,
+    NaN(String),
+    UnknownDataUnit(String),
+}
+
+impl Display for ParseDataSizeError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        use ParseDataSizeError::*;
+        let txt = match self {
+            InvalidFormat => "Invalid format! Format as <num><unit>".into(),
+            NaN(nan) => format!("\"{}\" should be a number", nan),
+            UnknownDataUnit(unit) => format!("Unknown data unit {unit}"),
+        };
+        write!(f, "{}", txt)
+    }
+}
+
+impl Error for ParseDataSizeError {}
+
+// ------------------------------------------------------------------------------------------------
+
 /// Размер какой-либо информации
+#[derive(Debug, Clone, Copy)]
 pub struct DataSize {
     unit: DataSizeUnit,
     size: usize,
 }
 
 impl DataSize {
-    pub fn new(size: usize, unit: DataSizeUnit) -> Self {
-        Self { size, unit }
-    }
-
+    pub fn new(size: usize, unit: DataSizeUnit) -> Self { Self { size, unit } }
     /// Алиас для `DataSize::new(size, DataSizeUnit::Bytes)`
-    pub fn bytes(size: usize) -> Self {
-        Self { size, unit: DataSizeUnit::Bytes }
-    }
-
+    pub fn bytes(size: usize) -> Self { Self { size, unit: DataSizeUnit::Bytes } }
     /// Алиас для `DataSize::new(size, DataSizeUnit::Kb)`
-    pub fn kb(size: usize) -> Self {
-        Self { size, unit: DataSizeUnit::Kb }
-    }
-
+    pub fn kb(size: usize) -> Self { Self { size, unit: DataSizeUnit::Kb } }
     /// Алиас для `DataSize::new(size, DataSizeUnit::Mb)`
-    pub fn mb(size: usize) -> Self {
-        Self { size, unit: DataSizeUnit::Mb }
-    }
+    pub fn mb(size: usize) -> Self { Self { size, unit: DataSizeUnit::Mb } }
 
-    pub fn size(&self) -> usize {
-        self.size
-    }
-
-    pub fn unit(&self) -> DataSizeUnit {
-        self.unit
-    }
+    pub fn size(&self) -> usize { self.size }
+    pub fn unit(&self) -> DataSizeUnit { self.unit }
 
     /// Переводит размер в другие единицы
     pub fn in_unit(&self, unit: DataSizeUnit) -> Self {
@@ -80,9 +95,9 @@ impl Display for DataSize {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         use DataSizeUnit::*;
         let postfix = match self.unit {
-            Bytes => "B",
-            Kb    => "Kb",
-            Mb    => "Mb",
+            Bytes => "b",
+            Kb    => "kb",
+            Mb    => "mb",
         };
 
         write!(f, "{}{}", self.size, postfix)
@@ -92,5 +107,26 @@ impl Display for DataSize {
 impl Default for DataSize {
     fn default() -> Self {
         Self::bytes(0)
+    }
+}
+
+impl FromStr for DataSize {
+    type Err = ParseDataSizeError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let re = Regex::new(r"(?<num>\d+)(?<unit>B|Kb|Mb)").expect("Cannot create Regex!");
+
+        let Some(capture) = re.captures(s) else { return Err(Self::Err::InvalidFormat); };
+        let Ok(num): Result<usize, _> = capture["num"].parse() else {
+            return Err(Self::Err::NaN(capture["num"].to_string()));
+        };
+        let unit = match &capture["unit"] {
+            "B"  => DataSizeUnit::Bytes,
+            "Kb" => DataSizeUnit::Kb,
+            "Gb" => DataSizeUnit::Mb,
+            unit => return Err(Self::Err::UnknownDataUnit(unit.to_string())),
+        };
+
+        Ok(DataSize::new(num, unit))
     }
 }

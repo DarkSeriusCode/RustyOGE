@@ -9,7 +9,7 @@ repository = "https://github.com/DarkSeriusCode/RustyOGE"
 readme = "README.md"
 
 [dependencies]
-regex = "1.7.1"
+regex = "1.10.3"
 unrar = "0.5.1"
 
 [workspace]
