@@ -114,7 +114,7 @@ impl FromStr for DataSize {
     type Err = ParseDataSizeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let re = Regex::new(r"(?<num>\d+)(?<unit>B|Kb|Mb)").expect("Cannot create Regex!");
+        let re = Regex::new(r"(?<num>\d+)(?<unit>\w{2})").expect("Cannot create Regex!");
 
         let Some(capture) = re.captures(s) else { return Err(Self::Err::InvalidFormat); };
         let Ok(num): Result<usize, _> = capture["num"].parse() else {
