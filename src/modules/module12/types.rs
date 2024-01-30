@@ -8,12 +8,20 @@ use crate::utils::{
 
 /// Детали решения задания. Указывает, по какому критерию искать файлы для подсчёта.
 #[derive(Debug, Clone)]
-pub enum ProblemSpec {
-    /// В задаче нужно посчитать файлы с расширениями, указанными в `Vec<OsString>`
-    WithExtencions(Vec<OsString>),
-    /// В задаче нужно посчитать файлы с определённым расширением (`OsString`) и объёмом
-    /// (`FileSize`).
-    WithExtencionAndSize(OsString, DataSize),
+pub struct ProblemSpec {
+    /// Возможные расширения файла
+    pub extensions: Vec<OsString>,
+    /// Минимальный размер файла
+    pub minimum_file_size: Option<DataSize>,
+}
+
+impl ProblemSpec {
+    pub fn new(extensions: Vec<OsString>, min_fsize: Option<DataSize>) -> Self {
+        Self {
+            extensions,
+            minimum_file_size: min_fsize,
+        }
+    }
 }
 
 // ------------------------------------------------------------------------------------------------

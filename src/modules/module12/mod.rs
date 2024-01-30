@@ -1,6 +1,4 @@
-use std::ffi::OsString;
 use crate::{SolveError, SolveResult};
-use crate::utils::data_size::DataSize;
 
 use unrar::Archive;
 
@@ -15,10 +13,8 @@ pub fn solve(input_data: InputData) -> SolveResult {
     let all_files = core::get_files_in_dir(archive, &input_data.search_dir)
         .map_err(|e| SolveError::from(e))?;
 
-    let (exts, size): (Vec<OsString>, DataSize) = match input_data.spec {
-        ProblemSpec::WithExtencions(exts)            => (exts, DataSize::default()),
-        ProblemSpec::WithExtencionAndSize(ext, size) => (vec![ext], size),
-    };
+    let exts = input_data.spec.extensions;
+    let size = input_data.spec.minimum_file_size.unwrap_or_default();
 
     let filtered_files = all_files
         .iter()
