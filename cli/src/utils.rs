@@ -1,53 +1,18 @@
-use std::str::FromStr;
+use std::error::Error;
+use std::process;
 
-#[derive(Debug, PartialEq, Eq)]
-pub struct ParsePairError;
+use clap::Command;
+use colored::Colorize;
 
-/// Представляет пару значений.
-pub struct Pair<F, S>
-where
-    F: FromStr,
-    S: FromStr,
-{
-    first: F,
-    second: S,
+pub(crate) fn exit_with_any_error(error: Box<dyn Error>) -> ! {
+    eprintln!("{}", error.to_string().red().bold());
+    process::exit(1);
 }
 
-impl<F, S> Pair<F, S>
-where
-    F: FromStr,
-    S: FromStr,
-{
-    pub fn new(first: F, second: S) -> Self {
-        Self { first, second }
-    }
+// ------------------------------------------------------------------------------------------------
 
-    pub fn first(&self) -> &F {
-        &self.first
-    }
-
-    pub fn second(&self) -> &S {
-        &self.second
-    }
-}
-
-impl<F, S> FromStr for Pair<F, S>
-where
-    F: FromStr,
-    S: FromStr,
-{
-    type Err = ParsePairError;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let parts = Vec::from_iter(s.split_whitespace());
-
-        if parts.len() != 2 {
-            return Err(ParsePairError);
-        }
-
-        let first_from_str = F::from_str(parts[0]).map_err(|_| ParsePairError)?;
-        let second_from_str = S::from_str(parts[1]).map_err(|_| ParsePairError)?;
-
-        Ok(Pair::new(first_from_str, second_from_str))
-    }
+/// Примесь, как либо изменяющая `Command`
+pub trait CommandArgMixin {
+    /// Подмешивает что-либо в `Command`
+    fn mix_to_command(cmd: Command) -> Command;
 }
