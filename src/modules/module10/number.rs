@@ -14,8 +14,8 @@ pub enum ConvertionError {
 impl Display for ConvertionError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let err_msg = match self {
-            Self::VeryBigBase    => "Основание больше 36",
-            Self::InvalidInteger => "Некоректное число",
+            Self::VeryBigBase    => "The base greater than 36",
+            Self::InvalidInteger => "Incorrect number",
         };
         write!(f, "{err_msg}")
     }

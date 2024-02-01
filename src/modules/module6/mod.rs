@@ -20,7 +20,7 @@ pub fn solve(input_data: InputData) -> SolveResult {
         match core::run_program(&python_interpreter, &input_data.file_path, args) {
             Ok(output) if output == input_data.spec.expected_output => correct_output_count += 1,
             Ok(_) => (),
-            Err(e) => return Err(SolveError(format!("Ошибка запуска программы ({e})").into())),
+            Err(e) => return Err(SolveError(format!("Cannot start the program ({e})").into())),
         }
     }
 

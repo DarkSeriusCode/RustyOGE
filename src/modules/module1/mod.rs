@@ -16,7 +16,7 @@ pub fn solve(input_data: InputData) -> SolveResult {
             // text = ConcreteText
             let InputText::ConcreteText(text) = input_data.text else { todo!() };
             let found_word = core::find_word_with_len(&utils::normalize_text(&text), needed_len);
-            found_word.ok_or(SolveError("Невозможно найти такое слово".into()))
+            found_word.ok_or(SolveError("Unable to find such word".into()))
         },
         ProblemSpec::CalcTextSize(unit) => {
             let text_size = DataSize::bytes(input_data.text.chars_count() * bytes_in_chars);

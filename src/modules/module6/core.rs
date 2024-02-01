@@ -33,7 +33,7 @@ pub fn find_python() -> Result<String, SolveError> {
             return Ok(command.to_string());
         }
     }
-    Err(SolveError("Не найден Python!".into()))
+    Err(SolveError("Cannot find python".into()))
 }
 
 //-------------------------------------------------------------------------------------------------

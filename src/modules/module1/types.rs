@@ -58,7 +58,7 @@ impl Validated for InputData {
     fn valid(&self) -> Result<(), String> {
         if let ProblemSpec::FindWord(_) = self.spec {
             if let InputText::TextInfo { .. } = self.text {
-                return Err("Невозможно найти слово, когда не указан текст!".into());
+                return Err("Cannot to find word if `text` is not specified".into());
             }
         }
         Ok(())

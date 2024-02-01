@@ -54,7 +54,7 @@ impl InputData {
 impl Validated for InputData {
     fn valid(&self) -> Result<(), String> {
         if !self.archive_path.exists() {
-            return Err(format!("Файла {} не существует!", &self.archive_path.to_str().unwrap()));
+            return Err(format!("File {} doesn't exist", &self.archive_path.to_str().unwrap()));
         }
         Ok(())
     }

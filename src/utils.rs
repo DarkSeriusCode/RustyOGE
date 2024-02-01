@@ -27,7 +27,7 @@ pub struct SolveError(pub Box<dyn Error>);
 
 impl Display for SolveError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Невозможно решить задачу! Причина: {}", self.0)
+        write!(f, "Cannot to solve the problem! Reason: {}", self.0)
     }
 }
 
@@ -40,12 +40,12 @@ impl PartialEq for SolveError {
 impl From<unrar_err::UnrarError> for SolveError {
     fn from(value: unrar_err::UnrarError) -> Self {
         let when = match value.when {
-            unrar_err::When::Open    => "открытия архива",
-            unrar_err::When::Read    => "чтения архива",
-            unrar_err::When::Process => "обработки архива",
+            unrar_err::When::Open    => "opening archive",
+            unrar_err::When::Read    => "reading archive",
+            unrar_err::When::Process => "processing archive",
         };
 
-        SolveError(format!("Во время {} произошла ошибка: {}", when, value.to_string()).into())
+        SolveError(format!("When {}: {}", when, value.to_string()).into())
     }
 }
 

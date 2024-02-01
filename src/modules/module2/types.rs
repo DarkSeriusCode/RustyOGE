@@ -46,11 +46,11 @@ impl InputData {
 impl Validated for InputData {
     fn valid(&self) -> Result<(), String> {
         if self.encoded_strings.len() == 0 {
-            return Err("Вы должны ввести хотя бы одну строку!".into());
+            return Err("You must specify at least one string".into());
         }
         if self.spec.unique_chars && self.encoded_strings.len() != 1 {
-            return Err("Для поиска расшифровки с уникальными символами вы \
-                       должны ввести ОДНУ строку".into());
+            return Err("You must specify only one string to find a decoding with \
+                        unique characters".into());
         }
         Ok(())
     }

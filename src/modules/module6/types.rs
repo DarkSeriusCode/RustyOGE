@@ -43,10 +43,10 @@ impl InputData {
 impl Validated for InputData {
     fn valid(&self) -> Result<(), String> {
         if !self.file_path.exists() {
-            return Err(format!("Файла {} не существует!", self.file_path.to_str().unwrap()));
+            return Err(format!("File {} doesn't exist", self.file_path.to_str().unwrap()));
         }
         if !Regex::new(PROGRAM_INPUT_REGEX).unwrap().is_match(&self.program_input) {
-            return Err(format!("Неправильный формат входных данных ({})!", self.program_input));
+            return Err(format!("Invalid format of given string ({})", self.program_input));
         }
         Ok(())
     }
