@@ -5,7 +5,7 @@ use clap::{
     Arg, ArgAction, ArgMatches, Command,
     error::ErrorKind,
 };
-use color_print::cprintln;
+use color_print::{cprintln, cformat};
 
 mod utils;
 mod cli_wrapers;
@@ -123,11 +123,12 @@ fn mix_args_to_solve_if_needed(cmd: Command) -> Command {
 // ------------------------------------------------------------------------------------------------
 
 fn show_list_of_available_problems() {
-    for problem_num in 1..=12 {
-        if AVAILABLE_PROBLEMS.contains(&problem_num) {
-            cprintln!("<g><s><u>Problem {}", problem_num);
-        } else {
-            cprintln!("<r><strike>Problem {}", problem_num);
-        }
+    let get_colored_string = |p_num| {
+        if AVAILABLE_PROBLEMS.contains(&p_num) { cformat!("<g><s><u>Problem {}", p_num) }
+        else { cformat!("<r><strike>Problem {}", p_num) }
+    };
+    for pnum in (1..=12).step_by(2) {
+        let pnum2 = pnum + 1;
+        cprintln!("{}\t{}", get_colored_string(pnum), get_colored_string(pnum2));
     }
 }
