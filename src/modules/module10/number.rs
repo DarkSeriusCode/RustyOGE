@@ -6,7 +6,7 @@ use std::cmp::{PartialEq, Eq, PartialOrd, Ord, Ordering};
 #[derive(Debug, Clone, Copy)]
 pub enum ConvertionError {
     /// Основание больше 36
-    VeryBigBase,
+    InvalidBase,
     /// Число содержит недопустимые в данной системе счисления символы, или число не корректно
     InvalidInteger,
 }
@@ -14,7 +14,7 @@ pub enum ConvertionError {
 impl Display for ConvertionError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let err_msg = match self {
-            Self::VeryBigBase    => "The base greater than 36",
+            Self::InvalidBase    => "The base isn't in range [2;36]",
             Self::InvalidInteger => "Incorrect number",
         };
         write!(f, "{err_msg}")
@@ -73,7 +73,7 @@ impl Number {
 
     /// Переводит число в систему счисления с основанием `base`
     pub fn convert(&self, base: u32) -> Result<Self, ConvertionError> {
-        if base > 36 { return Err(ConvertionError::VeryBigBase); }
+        if base > 36 { return Err(ConvertionError::InvalidBase); }
 
         let is_negative = self.number.starts_with('-');
         let number = if is_negative { &self.number[1..] } else { &self.number };
@@ -103,6 +103,7 @@ impl Number {
     /// # Паникует
     /// Если `base` больше 36!
     fn to_decimal(number_str: &str, base: u32) -> Result<u32, ConvertionError> {
+        if !(2..=36).contains(&base) { return Err(ConvertionError::InvalidBase); }
         u32::from_str_radix(number_str, base).map_err(|_| ConvertionError::InvalidInteger)
     }
 

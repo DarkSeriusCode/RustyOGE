@@ -7,6 +7,10 @@ pub use types::*;
 
 /// Решает задачу и возвращает результат решения.
 pub fn solve(input_data: InputData) -> SolveResult {
+    if (input_data.bits_in_char as f64 / 8.0f64).fract() != 0.0 {
+        return Err(SolveError(format!("There're 8 bits in 1 byte! Not {}!",
+                                      input_data.bits_in_char).into()));
+    }
     let bytes_in_chars = input_data.bits_in_char / 8;
 
     match input_data.spec {
