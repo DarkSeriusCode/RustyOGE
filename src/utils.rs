@@ -27,7 +27,7 @@ pub struct SolveError(pub Box<dyn Error>);
 
 impl Display for SolveError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Cannot to solve the problem! Reason: {}", self.0)
+        write!(f, "Cannot solve the problem! Reason: {}", self.0)
     }
 }
 
