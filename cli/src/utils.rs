@@ -2,10 +2,10 @@ use std::error::Error;
 use std::process;
 
 use clap::Command;
-use colored::Colorize;
+use color_print::cprintln;
 
 pub(crate) fn exit_with_any_error(error: Box<dyn Error>) -> ! {
-    eprintln!("{}", error.to_string().red().bold());
+    cprintln!("<r><s>{}", error.to_string());
     process::exit(1);
 }
 

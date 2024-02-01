@@ -5,7 +5,7 @@ use clap::{
     Arg, ArgAction, ArgMatches, Command,
     error::ErrorKind,
 };
-use colored::Colorize;
+use color_print::cprintln;
 
 mod utils;
 mod cli_wrapers;
@@ -85,7 +85,7 @@ fn solve(matches: &ArgMatches) {
     };
 
     let Ok(answer) = solve_res else { exit_with_any_error(solve_res.unwrap_err()) };
-    println!("Answer: {}", answer.bold().green());
+    cprintln!("Answer: <g><s>{}", answer);
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -124,12 +124,10 @@ fn mix_args_to_solve_if_needed(cmd: Command) -> Command {
 
 fn show_list_of_available_problems() {
     for problem_num in 1..=12 {
-        let text = format!("Problem {problem_num}");
-
         if AVAILABLE_PROBLEMS.contains(&problem_num) {
-            println!("{}", &text.green().bold().underline());
+            cprintln!("<g><s><u>Problem {}", problem_num);
         } else {
-            println!("{}", &text.red());
+            cprintln!("<r><strike>Problem {}", problem_num);
         }
     }
 }
