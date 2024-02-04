@@ -13,8 +13,8 @@ pub fn solve(input_data: InputData) -> SolveResult {
     let all_files = core::get_files_in_dir(archive, &input_data.search_dir)
         .map_err(|e| SolveError::from(e))?;
 
-    let exts = input_data.spec.extensions;
-    let size = input_data.spec.minimum_file_size.unwrap_or_default();
+    let exts = input_data.extensions;
+    let size = input_data.minimum_file_size.unwrap_or_default();
 
     let filtered_files = all_files
         .iter()

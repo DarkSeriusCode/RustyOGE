@@ -7,10 +7,10 @@ pub use types::*;
 
 /// Решает задачу и возвращает результат решения.
 pub fn solve(input_data: InputData) -> SolveResult {
-    let output_data_type = input_data.spec.output_data_type;
+    let output_data_type = input_data.output_data_type;
 
     // Ищем строку с одной расшифровкой. В input_data.encoded_strings больше одной строки
-    if input_data.spec.one_decoding {
+    if input_data.one_decoding {
         for encoded_str in &input_data.encoded_strings {
             let decoded = core::decode(&input_data.codes, &encoded_str);
             if decoded.len() == 1 {
@@ -25,7 +25,7 @@ pub fn solve(input_data: InputData) -> SolveResult {
     let decoded_strings = core::decode(&input_data.codes, encoded_string);
     let decoded_strings = Vec::from_iter(decoded_strings.iter()
                                             .filter(|str| utils::has_unique_chars(str) && 
-                                                          input_data.spec.unique_chars));
+                                                          input_data.unique_chars));
 
     if decoded_strings.len() == 0 {
         return Err(SolveError("There's no decoding that meets the requirements".into()));

@@ -10,7 +10,7 @@ use clap::{
 };
 
 use rusty_oge::{
-    module12::{InputData, ProblemSpec},
+    module12::InputData,
     utils::{
         Validated,
         data_size::{DataSize, DataSizeUnit},
@@ -68,8 +68,7 @@ impl FromArgMatches for Module12InputData {
             .collect();
         let file_size = matches.get_one::<DataSize>("file_size");
 
-        let spec = ProblemSpec::new(exts, file_size.copied());
-        let input_data = InputData::new(archive_path, search_dir, spec);
+        let input_data = InputData::new(archive_path, search_dir, exts, file_size.copied());
         if let Err(e) = input_data.valid() {
             return Err(Error::raw(ErrorKind::InvalidValue, e));
         }

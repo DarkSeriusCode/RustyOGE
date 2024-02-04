@@ -6,26 +6,6 @@ use crate::utils::{
     data_size::DataSize
 };
 
-/// Детали решения задания. Указывает, по какому критерию искать файлы для подсчёта.
-#[derive(Debug, Clone)]
-pub struct ProblemSpec {
-    /// Возможные расширения файла
-    pub extensions: Vec<OsString>,
-    /// Минимальный размер файла
-    pub minimum_file_size: Option<DataSize>,
-}
-
-impl ProblemSpec {
-    pub fn new(extensions: Vec<OsString>, min_fsize: Option<DataSize>) -> Self {
-        Self {
-            extensions,
-            minimum_file_size: min_fsize,
-        }
-    }
-}
-
-// ------------------------------------------------------------------------------------------------
-
 /// Входные данные задачи.
 #[derive(Debug, Clone)]
 pub struct InputData {
@@ -33,12 +13,15 @@ pub struct InputData {
     pub archive_path: PathBuf,
     /// Каталог в архиве, где нужно искть файлы
     pub search_dir: PathBuf,
-    /// Детали решения задания.
-    pub spec: ProblemSpec,
+    /// Возможные расширения файла
+    pub extensions: Vec<OsString>,
+    /// Минимальный размер файла
+    pub minimum_file_size: Option<DataSize>,
 }
 
 impl InputData {
-    pub fn new<AP, SP>(archive_path: AP, search_dir: SP, spec: ProblemSpec) -> Self
+    pub fn new<AP, SP>(archive_path: AP, search_dir: SP,
+                       exts: Vec<OsString>, min_fsize: Option<DataSize>) -> Self
     where
         AP: AsRef<Path>,
         SP: AsRef<Path>,
@@ -46,7 +29,8 @@ impl InputData {
         Self {
             archive_path: archive_path.as_ref().to_path_buf(),
             search_dir: search_dir.as_ref().to_path_buf(),
-            spec,
+            extensions: exts,
+            minimum_file_size: min_fsize,
         }
     }
 }

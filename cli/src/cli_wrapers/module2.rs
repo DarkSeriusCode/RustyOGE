@@ -5,7 +5,7 @@ use clap::{
     error::{Error, ErrorKind}
 };
 
-use rusty_oge::module2::{InputData, ProblemSpec, OutputDataType, Codes};
+use rusty_oge::module2::{InputData, OutputDataType, Codes};
 use rusty_oge::utils::Validated;
 
 use crate::utils::CommandArgMixin;
@@ -144,9 +144,9 @@ impl FromArgMatches for Module2InputData {
         let one_decoding = *matches.get_one::<bool>("one_decoding").unwrap();
         let unique_chars = *matches.get_one::<bool>("unique_chars").unwrap();
         let output_type = *matches.get_one::<CLIOutputDataType>("output_type").unwrap();
-        let spec = ProblemSpec::new(one_decoding, unique_chars, output_type.into());
 
-        let input_data = InputData::new(codes, encoded_strings, spec);
+        let input_data = InputData::new(codes, encoded_strings, one_decoding,
+                                        unique_chars, output_type.into());
         if let Err(e) = input_data.valid() {
             return Err(Error::raw(ErrorKind::InvalidValue, e));
         }

@@ -21,232 +21,199 @@ fn path_to(fname: &str) -> PathBuf {
 
 Test! {
     Name = problem10504,
-    Input = (&path_to("10504-10601.rar"), "Проза"),
-    Spec = ProblemSpec::new(vec!["txt".into()], None),
+    Input = (&path_to("10504-10601.rar"), "Проза", vec!["txt".into()], None),
     Output = "16"
 }
 
 Test! {
     Name = problem10507,
-    Input = (&path_to("10504-10601.rar"), "Проза"),
-    Spec = ProblemSpec::new(vec!["pdf".into()], None),
+    Input = (&path_to("10504-10601.rar"), "Проза", vec!["pdf".into()], None),
     Output = "11"
 }
 
 Test! {
     Name = problem10510,
-    Input = (&path_to("10504-10601.rar"), "Проза"),
-    Spec = ProblemSpec::new(vec!["htm".into()], None),
+    Input = (&path_to("10504-10601.rar"), "Проза", vec!["htm".into()], None),
     Output = "10"
 }
 
 Test! {
     Name = problem10512,
-    Input = (&path_to("10504-10601.rar"), "Проза"),
-    Spec = ProblemSpec::new(vec!["rtf".into()], None),
+    Input = (&path_to("10504-10601.rar"), "Проза", vec!["rtf".into()], None),
     Output = "14"
 }
 
 Test! {
     Name = problem10514,
-    Input = (&path_to("10504-10601.rar"), "Поэзия"),
-    Spec = ProblemSpec::new(vec!["rtf".into()], None),
+    Input = (&path_to("10504-10601.rar"), "Поэзия", vec!["rtf".into()], None),
     Output = "11"
 }
 
 Test! {
     Name = problem10516,
-    Input = (&path_to("10504-10601.rar"), "Поэзия"),
-    Spec = ProblemSpec::new(vec!["pdf".into()], None),
+    Input = (&path_to("10504-10601.rar"), "Поэзия", vec!["pdf".into()], None),
     Output = "16"
 }
 
 Test! {
     Name = problem10518,
-    Input = (&path_to("10504-10601.rar"), "Поэзия"),
-    Spec = ProblemSpec::new(vec!["txt".into()], None),
+    Input = (&path_to("10504-10601.rar"), "Поэзия", vec!["txt".into()], None),
     Output = "12"
 }
 
 Test! {
     Name = problem10522,
-    Input = (&path_to("10504-10601.rar"), "DEMO-12"),
-    Spec = ProblemSpec::new(vec!["txt".into()], None),
+    Input = (&path_to("10504-10601.rar"), "DEMO-12", vec!["txt".into()], None),
     Output = "33"
 }
 
 Test! {
     Name = problem10524,
-    Input = (&path_to("10504-10601.rar"), "DEMO-12"),
-    Spec = ProblemSpec::new(vec!["rtf".into()], None),
+    Input = (&path_to("10504-10601.rar"), "DEMO-12", vec!["rtf".into()], None),
     Output = "25"
 }
 
 Test! {
     Name = problem10596,
-    Input = (&path_to("10504-10601.rar"), "DEMO-12"),
-    Spec = ProblemSpec::new(vec!["pdf".into()], None),
+    Input = (&path_to("10504-10601.rar"), "DEMO-12", vec!["pdf".into()], None),
     Output = "31"
 }
 
 Test! {
     Name = problem10597,
-    Input = (&path_to("10504-10601.rar"), "DEMO-12"),
-    Spec = ProblemSpec::new(vec!["htm".into()], None),
+    Input = (&path_to("10504-10601.rar"), "DEMO-12", vec!["htm".into()], None),
     Output = "17"
 }
 
 Test! {
     Name = problem10598,
-    Input = (&path_to("10504-10601.rar"), "DEMO-12"),
-    Spec = ProblemSpec::new(vec!["html".into()], None),
+    Input = (&path_to("10504-10601.rar"), "DEMO-12", vec!["html".into()], None),
     Output = "3"
 }
 
 Test! {
     Name = problem10599,
-    Input = (&path_to("10504-10601.rar"), "DEMO-12"),
-    Spec = ProblemSpec::new(vec!["odt".into()], None),
+    Input = (&path_to("10504-10601.rar"), "DEMO-12", vec!["odt".into()], None),
     Output = "2"
 }
 
 Test! {
     Name = problem10600,
-    Input = (&path_to("10504-10601.rar"), "DEMO-12"),
-    Spec = ProblemSpec::new(vec!["docx".into()], None),
+    Input = (&path_to("10504-10601.rar"), "DEMO-12", vec!["docx".into()], None),
     Output = "3"
 }
 
 Test! {
     Name = problem10601,
-    Input = (&path_to("10504-10601.rar"), "DEMO-12"),
-    Spec = ProblemSpec::new(vec!["doc".into(), "docx".into()], None),
+    Input = (&path_to("10504-10601.rar"), "DEMO-12", vec!["doc".into(), "docx".into()], None),
     Output = "4"
 }
 
 Test! {
     Name = problem11322,
-    Input = (&path_to("11322.rar"), "Task12"),
-    Spec = ProblemSpec::new(vec!["doc".into()], None),
+    Input = (&path_to("11322.rar"), "Task12", vec!["doc".into()], None),
     Output = "3"
 }
 
 Test! {
     Name = problem11323,
-    Input = (&path_to("11323.rar"), "Task12"),
-    Spec = ProblemSpec::new(vec!["docx".into()], None),
+    Input = (&path_to("11323.rar"), "Task12", vec!["docx".into()], None),
     Output = "2"
 }
 
 Test! {
     Name = problem11324,
-    Input = (&path_to("11324.rar"), "Task12"),
-    Spec = ProblemSpec::new(vec!["doc".into(), "docx".into()], None),
+    Input = (&path_to("11324.rar"), "Task12", vec!["doc".into(), "docx".into()], None),
     Output = "5"
 }
 
 Test! {
     Name = problem11325,
-    Input = (&path_to("11325.rar"), "Task12"),
-    Spec = ProblemSpec::new(vec!["txt".into()], None),
+    Input = (&path_to("11325.rar"), "Task12", vec!["txt".into()], None),
     Output = "12"
 }
 
 Test! {
     Name = problem11326,
-    Input = (&path_to("11326.rar"), "Task12"),
-    Spec = ProblemSpec::new(vec!["rtf".into()], None),
+    Input = (&path_to("11326.rar"), "Task12", vec!["rtf".into()], None),
     Output = "10"
 }
 
 Test! {
     Name = problem11327,
-    Input = (&path_to("11327.rar"), "Task12"),
-    Spec = ProblemSpec::new(vec!["pdf".into()], None),
+    Input = (&path_to("11327.rar"), "Task12", vec!["pdf".into()], None),
     Output = "7"
 }
 
 Test! {
     Name = problem11328,
-    Input = (&path_to("11328.rar"), "Task12"),
-    Spec = ProblemSpec::new(vec!["htm".into()], None),
+    Input = (&path_to("11328.rar"), "Task12", vec!["htm".into()], None),
     Output = "3"
 }
 
 Test! {
     Name = problem11329,
-    Input = (&path_to("11329.rar"), "Files"),
-    Spec = ProblemSpec::new(vec!["py".into()], None),
+    Input = (&path_to("11329.rar"), "Files", vec!["py".into()], None),
     Output = "4"
 }
 
 Test! {
     Name = problem11330,
-    Input = (&path_to("11330.rar"), "Files"),
-    Spec = ProblemSpec::new(vec!["js".into()], None),
+    Input = (&path_to("11330.rar"), "Files", vec!["js".into()], None),
     Output = "12"
 }
 
 Test! {
     Name = problem11331,
-    Input = (&path_to("11331.rar"), "Files"),
-    Spec = ProblemSpec::new(vec!["html".into()], None),
+    Input = (&path_to("11331.rar"), "Files", vec!["html".into()], None),
     Output = "5"
 }
 
 Test! {
     Name = problem18180,
-    Input = (&path_to("18180.rar"), "Поэзия"),
-    Spec = ProblemSpec::new(vec!["odt".into()], None),
+    Input = (&path_to("18180.rar"), "Поэзия", vec!["odt".into()], None),
     Output = "20"
 }
 
 Test! {
     Name = problem18195,
-    Input = (&path_to("18195.rar"), "Поэзия"),
-    Spec = ProblemSpec::new(vec!["docx".into()], None),
+    Input = (&path_to("18195.rar"), "Поэзия", vec!["docx".into()], None),
     Output = "27"
 }
 
 Test! {
     Name = problem18221,
-    Input = (&path_to("18221.rar"), "Поэзия"),
-    Spec = ProblemSpec::new(vec!["pdf".into()], None),
+    Input = (&path_to("18221.rar"), "Поэзия", vec!["pdf".into()], None),
     Output = "17"
 }
 
 Test! {
     Name = problem18236,
-    Input = (&path_to("18236.rar"), "Поэзия"),
-    Spec = ProblemSpec::new(vec!["txt".into()], None),
+    Input = (&path_to("18236.rar"), "Поэзия", vec!["txt".into()], None),
     Output = "13"
 }
 
 Test! {
     Name = problem18251,
-    Input = (&path_to("18251.rar"), "Поэзия"),
-    Spec = ProblemSpec::new(vec!["txt".into()], None),
+    Input = (&path_to("18251.rar"), "Поэзия", vec!["txt".into()], None),
     Output = "12"
 }
 
 Test! {
     Name = problem18266,
-    Input = (&path_to("18266.rar"), "Поэзия"),
-    Spec = ProblemSpec::new(vec!["htm".into()], None),
+    Input = (&path_to("18266.rar"), "Поэзия", vec!["htm".into()], None),
     Output = "7"
 }
 
 Test! {
     Name = problem18281,
-    Input = (&path_to("18281.rar"), "11-12 Поэзия"),
-    Spec = ProblemSpec::new(vec!["rtf".into()], None),
+    Input = (&path_to("18281.rar"), "11-12 Поэзия", vec!["rtf".into()], None),
     Output = "15"
 }
 
 Test! {
     Name = problem18296,
-    Input = (&path_to("18296.rar"), "Поэзия"),
-    Spec = ProblemSpec::new(vec!["html".into()], None),
+    Input = (&path_to("18296.rar"), "Поэзия", vec!["html".into()], None),
     Output = "13"
 }
 
@@ -254,21 +221,18 @@ Test! {
 
 Test! {
     Name = problem16020,
-    Input = (&path_to("16020.rar"), "DEMO-12"),
-    Spec = ProblemSpec::new(vec!["htm".into()], Some(DataSize::kb(1024))),
+    Input = (&path_to("16020.rar"), "DEMO-12", vec!["htm".into()], Some(DataSize::kb(1024))),
     Output = "3"
 }
 
 Test! {
     Name = problem18042,
-    Input = (&path_to("18042.rar"), "DEMO-12"),
-    Spec = ProblemSpec::new(vec!["rtf".into()], Some(DataSize::mb(2))),
+    Input = (&path_to("18042.rar"), "DEMO-12", vec!["rtf".into()], Some(DataSize::mb(2))),
     Output = "5"
 }
 
 Test! {
     Name = problem18762,
-    Input = (&path_to("18762.rar"), "DEMO-12"),
-    Spec = ProblemSpec::new(vec!["rtf".into()], Some(DataSize::mb(2))),
+    Input = (&path_to("18762.rar"), "DEMO-12", vec!["rtf".into()], Some(DataSize::mb(2))),
     Output = "5"
 }

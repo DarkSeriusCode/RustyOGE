@@ -7,7 +7,7 @@ use clap::{
     error::{Error, ErrorKind},
 };
 
-use rusty_oge::module6::{InputData, ProblemSpec};
+use rusty_oge::module6::InputData;
 use rusty_oge::utils::Validated;
 
 use crate::utils::CommandArgMixin;
@@ -52,8 +52,7 @@ impl FromArgMatches for Module6InputData {
         let program_input = matches.get_one::<String>("program_input").unwrap();
         let expected_output = matches.get_one::<String>("expected_output").unwrap();
 
-        let spec = ProblemSpec::new(expected_output.to_string());
-        let input_data = InputData::new(file_name, program_input, spec);
+        let input_data = InputData::new(file_name, program_input, expected_output);
         if let Err(e) = input_data.valid() {
             return Err(Error::raw(ErrorKind::InvalidValue, e));
         }

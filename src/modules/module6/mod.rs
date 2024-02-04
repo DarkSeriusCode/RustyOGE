@@ -18,7 +18,7 @@ pub fn solve(input_data: InputData) -> SolveResult {
     // Запуск программы
     for args in &program_args {
         match core::run_program(&python_interpreter, &input_data.file_path, args) {
-            Ok(output) if output == input_data.spec.expected_output => correct_output_count += 1,
+            Ok(output) if output == input_data.expected_output => correct_output_count += 1,
             Ok(_) => (),
             Err(e) => return Err(SolveError(format!("Cannot start the program ({e})").into())),
         }

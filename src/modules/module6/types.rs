@@ -4,21 +4,6 @@ use std::path::{Path, PathBuf};
 use crate::utils::Validated;
 use super::consts::PROGRAM_INPUT_REGEX;
 
-/// Детали решения задачи. Хранит дополнительную информацию о задаче.
-#[derive(Debug, PartialEq, Eq, Clone)]
-pub struct ProblemSpec {
-    /// Ожидаемый вывод программы
-    pub expected_output: String,
-}
-
-impl ProblemSpec {
-    pub fn new(expected_output: String) -> Self {
-        Self { expected_output }
-    }
-}
-
-// ------------------------------------------------------------------------------------------------
-
 /// Входные данные задачи.
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct InputData {
@@ -26,16 +11,16 @@ pub struct InputData {
     pub file_path: PathBuf,
     /// Строка входных данных для программы
     pub program_input: String,
-    /// Детали выполнения
-    pub spec: ProblemSpec,
+    /// Ожидаемый вывод программы
+    pub expected_output: String,
 }
 
 impl InputData {
-    pub fn new(file_path: &Path, program_input: &str, spec: ProblemSpec) -> Self {
+    pub fn new(file_path: &Path, program_input: &str, expected_output: &str) -> Self {
         Self {
             file_path: file_path.to_path_buf(),
             program_input: program_input.to_string(),
-            spec,
+            expected_output: expected_output.to_string(),
         }
     }
 }

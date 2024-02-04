@@ -7,9 +7,13 @@ pub type Codes = HashMap<String, String>;
 
 // ------------------------------------------------------------------------------------------------
 
-/// Детали решения задачи. Указывает как имено нужно обработать данные.
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub struct ProblemSpec {
+/// Входные данные задачи.
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub struct InputData {
+    /// Таблица кодов
+    pub codes: Codes,
+    /// Закодированные строки
+    pub encoded_strings: Vec<String>,
     /// `true`, если нужно **только** найти строку с одной расшифровкой.
     pub one_decoding: bool,
     /// Фильтрует расшифровки строки, оставляя только те, где символы не повторяются.
@@ -18,28 +22,10 @@ pub struct ProblemSpec {
     pub output_data_type: OutputDataType,
 }
 
-impl ProblemSpec {
-    pub fn new(one_decoding: bool, unique_chars: bool, output_data_type: OutputDataType) -> Self {
-        Self { one_decoding, unique_chars, output_data_type, }
-    }
-}
-
-// ------------------------------------------------------------------------------------------------
-
-/// Входные данные задачи.
-#[derive(Debug, PartialEq, Eq, Clone)]
-pub struct InputData {
-    /// Таблица кодов
-    pub codes: Codes,
-    /// Закодированные строки
-    pub encoded_strings: Vec<String>,
-    /// Детали выполнения
-    pub spec: ProblemSpec,
-}
-
 impl InputData {
-    pub fn new(codes: Codes, encoded_strings: Vec<String>, spec: ProblemSpec) -> Self {
-        Self { codes, encoded_strings, spec, }
+    pub fn new(codes: Codes, encoded_strings: Vec<String>,
+               one_decoding: bool, unique_chars: bool, output_data_type: OutputDataType) -> Self {
+        Self { codes, encoded_strings, one_decoding, unique_chars, output_data_type, }
     }
 }
 
@@ -48,7 +34,7 @@ impl Validated for InputData {
         if self.encoded_strings.len() == 0 {
             return Err("You must specify at least one string".into());
         }
-        if self.spec.unique_chars && self.encoded_strings.len() != 1 {
+        if self.unique_chars && self.encoded_strings.len() != 1 {
             return Err("You must specify only one string to find a decoding with \
                         unique characters".into());
         }

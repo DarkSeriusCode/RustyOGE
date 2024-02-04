@@ -52,7 +52,7 @@ pub mod module1;
 /// Пример решения [этого](https://inf-oge.sdamgia.ru/problem?id=7) задания
 /// ```rust
 /// use rusty_oge::utils::Validated;
-/// use rusty_oge::module2::{InputData, OutputDataType, ProblemSpec, Codes, solve};
+/// use rusty_oge::module2::{InputData, OutputDataType, Codes, solve};
 ///
 /// let input_data = InputData {
 ///     codes: Codes::from_iter([
@@ -64,11 +64,9 @@ pub mod module1;
 ///         "1010110".to_string(),
 ///         "10111000".to_string()
 ///     ],
-///     spec: ProblemSpec {
-///         one_decoding: true,
-///         unique_chars: false,
-///         output_data_type: OutputDataType::DecodedString,
-///     }
+///     one_decoding: true,
+///     unique_chars: false,
+///     output_data_type: OutputDataType::DecodedString,
 /// };
 /// // Или используйте метод InputData::new()
 ///
@@ -88,14 +86,12 @@ pub mod module2;
 /// ```rust
 /// use std::path::Path;
 /// use rusty_oge::utils::Validated;
-/// use rusty_oge::module6::{InputData, ProblemSpec, solve};
+/// use rusty_oge::module6::{InputData, solve};
 ///
 /// let input_data = InputData {
 ///     file_path: Path::new("tests/module6_files/10458.py").to_path_buf(),
 ///     program_input: "(1, 2); (11, 2); (1, 12); (11, 12); (–11, –12); (–11, 12); (–12, 11); (10, 10); (10, 5).".to_string(),
-///     spec: ProblemSpec {
-///         expected_output: "YES".to_string(),
-///     },
+///     expected_output: "YES".to_string(),
 /// };
 /// // Или используйте метод InputData::new()
 ///
@@ -159,12 +155,13 @@ pub mod module10;
 /// Пример решения [задания](https://inf-oge.sdamgia.ru/problem?id=11322)
 /// ```rust
 /// use rusty_oge::utils::{Validated, data_size::DataSize};
-/// use rusty_oge::module12::{InputData, ProblemSpec, FileInfo, solve};
+/// use rusty_oge::module12::{InputData, FileInfo, solve};
 ///
 /// let input_data = InputData {
 ///     archive_path: "tests/module12_files/11322.rar".into(),
 ///     search_dir: "Task12".into(),
-///     spec: ProblemSpec::WithExtencions(vec!["doc".into()]),
+///     extensions: vec!["doc".into()],
+///     minimum_file_size: None,
 /// };
 /// // Или используйте метод InputData::new()
 ///
