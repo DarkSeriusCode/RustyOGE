@@ -31,7 +31,7 @@ impl InputData {
 
 impl Validated for InputData {
     fn valid(&self) -> Result<(), String> {
-        if self.encoded_strings.len() == 0 {
+        if self.encoded_strings.is_empty() {
             return Err("You must specify at least one string".into());
         }
         if self.unique_chars && self.encoded_strings.len() != 1 {

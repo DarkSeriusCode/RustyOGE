@@ -35,11 +35,11 @@ enum Alphabet {
     English,
 }
 
-impl Into<Vec<(String, String)>> for Alphabet {
-    fn into(self) -> Vec<(String, String)> {
-        match self {
-            Self::Russian => &RUS_ALPHABET,
-            Self::English => &ENG_ALPHABET,
+impl From<Alphabet> for Vec<(String, String)> {
+    fn from(value: Alphabet) -> Self {
+        match value {
+            Alphabet::Russian => RUS_ALPHABET,
+            Alphabet::English => ENG_ALPHABET,
         }.iter().map(|(l, c)| (l.to_string(), c.to_string())).collect()
     }
 }
@@ -53,12 +53,12 @@ enum CLIOutputDataType {
     RepeatingChars,
 }
 
-impl Into<OutputDataType> for CLIOutputDataType {
-    fn into(self) -> OutputDataType {
-        match self {
-            Self::DecodedString  => OutputDataType::DecodedString,
-            Self::Length         => OutputDataType::Length,
-            Self::RepeatingChars => OutputDataType::RepeatingChars,
+impl From<CLIOutputDataType> for OutputDataType {
+    fn from(value: CLIOutputDataType) -> Self {
+        match value {
+            CLIOutputDataType::DecodedString  => Self::DecodedString,
+            CLIOutputDataType::Length         => Self::Length,
+            CLIOutputDataType::RepeatingChars => Self::RepeatingChars,
         }
     }
 }
@@ -162,7 +162,7 @@ impl FromArgMatches for Module2InputData {
 // ------------------------------------------------------------------------------------------------
 
 fn parse_codes(s: &str) -> Result<(String, String), Error> {
-    let Some((letter, code)) = s.split_once("=") else {
+    let Some((letter, code)) = s.split_once('=') else {
         return Err(Error::raw(ErrorKind::Format,
                               format!("Invalid format \"{}\". Format as <letter>=<code>", s)))
     };

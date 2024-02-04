@@ -1,5 +1,3 @@
-use std::convert::Into;
-
 use clap::{
     value_parser,
     Command, Arg, ArgGroup, ArgMatches,
@@ -19,11 +17,11 @@ enum CLINumberToFind {
     Max,
 }
 
-impl Into<NumberToFind> for CLINumberToFind {
-    fn into(self) -> NumberToFind {
-        match self {
-            Self::Min => NumberToFind::Min,
-            Self::Max => NumberToFind::Max,
+impl From<CLINumberToFind> for NumberToFind {
+    fn from(value: CLINumberToFind) -> Self {
+        match value {
+            CLINumberToFind::Min => Self::Min,
+            CLINumberToFind::Max => Self::Max,
         }
     }
 }

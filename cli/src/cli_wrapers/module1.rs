@@ -1,5 +1,3 @@
-use std::convert::Into;
-
 use clap::{
     value_parser,
     Command, Arg, ArgGroup, ArgMatches,
@@ -20,12 +18,12 @@ enum CLIDataSizeUnit {
     Mb,
 }
 
-impl Into<DataSizeUnit> for CLIDataSizeUnit {
-    fn into(self) -> DataSizeUnit {
-        match self {
-            Self::Bytes => DataSizeUnit::Bytes,
-            Self::Kb    => DataSizeUnit::Kb,
-            Self::Mb    => DataSizeUnit::Mb,
+impl From<CLIDataSizeUnit> for DataSizeUnit {
+    fn from(value: CLIDataSizeUnit) -> Self {
+        match value {
+            CLIDataSizeUnit::Bytes => Self::Bytes,
+            CLIDataSizeUnit::Kb    => Self::Kb,
+            CLIDataSizeUnit::Mb    => Self::Mb,
         }
     }
 }

@@ -8,7 +8,7 @@ use unrar::error as unrar_err;
 
 pub mod data_size;
 
-const NORMALIZE_MAP: &[(&[&'static str], &'static str)] = &[
+const NORMALIZE_MAP: &[(&[&str], &str)] = &[
     (&["  —"], " -"),
     (&["−", "–", "—"], "-"),
     (&["\u{2009}"], " ")
@@ -45,7 +45,7 @@ impl From<unrar_err::UnrarError> for SolveError {
             unrar_err::When::Process => "processing archive",
         };
 
-        SolveError(format!("When {}: {}", when, value.to_string()).into())
+        SolveError(format!("When {}: {}", when, value).into())
     }
 }
 
@@ -78,7 +78,7 @@ pub fn normalize_text(text: &str) -> String {
 // ------------------------------------------------------------------------------------------------
 
 /// Возвращает `true`, если ни один символ в строке не повторяется, иначе `false`
-pub(crate) fn has_unique_chars(string: &String) -> bool {
+pub(crate) fn has_unique_chars(string: &str) -> bool {
     let set: HashSet<char> = HashSet::from_iter(string.chars());
     set.len() == string.chars().count()
 }

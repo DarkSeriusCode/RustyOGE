@@ -117,7 +117,7 @@ impl Number {
 
         while number != 0 {
             let ch = char::from_digit(number % base, base)
-                .ok_or_else(|| ConvertionError::InvalidInteger)?;
+                .ok_or(ConvertionError::InvalidInteger)?;
             buff.push(ch);
             number /= base;
         }

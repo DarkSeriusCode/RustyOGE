@@ -9,14 +9,14 @@ pub fn decode(codes: &Codes, string: &String) -> Vec<String> {
         // Пытаемся представить stirng не как один код, а как несколько
         let mut additional_letters = vec![];
         for i in 1..=string_len {
-            if let Some(_) = codes.get(&string[..i].to_string()) {
-                additional_letters.extend(decode(&codes, &string[i..].to_string()));
+            if codes.get(&string[..i].to_string()).is_some() {
+                additional_letters.extend(decode(codes, &string[i..].to_string()));
             }
         }
         // Добавляем к символу все дополнительные разшифровки
         let mut res = vec![letter.to_string()];
         res.extend(additional_letters);
-        return res;
+        res
 
     } else {
         let mut decoded_strings: Vec<String> = vec![];
@@ -31,6 +31,6 @@ pub fn decode(codes: &Codes, string: &String) -> Vec<String> {
                 }
             }
         }
-        return decoded_strings;
+        decoded_strings
     }
 }

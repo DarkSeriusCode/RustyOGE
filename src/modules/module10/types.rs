@@ -46,7 +46,7 @@ impl InputData {
 
 impl Validated for InputData {
     fn valid(&self) -> Result<(), String> {
-        if self.numbers.len() == 0 {
+        if self.numbers.is_empty() {
             return Err("You must specify at least one number".into())
         }
         Ok(())

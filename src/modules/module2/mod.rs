@@ -12,7 +12,7 @@ pub fn solve(input_data: InputData) -> SolveResult {
     // Ищем строку с одной расшифровкой. В input_data.encoded_strings больше одной строки
     if input_data.one_decoding {
         for encoded_str in &input_data.encoded_strings {
-            let decoded = core::decode(&input_data.codes, &encoded_str);
+            let decoded = core::decode(&input_data.codes, encoded_str);
             if decoded.len() == 1 {
                 let decoded_str = decoded.first().unwrap();
                 return Ok(output_data_type.format(decoded_str));
@@ -27,7 +27,7 @@ pub fn solve(input_data: InputData) -> SolveResult {
                                             .filter(|str| utils::has_unique_chars(str) && 
                                                           input_data.unique_chars));
 
-    if decoded_strings.len() == 0 {
+    if decoded_strings.is_empty() {
         return Err(SolveError("There's no decoding that meets the requirements".into()));
     }
     let first_decoded_str = decoded_strings.first().unwrap();

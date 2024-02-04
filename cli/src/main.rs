@@ -15,7 +15,7 @@ mod macros;
 use utils::{CommandArgMixin, exit_with_any_error};
 
 const AVAILABLE_PROBLEMS: [u32;5] = [1, 2, 6, 10, 12];
-const PRINT_ERROR: &'static str = "FATAL ERROR while printing the text";
+const PRINT_ERROR: &str = "FATAL ERROR while printing the text";
 
 // ------------------------------------------------------------------------------------------------
 
@@ -100,7 +100,7 @@ fn mix_args_to_solve_if_needed(cmd: Command) -> Command {
     // Завершится с ошибкой, если не указан problem_num, а problem_num - обязательный
     let Some(problem_num) = solve_m.get_one::<u32>("problem_num")
         else { cmd.try_get_matches().unwrap_err().exit() };
-    if !AVAILABLE_PROBLEMS.contains(&problem_num) {
+    if !AVAILABLE_PROBLEMS.contains(problem_num) {
         clap::Error::raw(ErrorKind::InvalidValue,
                          format!("There's no problem with №{}!", *problem_num)).exit()
     }

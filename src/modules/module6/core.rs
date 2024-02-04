@@ -40,7 +40,7 @@ pub fn find_python() -> Result<String, SolveError> {
 
 /// Запускает Python программу с входными данными и возвращает вывод программы
 pub fn run_program(python_cmd: &str, program_path: &Path,
-                   program_args: &Vec<String>) -> io::Result<String>
+                   program_args: &[String]) -> io::Result<String>
 {
     let program_path = program_path.to_str().unwrap();
     let program_args = program_args.join("\n");
