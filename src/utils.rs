@@ -93,3 +93,24 @@ pub(crate) fn get_repeating_chars(string: &str) -> Vec<char> {
     v.sort();
     v
 }
+
+/// Возвращает вектор со всеми возиожными расстановками `items` на `len` местах
+pub(crate) fn combinations<T, U>(len: usize, items: U) -> Vec<Vec<T>>
+where
+    T: Clone,
+    U: IntoIterator<Item = T> + Clone,
+{
+    if len == 1 {
+        return Vec::from_iter(items.clone().into_iter().map(|i| vec![i.to_owned()]));
+    } else {
+        let mut v = vec![];
+        for combination in combinations(len - 1, items.clone()) {
+            for item in items.clone().into_iter() {
+                let mut new_combination = vec![item.to_owned()];
+                new_combination.extend_from_slice(&combination);
+                v.push(new_combination);
+            }
+        }
+        v
+    }
+}
