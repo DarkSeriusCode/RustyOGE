@@ -79,6 +79,31 @@ pub mod module1;
 pub mod module2;
 
 /// Модуль 5-го задания
+///
+/// Модуль решения пятого задания ОГЭ по информатике. ([каталог заданий](https://inf-oge.sdamgia.ru/test?a=view_many&cat_id[]=24&cat_id[]=40&filter=all))
+///
+/// Пример решения [этого](https://inf-oge.sdamgia.ru/problem?id=12854) задания
+/// ```rust
+/// use std::str::FromStr;
+/// use rusty_oge::utils::Validated;
+/// use rusty_oge::module5::{InputData, ProblemSpec, CommandTable, Command, solve};
+///
+/// let input_data = InputData {
+///     commands: CommandTable::from_iter([
+///         ('1', Command::from_str("-b").unwrap()), ('2', Command::from_str("*5").unwrap())
+///     ]),
+///     begin_num: 2,
+///     result_num: 17,
+///     spec: ProblemSpec::FindVariableValue("21121".into()),
+/// };
+/// // Или используйте метод InputData::new()
+///
+/// // Удостоверимся, что ввели правильные данные
+/// assert!(input_data.valid().is_ok());
+///
+/// let right_answer = "3".to_string();
+/// assert_eq!(solve(input_data), Ok(right_answer));
+/// ```
 pub mod module5;
 
 /// Модуль 6-го задания

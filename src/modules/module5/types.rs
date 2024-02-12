@@ -8,6 +8,7 @@ use std::{
 
 use crate::utils::Validated;
 
+/// Алиас для `HashMap<char, Command>`
 pub type CommandTable = HashMap<char, Command>;
 
 // ------------------------------------------------------------------------------------------------
@@ -38,6 +39,18 @@ impl Error for ParseCommandError {}
 // ------------------------------------------------------------------------------------------------
 
 /// Команда исполнителя
+///
+/// Строковый формат (используется в `from_str`): `<operator><value>`
+///
+/// Где `<operator>`:
+/// - `+` - прибавить `<value>` к числу
+/// - `-` - вычесть `<value>` из числа
+/// - `*` - умножить на `<value>`
+/// - `/` - разделить на `<value>`
+/// - `^` - Возвести в степень `<value>`
+///
+/// `<value>` может быть как числом, так и просто символом, в этом случае символ расценивается как
+/// переменная
 #[derive(Debug, Clone)]
 pub struct Command {
     /// Функция, вызываемая при использовании `execute`
@@ -49,10 +62,16 @@ pub struct Command {
 }
 
 impl Command {
+    /// Создаёт новую команду для исполнителя.
+    /// `action` - функция, вызываемая в `execute` и принимающая первым параметром число на экране,
+    /// а вторым `action_value`
+    /// `action_value` - если Some(n), то в кацестве второго аргумента `action` передаётся n, если
+    /// None, то передаётся значение переменной
     pub fn new(action: fn(f32, f32) -> f32, action_value: Option<f32>) -> Self {
         Self { action, action_value, }
     }
 
+    /// Выполняет команду исполнителя.
     pub fn execute(&self, acc: f32, num: f32) -> f32 {
         (self.action)(acc, self.action_value.unwrap_or(num))
     }
@@ -70,8 +89,8 @@ impl FromStr for Command {
             '*' => Mul::mul,
             '/' => Div::div,
             '^' => |num: f32, e: f32| num.powf(e),
-            _ => return Err(ParseCommandError("Unknown action! \
-                                               Possible actions are +, -, *, /, ^".into())),
+            other => return Err(ParseCommandError(format!("Unknown action! {}\
+                                               Possible actions are +, -, *, /, ^", other))),
         };
 
         let action_value = match s[1..].parse::<f32>() {
