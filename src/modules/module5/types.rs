@@ -133,7 +133,7 @@ impl Validated for InputData {
         if let ProblemSpec::FindVariableValue(ref program) = self.spec {
             for cmd_name in program.chars() {
                 if self.commands.get(&cmd_name).is_none() {
-                    return Err(format!("Unknown command {}!", cmd_name));
+                    return Err(format!("Unknown command {} in \"{}\"!", cmd_name, program));
                 }
             }
         }
