@@ -5,7 +5,7 @@ use clap::Command;
 use color_print::cprintln;
 
 pub(crate) fn exit_with_any_error(error: Box<dyn Error>) -> ! {
-    cprintln!("<r><s>{}", error.to_string());
+    cprintln!("<r>{}</r>", error.to_string());
     process::exit(1);
 }
 
