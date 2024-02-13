@@ -10,10 +10,7 @@ pub use types::*;
 /// Решает задачу и возвращает результат решения.
 pub fn solve(input_data: InputData) -> SolveResult {
     let parts = input_data.ip_parts;
-    let all_key_combinations: Vec<String> = utils::combinations(parts.len(), parts.keys())
-        .iter()
-        .map(|v| String::from_iter(v.iter().map(|c| c.to_owned())))
-        .collect();
+    let all_key_combinations: Vec<String> = utils::combinations(parts.len(), parts.keys());
 
     for key_combination in all_key_combinations {
         let mut ip_addr = String::new();

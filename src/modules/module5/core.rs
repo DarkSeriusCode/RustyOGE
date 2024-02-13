@@ -28,8 +28,7 @@ pub fn find_variable_value(cmds: &CommandTable, program: &str,
 /// `res_value` и возвращает None, если это невозможно
 pub fn make_algorithm(cmds: &CommandTable, len: usize,
                       beg_value: i32, res_value: i32) -> Option<String> {
-    for program in utils::combinations(len, cmds.keys().map(ToOwned::to_owned)) {
-        let program: String = program.iter().collect();
+    for program in utils::combinations::<String, _, _>(len, cmds.keys()) {
         // 1 потому что в задачах с составлением алгоритма переменной b нет
         if res_value as f32 == execute_program(cmds, &program, beg_value, 1) {
             return Some(program);
