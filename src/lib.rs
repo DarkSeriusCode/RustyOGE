@@ -19,6 +19,7 @@ pub use modules::module1;
 pub use modules::module2;
 pub use modules::module5;
 pub use modules::module6;
+pub use modules::module7;
 pub use modules::module10;
 pub use modules::module12;
 

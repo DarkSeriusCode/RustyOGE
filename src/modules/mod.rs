@@ -131,6 +131,34 @@ pub mod module5;
 /// ```
 pub mod module6;
 
+/// Модуль 7-го задания
+///
+/// Модуль для решения седьмого задания ОГЭ по информатике. ([каталог заданий](https://inf-oge.sdamgia.ru/test?a=view_many&cat_id[]=41&cat_id[]=42&cat_id[]=17&filter=all))
+///
+/// **ВАЖНО!** Этот модуль решает те седьмые задачки, где требуется составить IP адрес. Остальные
+/// седьмые задания настолько просты и наглядны, что нет смысла писать для них алгоритм решения.
+///
+/// Пример решения [этого](https://inf-oge.sdamgia.ru/problem?id=518) задания
+/// ```rust
+/// use std::collections::HashMap;
+/// use rusty_oge::utils::Validated;
+/// use rusty_oge::module7::{InputData, solve};
+///
+/// let input_data = InputData {
+///     ip_parts: HashMap::from_iter([
+///         ('А', "17".into()), ('Б', ".44".into()), ('В', "4.144".into()), ('Г', "9.13".into())
+///     ]),
+/// };
+/// // Или используйте метод InputData::new()
+///
+/// // Удостоверимся, что ввели правильные данные
+/// assert!(input_data.valid().is_ok());
+///
+/// let right_answer = "АГВБ".to_string();
+/// assert_eq!(solve(input_data), Ok(right_answer));
+/// ```
+pub mod module7;
+
 /// Модуль 10-го задания
 ///
 /// Модуль для решения десятого задания ОГЭ по информатике. ([каталог заданий](https://inf-oge.sdamgia.ru/test?a=view_many&cat_id[]=45&cat_id[]=23&cat_id[]=46&filter=all))
