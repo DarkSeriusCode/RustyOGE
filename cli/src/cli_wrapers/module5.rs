@@ -104,7 +104,7 @@ fn parse_command(s: &str) -> Result<(char, module5::Command), Error> {
         return Err(Error::raw(ErrorKind::Format,
                               format!("Invalid format \"{}\". Format as <name>=<action>", s)))
     };
-    if cmd_name.len() != 1 {
+    if cmd_name.chars().count() != 1 {
         return Err(Error::raw(ErrorKind::InvalidValue, format!("The name of the command should be \
                                                                a single char! Not {}", cmd_name)));
     }
