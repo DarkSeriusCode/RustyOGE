@@ -1,6 +1,7 @@
 extern crate rusty_oge;
 
 use rusty_oge::num;
+use rusty_oge::utils::NumberToFind;
 use rusty_oge::module10::*;
 
 #[macro_use]
