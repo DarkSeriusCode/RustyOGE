@@ -14,7 +14,7 @@ mod macros;
 
 use utils::{CommandArgMixin, exit_with_any_error};
 
-const AVAILABLE_PROBLEMS: [u32;7] = [1, 2, 5, 6, 7, 10, 12];
+const AVAILABLE_PROBLEMS: [u32;8] = [1, 2, 3, 5, 6, 7, 10, 12];
 const PRINT_ERROR: &str = "FATAL ERROR while printing the text";
 
 // ------------------------------------------------------------------------------------------------
@@ -78,6 +78,7 @@ fn solve(matches: &ArgMatches) {
     let solve_res: Result<String, Box<dyn Error>> = match problem_num {
         1  => solve_problem!(1, matches),
         2  => solve_problem!(2, matches),
+        3  => solve_problem!(3, matches),
         5  => solve_problem!(5, matches),
         6  => solve_problem!(6, matches),
         7  => solve_problem!(7, matches),
@@ -114,6 +115,7 @@ fn mix_args_to_solve_if_needed(cmd: Command) -> Command {
         match problem_num {
             1  => module1::Module1InputData::mix_to_command(subcmd),
             2  => module2::Module2InputData::mix_to_command(subcmd),
+            3  => module3::Module3InputData::mix_to_command(subcmd),
             5  => module5::Module5InputData::mix_to_command(subcmd),
             6  => module6::Module6InputData::mix_to_command(subcmd),
             7  => module7::Module7InputData::mix_to_command(subcmd),
