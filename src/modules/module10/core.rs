@@ -1,4 +1,5 @@
-use super::{Number, NumberToFind, SolveResult, SolveError};
+use super::{Number, SolveResult, SolveError};
+use crate::utils::NumberToFind;
 
 /// Обёртка над `Number::convert()`, возвращающая `SolveResult`, вместо `ConvertionResult`
 pub fn convert(number: &Number, base: u32) -> SolveResult {

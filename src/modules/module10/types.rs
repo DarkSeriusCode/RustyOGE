@@ -1,16 +1,5 @@
 use crate::module10::Number;
-use crate::utils::Validated;
-
-/// Какое число требуется найти
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub enum NumberToFind {
-    /// Нужно найти минимальное число
-    Min,
-    /// Нужно найти максимальное число
-    Max,
-}
-
-// ------------------------------------------------------------------------------------------------
+use crate::utils::{Validated, NumberToFind};
 
 /// Детали выполнения задания. Указывает, что требуется сделать в задаче.
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]

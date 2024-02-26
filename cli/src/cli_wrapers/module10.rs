@@ -6,8 +6,8 @@ use clap::{
     error::{Error, ErrorKind},
 };
 
-use rusty_oge::module10::{Number, NumberToFind, InputData, ProblemSpec};
-use rusty_oge::utils::Validated;
+use rusty_oge::module10::{Number, InputData, ProblemSpec};
+use rusty_oge::utils::{NumberToFind, Validated};
 
 use crate::utils::CommandArgMixin;
 
