@@ -78,6 +78,56 @@ pub mod module1;
 /// ```
 pub mod module2;
 
+/// Модуль 3-го задания
+///
+/// Модуль для решения третьего задания ОГЭ по информатике. ([каталог заданий](https://inf-oge.sdamgia.ru/test?a=view_many&cat_id[]=37&cat_id[]=31&cat_id[]=38&filter=all))
+///
+/// Пример решения [этого](https://inf-oge.sdamgia.ru/problem?id=10636) задания
+/// ```rust
+/// use rusty_oge::utils::{NumberToFind, Validated};
+/// use rusty_oge::module3::{InputData, solve};
+///
+/// let input_data = InputData {
+///     number_to_find: NumberToFind::Max,
+///     digits_in_number: None,
+///     expression: "НЕ(Число > 10000) И (Число нечетное).".into(),
+///     expression_result: true,
+/// };
+///
+/// // Или используйте метод InputData::new()
+///
+/// // Удостоверимся, что ввели правильные данные
+/// assert!(input_data.valid().is_ok());
+///
+/// let right_answer = "9999".to_string();
+/// assert_eq!(solve(input_data), Ok(right_answer));
+/// ```
+/// Замечу, что числа должны записываться **без пробелов**! Так, например, вместо `10 000` следует
+/// написать `10000`
+///
+///
+/// Или вот ещё пример [задания](https://inf-oge.sdamgia.ru/problem?id=18033) где нужно найти максимальное трёхзначное число
+/// ```rust
+/// use rusty_oge::utils::{NumberToFind, Validated};
+/// use rusty_oge::module3::{InputData, solve};
+///
+/// let input_data = InputData {
+///     number_to_find: NumberToFind::Min,
+///     digits_in_number: Some(3),
+///     expression: "НЕ (Число нечетное) И (Число кратно 3).".into(),
+///     expression_result: true,
+/// };
+///
+/// // Или используйте метод InputData::new()
+///
+/// // Удостоверимся, что ввели правильные данные
+/// assert!(input_data.valid().is_ok());
+///
+/// let right_answer = "102".to_string();
+/// assert_eq!(solve(input_data), Ok(right_answer));
+/// ```
+pub mod module3;
+
 /// Модуль 5-го задания
 ///
 /// Модуль решения пятого задания ОГЭ по информатике. ([каталог заданий](https://inf-oge.sdamgia.ru/test?a=view_many&cat_id[]=24&cat_id[]=40&filter=all))
@@ -185,8 +235,8 @@ pub mod module7;
 ///
 /// [Задание](https://inf-oge.sdamgia.ru/problem?id=10323) где требуется найти максимальное/минимальное число в десятичной системе счисления.
 /// ```rust
-/// use rusty_oge::{num, utils::Validated};
-/// use rusty_oge::module10::{InputData, ProblemSpec, NumberToFind, solve};
+/// use rusty_oge::{num, utils::{NumberToFind, Validated}};
+/// use rusty_oge::module10::{InputData, ProblemSpec, solve};
 ///
 /// let input_data = InputData {
 ///     numbers: vec![num!("23", 16), num!("32", 8), num!("11110", 2)],

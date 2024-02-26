@@ -1,0 +1,22 @@
+WHITESPACE     = _{ " " }
+
+variable       = { (LETTER+) }
+number         = { ASCII_DIGIT+ }
+digit_position = { "первая" | "вторая" | "последняя" }
+digit          = !{ digit_position ~ "цифра" }
+value          = @{ digit | variable }
+
+cmp_op         = { "<=" | ">=" | "<" | ">" }
+cmp_expr       = !{ "(" ~ value ~ cmp_op ~ number ~ ")" }
+
+even_odd_op    = { "четн"~LETTER{2} | "нечетн"~LETTER{2} }
+even_odd_expr  = !{ "(" ~ value ~ even_odd_op ~ ")" }
+
+div_expr       = !{ "(" ~ value ~ ("делится на" | "кратно") ~ number ~ ")" }
+
+not_expr       = { "НЕ" ~ expr }
+and_expr       = !{ expr ~ "И" ~ main_expr }
+or_expr        = !{ expr ~ "ИЛИ" ~ main_expr }
+
+main_expr      = _{ and_expr | or_expr | expr ~ "."? }
+expr           = _{ not_expr | even_odd_expr | cmp_expr | div_expr }
