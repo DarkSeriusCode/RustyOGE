@@ -40,7 +40,8 @@ impl Module10InputData {
                 .required(true)
                 .num_args(1..)
                 .value_parser(ValueParser::new(parse_number))
-                .help("Numbers given in problem. Format: <number>x<base>,<number>x<base>..."),
+                .help("Numbers given in problem. Format: <number>x<base>,<number>x<base>...\n\
+                      Example: --numbers 1010110x2 FF4Ax16"),
 
             Arg::new("number_to_find")
                 .long("number_to_find")

@@ -76,7 +76,8 @@ impl Module2InputData {
                 .group("codes_source")
                 .num_args(1..)
                 .value_parser(parse_codes)
-                .help("Codes given in the probelm. Format <letter>=<code>"),
+                .help("Codes given in the probelm. Format <letter>=<code>\n\
+                       Example: --codes A=00 B=01 C=10 D=11"),
             Arg::new("alphabet")
                 .long("alphabet")
                 .short('a')

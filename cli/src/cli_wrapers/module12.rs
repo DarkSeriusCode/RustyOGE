@@ -29,25 +29,25 @@ impl Module12InputData {
                 .short('a')
                 .required(true)
                 .value_parser(value_parser!(PathBuf))
-                .help("PLACEHOLDER"),
+                .help("A path to a given archive."),
             Arg::new("search_dir")
                 .long("search_dir")
                 .short('s')
                 .required(true)
                 .value_parser(value_parser!(PathBuf))
-                .help("PLACEHOLDER"),
+                .help("In which directory in the archive search for files"),
             Arg::new("exts")
                 .long("exts")
                 .short('e')
                 .required(true)
                 .num_args(1..)
                 .value_parser(value_parser!(OsString))
-                .help("PLACEHOLDER"),
+                .help("Find files with these extensions\nExample: --exts doc docx"),
             Arg::new("file_size")
-                .long("minimal_file_size")
+                .long("minimum_file_size")
                 .short('m')
                 .value_parser(parse_data_size)
-                .help("PLACEHOLDER")
+                .help("Minimum file size")
         ]
     }
 }
