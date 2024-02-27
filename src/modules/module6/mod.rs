@@ -1,4 +1,4 @@
-use crate::utils::{self, SolveError, SolveResult};
+use crate::utils::{self, SolveError, SolveResult, Validated};
 
 mod core;
 mod consts;
@@ -8,6 +8,10 @@ pub use types::*;
 
 /// Решает задачу и возвращает результат решения.
 pub fn solve(input_data: InputData) -> SolveResult {
+    if let Err(validation_err) = input_data.valid() {
+        return Err(SolveError(validation_err.into()));
+    }
+
     // Поиск Python
     let python_interpreter = core::find_python()?;
 

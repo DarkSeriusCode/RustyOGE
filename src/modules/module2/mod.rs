@@ -1,4 +1,4 @@
-use crate::utils::{self, SolveError, SolveResult};
+use crate::utils::{self, SolveError, SolveResult, Validated};
 
 mod core;
 mod types;
@@ -7,6 +7,10 @@ pub use types::*;
 
 /// Решает задачу и возвращает результат решения.
 pub fn solve(input_data: InputData) -> SolveResult {
+    if let Err(validation_err) = input_data.valid() {
+        return Err(SolveError(validation_err.into()));
+    }
+
     let output_data_type = input_data.output_data_type;
 
     // Ищем строку с одной расшифровкой. В input_data.encoded_strings больше одной строки

@@ -1,4 +1,4 @@
-use crate::utils::{self, SolveError, SolveResult, data_size::DataSize};
+use crate::utils::{self, SolveError, SolveResult, data_size::DataSize, Validated};
 
 mod types;
 mod core;
@@ -7,6 +7,10 @@ pub use types::*;
 
 /// Решает задачу и возвращает результат решения.
 pub fn solve(input_data: InputData) -> SolveResult {
+    if let Err(validation_err) = input_data.valid() {
+        return Err(SolveError(validation_err.into()));
+    }
+
     if (input_data.bits_in_char as f64 / 8.0f64).fract() != 0.0 {
         return Err(SolveError(format!("There're 8 bits in 1 byte! Not {}!",
                                       input_data.bits_in_char).into()));

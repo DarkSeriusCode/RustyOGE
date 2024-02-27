@@ -14,9 +14,6 @@
 /// };
 /// // Или используйте метод InputData::new()
 ///
-/// // Удостоверимся, что ввели правильные данные
-/// assert!(input_data.valid().is_ok());
-///
 /// let right_answer = "Москва".to_string();
 /// assert_eq!(solve(input_data), Ok(right_answer));
 /// ```
@@ -36,9 +33,6 @@
 ///     spec: ProblemSpec::CalcTextSize(DataSizeUnit::Kb),
 /// };
 /// // Или используйте метод InputData::new()
-///
-/// // Удостоверимся, что ввели правильные данные
-/// assert!(input_data.valid().is_ok());
 ///
 /// let right_answer = "30".to_string();
 /// assert_eq!(solve(input_data), Ok(right_answer));
@@ -70,9 +64,6 @@ pub mod module1;
 /// };
 /// // Или используйте метод InputData::new()
 ///
-/// // Удостоверимся, что ввели правильные данные
-/// assert!(input_data.valid().is_ok());
-///
 /// let right_answer = "НОС".to_string();
 /// assert_eq!(solve(input_data), Ok(right_answer));
 /// ```
@@ -96,9 +87,6 @@ pub mod module2;
 ///
 /// // Или используйте метод InputData::new()
 ///
-/// // Удостоверимся, что ввели правильные данные
-/// assert!(input_data.valid().is_ok());
-///
 /// let right_answer = "9999".to_string();
 /// assert_eq!(solve(input_data), Ok(right_answer));
 /// ```
@@ -119,9 +107,6 @@ pub mod module2;
 /// };
 ///
 /// // Или используйте метод InputData::new()
-///
-/// // Удостоверимся, что ввели правильные данные
-/// assert!(input_data.valid().is_ok());
 ///
 /// let right_answer = "102".to_string();
 /// assert_eq!(solve(input_data), Ok(right_answer));
@@ -148,9 +133,6 @@ pub mod module3;
 /// };
 /// // Или используйте метод InputData::new()
 ///
-/// // Удостоверимся, что ввели правильные данные
-/// assert!(input_data.valid().is_ok());
-///
 /// let right_answer = "3".to_string();
 /// assert_eq!(solve(input_data), Ok(right_answer));
 /// ```
@@ -172,9 +154,6 @@ pub mod module5;
 ///     expected_output: "YES".to_string(),
 /// };
 /// // Или используйте метод InputData::new()
-///
-/// // Удостоверимся, что ввели правильные данные
-/// assert!(input_data.valid().is_ok());
 ///
 /// let right_answer = "5".to_string();
 /// assert_eq!(solve(input_data), Ok(right_answer));
@@ -201,9 +180,6 @@ pub mod module6;
 /// };
 /// // Или используйте метод InputData::new()
 ///
-/// // Удостоверимся, что ввели правильные данные
-/// assert!(input_data.valid().is_ok());
-///
 /// let right_answer = "АГВБ".to_string();
 /// assert_eq!(solve(input_data), Ok(right_answer));
 /// ```
@@ -226,9 +202,6 @@ pub mod module7;
 /// };
 /// // Или используйте метод InputData::new()
 ///
-/// // Проверим корректность данных
-/// assert!(input_data.valid().is_ok());
-///
 /// let right_answer = "102".to_string();
 /// assert_eq!(solve(input_data), Ok(right_answer));
 /// ```
@@ -243,9 +216,6 @@ pub mod module7;
 ///     spec: ProblemSpec::FindNum(NumberToFind::Max),
 /// };
 /// // Или используйте метод InputData::new()
-///
-/// // Проверим корректность данных
-/// assert!(input_data.valid().is_ok());
 ///
 /// let right_answer = "35".to_string();
 /// assert_eq!(solve(input_data), Ok(right_answer));
@@ -270,9 +240,6 @@ pub mod module10;
 ///     minimum_file_size: None,
 /// };
 /// // Или используйте метод InputData::new()
-///
-/// // Проверим корректность данных
-/// assert!(input_data.valid().is_ok());
 ///
 /// let right_answer = "3".to_string();
 ///

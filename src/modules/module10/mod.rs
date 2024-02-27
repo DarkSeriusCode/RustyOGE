@@ -1,4 +1,4 @@
-use crate::utils::{SolveError, SolveResult};
+use crate::utils::{SolveError, SolveResult, Validated};
 
 mod types;
 mod core;
@@ -9,6 +9,10 @@ pub use number::*;
 
 /// Решает задачу и возвращает результат решения.
 pub fn solve(input_data: InputData) -> SolveResult {
+    if let Err(validation_err) = input_data.valid() {
+        return Err(SolveError(validation_err.into()));
+    }
+
     let first_number = input_data.numbers.first().unwrap();
 
     use ProblemSpec::*;

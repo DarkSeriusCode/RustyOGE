@@ -2,7 +2,7 @@ use std::ops::{AddAssign, SubAssign};
 
 use pest::Parser;
 
-use crate::utils::{SolveResult, NumberToFind};
+use crate::utils::{SolveResult, SolveError, NumberToFind, Validated};
 
 mod types;
 mod core;
@@ -12,6 +12,10 @@ use core::{Rule, LogicExpressionParser};
 
 /// Решает задачу и возвращает результат решения.
 pub fn solve(input_data: InputData) -> SolveResult {
+    if let Err(validation_err) = input_data.valid() {
+        return Err(SolveError(validation_err.into()));
+    }
+
     let parse_result = LogicExpressionParser::parse(Rule::main_expr, &input_data.expression)
         .unwrap().next().unwrap();
 

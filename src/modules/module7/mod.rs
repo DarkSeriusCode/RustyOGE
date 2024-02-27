@@ -1,7 +1,7 @@
 use std::net::Ipv4Addr;
 use std::str::FromStr;
 
-use crate::utils::{self, SolveResult, SolveError};
+use crate::utils::{self, SolveResult, SolveError, Validated};
 
 mod types;
 
@@ -9,6 +9,10 @@ pub use types::*;
 
 /// Решает задачу и возвращает результат решения.
 pub fn solve(input_data: InputData) -> SolveResult {
+    if let Err(validation_err) = input_data.valid() {
+        return Err(SolveError(validation_err.into()));
+    }
+
     let parts = input_data.ip_parts;
     let all_key_combinations: Vec<String> = utils::combinations(parts.len(), parts.keys());
 
