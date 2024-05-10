@@ -7,6 +7,7 @@ use std::convert::From;
 use unrar::error as unrar_err;
 
 pub mod data_size;
+pub mod graph;
 
 const NORMALIZE_MAP: &[(&[&str], &str)] = &[
     (&["  —"], " -"),

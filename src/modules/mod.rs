@@ -113,6 +113,9 @@ pub mod module2;
 /// ```
 pub mod module3;
 
+/// Модуль 4-го задания
+pub mod module4;
+
 /// Модуль 5-го задания
 ///
 /// Модуль решения пятого задания ОГЭ по информатике. ([каталог заданий](https://inf-oge.sdamgia.ru/test?a=view_many&cat_id[]=24&cat_id[]=40&filter=all))
