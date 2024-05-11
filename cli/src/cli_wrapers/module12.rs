@@ -89,6 +89,7 @@ fn parse_data_size(s: &str) -> Result<DataSize, Error> {
         return Err(Error::raw(ErrorKind::Format,
                               format!("Invalid format \"{}\". Format as <num><unit>", s)));
     };
+    // TODO: Убрать else, т.к он не выполнится никогда
     let Ok(num): Result<usize, _> = capture["num"].parse() else {
         return Err(Error::raw(ErrorKind::InvalidValue,
                               format!("\"{}\" in \"{}\" should be a number", &capture["num"], s)));
