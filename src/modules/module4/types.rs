@@ -27,17 +27,12 @@ pub struct InputData {
 }
 
 impl InputData {
-    pub fn new(map: &[(&str, &[(&str, usize)])], way: (&str, &str),
-               include: Vec<&str>, path_to_find: PathToFind) -> Self
+    pub fn new(map: HashMap<String, Vec<(String, usize)>>, way: (&str, &str),
+               include: Vec<String>, path_to_find: PathToFind) -> Self
     {
-        let mut hash_map = HashMap::new();
-        for (node_name, raw_neighbors) in map {
-            let neighbors = Vec::from_iter(raw_neighbors.iter().map(|(s, l)| (s.to_string(), *l)));
-            hash_map.insert(node_name.to_string(), neighbors.to_vec());
-        }
 
         Self {
-            map: hash_map,
+            map,
             way: (way.0.to_string(), way.1.to_string()),
             include: Vec::from_iter(include.iter().map(|s| s.to_string())),
             path_to_find,
