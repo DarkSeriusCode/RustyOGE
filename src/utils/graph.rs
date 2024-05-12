@@ -19,11 +19,11 @@ impl Graph {
         while ways.iter().any(|w| w.last().unwrap_or_default() != dest) {
             let mut new_ways = LinkedList::new();
             for way in ways {
+                if way.last().unwrap() == dest {
+                    new_ways.push_back(way);
+                    continue;
+                }
                 for (neighbor, neighbor_edge) in &self.0[way.last().unwrap()] {
-                    if way.last().unwrap() == dest {
-                        new_ways.push_back(way);
-                        break;
-                    }
                     if !way.goes_through(neighbor) {
                         new_ways.push_back(Way::merge(&way, *neighbor_edge, &Way::new(neighbor)));
                     }

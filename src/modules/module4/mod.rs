@@ -1,4 +1,4 @@
-use crate::utils::{graph::Graph, SolveResult, SolveError};
+use crate::utils::{graph::Graph, SolveResult, SolveError, Validated};
 
 mod types;
 
@@ -6,6 +6,10 @@ pub use types::*;
 
 /// Решает задачу и возвращает результат решения.
 pub fn solve(input_data: InputData) -> SolveResult {
+    if let Err(validation_err) = input_data.valid() {
+        return Err(SolveError(validation_err.into()));
+    }
+
     let graph = Graph::new(input_data.map);
     let ways = graph.find_ways(&input_data.way.0, &input_data.way.1);
     let mut filtered_ways = ways;
