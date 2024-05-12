@@ -1,7 +1,6 @@
 use std::path::PathBuf;
 use std::ffi::OsString;
 
-use regex::Regex;
 use clap::{
     value_parser,
     Command, Arg, ArgMatches,
@@ -13,7 +12,7 @@ use rusty_oge::{
     module12::InputData,
     utils::{
         Validated,
-        data_size::{DataSize, DataSizeUnit},
+        data_size::DataSize,
     },
 };
 
@@ -84,24 +83,5 @@ impl FromArgMatches for Module12InputData {
 // ------------------------------------------------------------------------------------------------
 
 fn parse_data_size(s: &str) -> Result<DataSize, Error> {
-    let re = Regex::new(r"(?<num>\d+)(?<unit>B|Kb|Mb)").expect("Cannot create Regex!");
-    let Some(capture) = re.captures(s) else {
-        return Err(Error::raw(ErrorKind::Format,
-                              format!("Invalid format \"{}\". Format as <num><unit>", s)));
-    };
-    // TODO: Убрать else, т.к он не выполнится никогда
-    let Ok(num): Result<usize, _> = capture["num"].parse() else {
-        return Err(Error::raw(ErrorKind::InvalidValue,
-                              format!("\"{}\" in \"{}\" should be a number", &capture["num"], s)));
-    };
-
-    let unit = match &capture["unit"] {
-        "B"  => DataSizeUnit::Bytes,
-        "Kb" => DataSizeUnit::Kb,
-        "Gb" => DataSizeUnit::Mb,
-        unit => return Err(Error::raw(ErrorKind::InvalidValue,
-                                      format!("Unknown data unit {unit}"))),
-    };
-
-    Ok(DataSize::new(num, unit))
+    s.parse::<DataSize>().map_err(|e| Error::raw(ErrorKind::InvalidValue, e.to_string()))
 }

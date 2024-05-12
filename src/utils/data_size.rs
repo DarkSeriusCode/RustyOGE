@@ -22,7 +22,6 @@ pub enum DataSizeUnit {
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub enum ParseDataSizeError {
     InvalidFormat,
-    NaN(String),
     UnknownDataUnit(String),
 }
 
@@ -30,8 +29,7 @@ impl Display for ParseDataSizeError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         use ParseDataSizeError::*;
         let txt = match self {
-            InvalidFormat => "Invalid format! Format as <num><unit>".into(),
-            NaN(nan) => format!("\"{}\" should be a number", nan),
+            InvalidFormat => "Invalid format! Format as <num >= 0><unit>".into(),
             UnknownDataUnit(unit) => format!("Unknown data unit {unit}"),
         };
         write!(f, "{}", txt)
@@ -114,12 +112,10 @@ impl FromStr for DataSize {
     type Err = ParseDataSizeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let re = Regex::new(r"(?<num>\d+)(?<unit>\w{2})").expect("Cannot create Regex!");
+        let re = Regex::new(r"(?<num>\d+)(?<unit>\w{1, 2})").expect("Cannot create Regex!");
 
         let Some(capture) = re.captures(s) else { return Err(Self::Err::InvalidFormat); };
-        let Ok(num): Result<usize, _> = capture["num"].parse() else {
-            return Err(Self::Err::NaN(capture["num"].to_string()));
-        };
+        let num: usize = capture["num"].parse().unwrap();
         let unit = match &capture["unit"] {
             "B"  => DataSizeUnit::Bytes,
             "Kb" => DataSizeUnit::Kb,
