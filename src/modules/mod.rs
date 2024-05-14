@@ -188,6 +188,9 @@ pub mod module6;
 /// ```
 pub mod module7;
 
+/// Модуль 9-го задания
+pub mod module9;
+
 /// Модуль 10-го задания
 ///
 /// Модуль для решения десятого задания ОГЭ по информатике. ([каталог заданий](https://inf-oge.sdamgia.ru/test?a=view_many&cat_id[]=45&cat_id[]=23&cat_id[]=46&filter=all))
