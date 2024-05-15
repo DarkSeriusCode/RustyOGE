@@ -73,7 +73,7 @@ impl CommandArgMixin for Module4InputData {
 }
 
 impl FromArgMatches for Module4InputData {
-    fn from_arg_matches(matches: &ArgMatches) -> Result<Self, clap::Error> {
+    fn from_arg_matches(matches: &ArgMatches) -> Result<Self, Error> {
         let map_parts    = matches.get_many::<(String, String, usize)>("map").unwrap()
                                .map(|i| i.to_owned()).collect::<Vec<_>>();
         let from         = matches.get_one::<String>("from").unwrap();
@@ -91,7 +91,7 @@ impl FromArgMatches for Module4InputData {
         Ok(Self(input_data))
     }
 
-    fn update_from_arg_matches(&mut self, matches: &ArgMatches) -> Result<(), clap::Error> {
+    fn update_from_arg_matches(&mut self, matches: &ArgMatches) -> Result<(), Error> {
         *self = Self::from_arg_matches(matches)?;
         Ok(())
     }
