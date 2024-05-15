@@ -114,6 +114,32 @@ pub mod module2;
 pub mod module3;
 
 /// Модуль 4-го задания
+///
+/// Модуль решения четвёртого задания ОГЭ по информатике. ([каталог заданий](https://inf-oge.sdamgia.ru/test?a=view_many&cat_id[]=39&cat_id[]=3&filter=all))
+///
+/// Пример решения [этого](https://inf-oge.sdamgia.ru/problem?id=23) задания
+/// ```rust
+/// use std::collections::HashMap;
+/// use rusty_oge::utils::Validated;
+/// use rusty_oge::module4::{InputData, PathToFind, solve};
+///
+/// let input_data = InputData {
+///     map: HashMap::from([
+///        ("A".into(), vec![("B".into(), 5), ("C".into(), 3)]),
+///        ("B".into(), vec![("A".into(), 5), ("C".into(), 1), ("D".into(), 4)]),
+///        ("C".into(), vec![("A".into(), 3), ("B".into(), 1), ("D".into(), 6)]),
+///        ("D".into(), vec![("B".into(), 4), ("C".into(), 6), ("E".into(), 1)]),
+///        ("E".into(), vec![("D".into(), 1)]),
+///     ]),
+///     way: ("A".into(), "E".into()),
+///     include: vec![],
+///     path_to_find: PathToFind::Shortest,
+/// };
+/// // Или используйте метод InputData::new()
+///
+/// let right_answer = "9".to_string();
+/// assert_eq!(solve(input_data), Ok(right_answer));
+/// ```
 pub mod module4;
 
 /// Модуль 5-го задания
@@ -189,6 +215,34 @@ pub mod module6;
 pub mod module7;
 
 /// Модуль 9-го задания
+///
+/// Модуль для решения девятого задания ОГЭ по информатике. ([каталог заданий](https://inf-oge.sdamgia.ru/test?a=view_many&cat_id[]=44&cat_id[]=22&filter=all))
+///
+/// Пример решения [этого](https://inf-oge.sdamgia.ru/problem?id=18039) задания
+/// ```rust
+/// use std::collections::HashMap;
+/// use rusty_oge::utils::Validated;
+/// use rusty_oge::module9::{InputData, solve};
+///
+/// let input_data = InputData {
+///     map: HashMap::from([
+///         ("A".into(), vec![("B".into(), 0), ("G".into(), 0)]),
+///         ("B".into(), vec![("D".into(), 0), ("K".into(), 0), ("V".into(), 0)]),
+///         ("G".into(), vec![("V".into(), 0), ("K".into(), 0), ("E".into(), 0)]),
+///         ("V".into(), vec![("K".into(), 0)]),
+///         ("D".into(), vec![("K".into(), 0)]),
+///         ("E".into(), vec![("K".into(), 0)]),
+///         ("K".into(), vec![]),
+///     ]),
+///     way: ("A".into(), "K".into()),
+///     include: vec![],
+///     exclude: vec![],
+/// };
+/// // Или используйте метод InputData::new()
+///
+/// let right_answer = "6".to_string();
+/// assert_eq!(solve(input_data), Ok(right_answer));
+/// ```
 pub mod module9;
 
 /// Модуль 10-го задания
