@@ -2,14 +2,14 @@
 name = "rusty_oge-cli"
 description = "CLI обёртка над библиотекой rusty_oge"
 authors = ["DarkSeriusCode"]
-version = "0.6.0"
+version = "0.7.0"
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/DarkSeriusCode/RustyOGE"
 readme = "README.md"
 
 [dependencies]
-rusty_oge = { version = "1.4.0", path = ".." }
+rusty_oge = { version = "1.5.0", path = ".." }
 paste = "1.0.14"
 regex = "1.10.3"
 clap = { version = "4.0", features = ["error-context", "cargo", "derive"] }
